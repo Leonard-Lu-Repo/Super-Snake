@@ -3,6 +3,11 @@ module objects {
         // Variables
         speedX=2;
         speedY=2;
+        gridPosX = 2;
+        gridPoxY = 1;
+        // Charlie comment: add List containing all bodies
+        //List<Body> listOfBodies = new List<Body>();
+
         private collision:boolean=false;
         public e:KeyboardEvent;
         // Constructor
@@ -51,5 +56,13 @@ module objects {
             }
         }
         
+        public addBody() {
+
+        }
+    }
+
+    export class Body {
+        posX = 1;
+        posY = 1;
     }
 }
