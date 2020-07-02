@@ -21,8 +21,9 @@ var objects;
             // Variables
             _this.speedX = 2;
             _this.speedY = 2;
-            _this.gridPosX = 2;
-            _this.gridPoxY = 1;
+            _this.gridPosX = 5;
+            _this.gridPosY = 5;
+            _this.currentDirection = 1; // 0 = up; 1 = right; 2 = down; 3 = left
             // Charlie comment: add List containing all bodies
             //List<Body> listOfBodies = new List<Body>();
             _this.collision = false;
@@ -30,19 +31,22 @@ var objects;
             return _this;
         }
         Snake.prototype.Start = function () {
-            this.x = 100;
-            this.y = 100;
+            var _this = this;
+            this.Move();
             //this.keyboardListener();
             /* this.scaleX = 0.25;
             this.scaleY = 0.25; */
+            setInterval(function () {
+                _this.Move();
+            }, 800);
         };
         Snake.prototype.Update = function () {
             if (this.collision) {
                 this.Reset();
             }
-            else {
+            /*else{
                 this.Move();
-            }
+            }*/
             this.CheckBound();
         };
         Snake.prototype.Reset = function () {
@@ -54,8 +58,30 @@ var objects;
             //this.x = objects.Game.stage.mouseX;
             // This will eventually be replaced with keyboard input
             // Maybe xbox controller....maybe...
-            this.x += this.speedX;
+            //this.x+=this.speedX;
             //this.y+=this.speedY;
+            switch (this.currentDirection) {
+                case 0: {
+                    this.gridPosY--;
+                    break;
+                }
+                case 1: {
+                    this.gridPosX++;
+                    break;
+                }
+                case 2: {
+                    this.gridPosY++;
+                    break;
+                }
+                case 3: {
+                    this.gridPosX--;
+                    break;
+                }
+            }
+            var newCoords;
+            newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
+            this.x = newCoords[0];
+            this.y = newCoords[1];
         };
         Snake.prototype.CheckBound = function () {
             if (this.x + this.width >= 1045) {

@@ -3,8 +3,9 @@ module objects {
         // Variables
         speedX=2;
         speedY=2;
-        gridPosX = 2;
-        gridPoxY = 1;
+        gridPosX = 5;
+        gridPosY = 5;
+        currentDirection = 1; // 0 = up; 1 = right; 2 = down; 3 = left
         // Charlie comment: add List containing all bodies
         //List<Body> listOfBodies = new List<Body>();
 
@@ -17,21 +18,24 @@ module objects {
         }
 
         public Start():void {
-            this.x = 100;
-            this.y = 100;
+            this.Move();
             
             //this.keyboardListener();
             /* this.scaleX = 0.25;
             this.scaleY = 0.25; */
+
+            setInterval(() => {
+                this.Move();
+            }, 800);
         }
         public Update():void {
             
             if(this.collision){
                 this.Reset();
             }
-            else{
+            /*else{
                 this.Move();
-            }
+            }*/
             this.CheckBound();
         }
         public Reset():void {
@@ -44,8 +48,31 @@ module objects {
             //this.x = objects.Game.stage.mouseX;
             // This will eventually be replaced with keyboard input
             // Maybe xbox controller....maybe...
-            this.x+=this.speedX;
+            //this.x+=this.speedX;
             //this.y+=this.speedY;
+
+            switch(this.currentDirection) {
+                case 0: {
+                    this.gridPosY--;
+                    break;
+                }
+                case 1: {
+                    this.gridPosX++;
+                    break;
+                }
+                case 2: {
+                    this.gridPosY++;
+                    break;
+                }
+                case 3: {
+                    this.gridPosX--;
+                    break;
+                }
+            }
+            let newCoords: Array<number>;
+            newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
+            this.x = newCoords[0];
+            this.y = newCoords[1];
         }
         public CheckBound():void {
             if(this.x+this.width>=1045){

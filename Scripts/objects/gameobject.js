@@ -37,9 +37,23 @@ var objects;
         GameObject.prototype.Reset = function () { };
         GameObject.prototype.Move = function () { };
         GameObject.prototype.CheckBound = function () { };
-        GameObject.prototype.getGridPosition = function (posX, posY) {
-            var coordinates = new Array(3, 3);
+        GameObject.prototype.getGridPosition = function (squareX, squareY) {
+            // TODO: These variables that describe the grid position should probably be somewhere else
+            // Size of the grid in pixels
+            var gridWidth = 945;
+            var gridHeight = 715;
+            // Top-left position of the grid on-screen
+            var gridTopLeftX = 40;
+            var gridTopLeftY = 0;
+            // Number of squares in the grid
+            var numSquareRows = 30;
+            var numSquareColumns = 30;
             // Calculate middle point of square for posX and posY
+            var widthOfSquare = gridWidth / numSquareColumns;
+            var heightOfSquare = gridHeight / numSquareRows;
+            var x = (widthOfSquare * (squareX - 1)) + (widthOfSquare / 2) + gridTopLeftX;
+            var y = (heightOfSquare * (squareY - 1)) + (heightOfSquare / 2) + gridTopLeftY;
+            var coordinates = new Array(x, y);
             return coordinates;
         };
         return GameObject;
