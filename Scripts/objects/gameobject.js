@@ -37,6 +37,11 @@ var objects;
         GameObject.prototype.Reset = function () { };
         GameObject.prototype.Move = function () { };
         GameObject.prototype.CheckBound = function () { };
+        GameObject.prototype.getGridPosition = function (posX, posY) {
+            var coordinates = new Array(3, 3);
+            // Calculate middle point of square for posX and posY
+            return coordinates;
+        };
         return GameObject;
     }(createjs.Bitmap));
     objects.GameObject = GameObject;

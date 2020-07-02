@@ -36,5 +36,14 @@ module objects {
         public Reset():void {}
         public Move():void {}
         public CheckBound():void {}
+
+        public getGridPosition(posX, posY):number[] {
+            let coordinates = new Array(3, 3);
+            
+            // Calculate middle point of square for posX and posY
+
+            
+            return coordinates;
+        }
     }
 }

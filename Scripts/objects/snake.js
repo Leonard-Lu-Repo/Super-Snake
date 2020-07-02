@@ -21,6 +21,10 @@ var objects;
             // Variables
             _this.speedX = 2;
             _this.speedY = 2;
+            _this.gridPosX = 2;
+            _this.gridPoxY = 1;
+            // Charlie comment: add List containing all bodies
+            //List<Body> listOfBodies = new List<Body>();
             _this.collision = false;
             _this.Start();
             return _this;
@@ -61,8 +65,18 @@ var objects;
                 this.collision = true;
             }
         };
+        Snake.prototype.addBody = function () {
+        };
         return Snake;
     }(objects.GameObject));
     objects.Snake = Snake;
+    var Body = /** @class */ (function () {
+        function Body() {
+            this.posX = 1;
+            this.posY = 1;
+        }
+        return Body;
+    }());
+    objects.Body = Body;
 })(objects || (objects = {}));
 //# sourceMappingURL=snake.js.map
