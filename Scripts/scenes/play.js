@@ -26,8 +26,8 @@ var scenes;
         PlayScene.prototype.Start = function () {
             console.log("Play scene start");
             // Inintialize our variables
-            this.levelLabel = new objects.Label("Level " + this.count, "40px", "Consolas", "#000000", 200, 80, true);
-            this.scoreLabel = new objects.Label(this.score + "", "40px", "Consolas", "#000000", 900, 80, true);
+            this.levelLabel = new objects.Label("Level " + this.count, "40px", "Consolas", "#000000", 100, 80, true);
+            this.scoreLabel = new objects.Label(this.score + "", "40px", "Consolas", "#000000", 800, 80, true);
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.Snake(this.assetManager);
             this.Main();

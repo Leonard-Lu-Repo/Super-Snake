@@ -37,8 +37,8 @@ module objects {
             
             // TODO: These variables that describe the grid position should probably be somewhere else
             // Size of the grid in pixels
-            let gridWidth = 1200;
-            let gridHeight = 750;
+            let gridWidth = 900;
+            let gridHeight = 700;
             
             // Top-left position of the grid on-screen
            /*  let gridTopLeftX = 40;
@@ -46,18 +46,16 @@ module objects {
             let gridTopLeftX = 0;
             let gridTopLeftY = 0;
             // Number of squares in the grid
-            /* let numSquareRows = 30;
+           /*  let numSquareRows = 30;
             let numSquareColumns = 30; */
-            let numSquareRows = gridWidth/this.width;
-            let numSquareColumns = gridHeight/this.height;
+            let numSquareRows = gridHeight/this.height;
+            let numSquareColumns = gridWidth/this.width;
 
             // Calculate middle point of square for posX and posY
             let widthOfSquare = gridWidth / numSquareColumns;
             let heightOfSquare = gridHeight / numSquareRows;
             let x = (widthOfSquare * (squareX-1)) + (widthOfSquare / 2) + gridTopLeftX;
             let y = (heightOfSquare * (squareY-1)) + (heightOfSquare / 2) + gridTopLeftY;
-          /*   let x = (widthOfSquare * (squareX-1));
-            let y = (heightOfSquare * (squareY-1))  + gridTopLeftY; */
             let coordinates = new Array(x, y);
             return coordinates;
         }

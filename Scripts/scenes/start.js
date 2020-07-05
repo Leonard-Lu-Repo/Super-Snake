@@ -24,10 +24,10 @@ var scenes;
         // Methods
         StartScene.prototype.Start = function () {
             // Initialize our objects for this scene
-            this.logo = new objects.Gamelogo(this.assetManager, 170);
+            this.logo = new objects.Gamelogo(this.assetManager, 100);
             this.background = new objects.Background(this.assetManager);
             // NOTE: PreloadJS manifest id
-            this.startButton = new objects.Button(this.assetManager, "startButton", 450, 500);
+            this.startButton = new objects.Button(this.assetManager, "startButton", 350, 500);
             this.Main();
         };
         StartScene.prototype.Update = function () {

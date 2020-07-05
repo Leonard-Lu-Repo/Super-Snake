@@ -15,15 +15,14 @@ var objects;
 (function (objects) {
     var Snake = /** @class */ (function (_super) {
         __extends(Snake, _super);
+        // Charlie comment: add List containing all bodies
+        //List<Body> listOfBodies = new List<Body>();
         // Constructor
         function Snake(assetManager) {
             var _this = _super.call(this, assetManager, "snake") || this;
             // Variables
             _this.gridPosX = 1;
             _this.gridPosY = 2;
-            // 0 = up; 1 = right; 2 = down; 3 = left
-            // Charlie comment: add List containing all bodies
-            //List<Body> listOfBodies = new List<Body>();
             _this.collision = false;
             _this.direction = new managers.Keyboard();
             _this.Start();
@@ -34,7 +33,6 @@ var objects;
             this.startTimer();
         };
         Snake.prototype.Update = function () {
-            this.CheckBound();
             if (this.collision) {
                 this.Reset();
             }
@@ -42,15 +40,16 @@ var objects;
         Snake.prototype.Reset = function () {
             this.stopTimer();
         };
+        //Use a timer to locate snake's head
         Snake.prototype.startTimer = function () {
             var _this = this;
             this.timer = setInterval(function () {
                 _this.Move();
             }, 800);
         };
+        //Clear timer
         Snake.prototype.stopTimer = function () {
             clearInterval(this.timer);
-            //alert("Game over");
         };
         Snake.prototype.Move = function () {
             //according to the keyboard event to decide direction to change snake's move
@@ -70,15 +69,17 @@ var objects;
             this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
+            this.CheckBound();
         };
+        //If snake's head touch the stage bound make collision true and game over
         Snake.prototype.CheckBound = function () {
-            if (this.x + this.width >= 1040 || this.x + this.width <= 50) {
+            if (this.x + this.halfW >= 930 || this.x <= this.halfW) {
                 this.collision = true;
-                //alert("Game over");
+                console.log("Game over");
             }
-            if (this.y + this.height >= 726) {
+            if (this.y + this.halfH >= 690 || this.y <= this.halfH) {
                 this.collision = true;
-                //alert("Game over");
+                console.log("Game over");
             }
         };
         Snake.prototype.addBody = function () {

@@ -40,25 +40,23 @@ var objects;
         GameObject.prototype.getGridPosition = function (squareX, squareY) {
             // TODO: These variables that describe the grid position should probably be somewhere else
             // Size of the grid in pixels
-            var gridWidth = 1200;
-            var gridHeight = 750;
+            var gridWidth = 900;
+            var gridHeight = 700;
             // Top-left position of the grid on-screen
             /*  let gridTopLeftX = 40;
              let gridTopLeftY = 0; */
             var gridTopLeftX = 0;
             var gridTopLeftY = 0;
             // Number of squares in the grid
-            /* let numSquareRows = 30;
-            let numSquareColumns = 30; */
-            var numSquareRows = gridWidth / this.width;
-            var numSquareColumns = gridHeight / this.height;
+            /*  let numSquareRows = 30;
+             let numSquareColumns = 30; */
+            var numSquareRows = gridHeight / this.height;
+            var numSquareColumns = gridWidth / this.width;
             // Calculate middle point of square for posX and posY
             var widthOfSquare = gridWidth / numSquareColumns;
             var heightOfSquare = gridHeight / numSquareRows;
             var x = (widthOfSquare * (squareX - 1)) + (widthOfSquare / 2) + gridTopLeftX;
             var y = (heightOfSquare * (squareY - 1)) + (heightOfSquare / 2) + gridTopLeftY;
-            /*   let x = (widthOfSquare * (squareX-1));
-              let y = (heightOfSquare * (squareY-1))  + gridTopLeftY; */
             var coordinates = new Array(x, y);
             return coordinates;
         };

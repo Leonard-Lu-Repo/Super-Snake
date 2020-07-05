@@ -6,12 +6,10 @@ module objects {
         direction:managers.Keyboard; 
         newCoords: Array<number>;
         public timer;
-        // 0 = up; 1 = right; 2 = down; 3 = left
+        private collision:boolean=false;
         // Charlie comment: add List containing all bodies
         //List<Body> listOfBodies = new List<Body>();
 
-        private collision:boolean=false;
-        public e:KeyboardEvent;
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager, "snake");
@@ -25,24 +23,26 @@ module objects {
             
         }
         public Update():void {
-            this.CheckBound();
+            
             if(this.collision){
                 this.Reset();
             }
+            
         }
+        
         public Reset():void {
              this.stopTimer();
              
         }
-       
+       //Use a timer to locate snake's head
         public startTimer():void{
             this.timer=setInterval(() => {
                 this.Move();
             }, 800);
         }
+        //Clear timer
         public stopTimer():void{
             clearInterval(this.timer);
-            //alert("Game over");
         }
         public Move():void {
              //according to the keyboard event to decide direction to change snake's move
@@ -58,21 +58,22 @@ module objects {
             if(this.direction.moveUp){
                 this.gridPosY--;
             }
-
              //To set new location of snake
-             this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
-             this.x = this.newCoords[0];
-             this.y = this.newCoords[1];
+            this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
+            this.x = this.newCoords[0];
+            this.y = this.newCoords[1];
+            this.CheckBound();
+            
         }
-      
+      //If snake's head touch the stage bound make collision true and game over
         public CheckBound():void {
-            if(this.x+this.width>=1040||this.x+this.width<=50){
+            if(this.x+this.halfW>=930||this.x<=this.halfW){
                 this.collision=true;
-                //alert("Game over");
+                console.log("Game over");
             }
-            if(this.y+this.height>=726){
+            if(this.y+this.halfH>=690||this.y<=this.halfH){
                 this.collision=true;
-                //alert("Game over");
+                console.log("Game over");
             }
         }
         

@@ -2,6 +2,12 @@
     margin: 0;
     padding: 0;
 }
+#outerContainer{
+    width: 1080px;
+    height: 728px;
+    background: url(../Assets/grass.png) no-repeat;
+    margin: 0px auto;
+}
 #canvas {
     display: block;
     margin: 0px auto;
