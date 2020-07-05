@@ -19,76 +19,66 @@ var objects;
         function Snake(assetManager) {
             var _this = _super.call(this, assetManager, "snake") || this;
             // Variables
-            _this.speedX = 2;
-            _this.speedY = 2;
-            _this.gridPosX = 5;
-            _this.gridPosY = 5;
-            _this.currentDirection = 1; // 0 = up; 1 = right; 2 = down; 3 = left
+            _this.gridPosX = 1;
+            _this.gridPosY = 2;
+            // 0 = up; 1 = right; 2 = down; 3 = left
             // Charlie comment: add List containing all bodies
             //List<Body> listOfBodies = new List<Body>();
             _this.collision = false;
+            _this.direction = new managers.Keyboard();
             _this.Start();
             return _this;
         }
         Snake.prototype.Start = function () {
-            var _this = this;
             this.Move();
-            //this.keyboardListener();
-            /* this.scaleX = 0.25;
-            this.scaleY = 0.25; */
-            setInterval(function () {
-                _this.Move();
-            }, 800);
+            this.startTimer();
         };
         Snake.prototype.Update = function () {
+            this.CheckBound();
             if (this.collision) {
                 this.Reset();
             }
-            /*else{
-                this.Move();
-            }*/
-            this.CheckBound();
         };
         Snake.prototype.Reset = function () {
-            this.x = 1045 - this.width;
-            //this.y=715-this.height;
+            this.stopTimer();
+        };
+        Snake.prototype.startTimer = function () {
+            var _this = this;
+            this.timer = setInterval(function () {
+                _this.Move();
+            }, 800);
+        };
+        Snake.prototype.stopTimer = function () {
+            clearInterval(this.timer);
+            //alert("Game over");
         };
         Snake.prototype.Move = function () {
-            // I need a reference to the "STAGE" createjs object to get mouse position
-            //this.x = objects.Game.stage.mouseX;
-            // This will eventually be replaced with keyboard input
-            // Maybe xbox controller....maybe...
-            //this.x+=this.speedX;
-            //this.y+=this.speedY;
-            switch (this.currentDirection) {
-                case 0: {
-                    this.gridPosY--;
-                    break;
-                }
-                case 1: {
-                    this.gridPosX++;
-                    break;
-                }
-                case 2: {
-                    this.gridPosY++;
-                    break;
-                }
-                case 3: {
-                    this.gridPosX--;
-                    break;
-                }
+            //according to the keyboard event to decide direction to change snake's move
+            if (this.direction.moveLeft) {
+                this.gridPosX--;
             }
-            var newCoords;
-            newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
-            this.x = newCoords[0];
-            this.y = newCoords[1];
+            if (this.direction.moveRight) {
+                this.gridPosX++;
+            }
+            if (this.direction.moveDown) {
+                this.gridPosY++;
+            }
+            if (this.direction.moveUp) {
+                this.gridPosY--;
+            }
+            //To set new location of snake
+            this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
+            this.x = this.newCoords[0];
+            this.y = this.newCoords[1];
         };
         Snake.prototype.CheckBound = function () {
-            if (this.x + this.width >= 1045) {
+            if (this.x + this.width >= 1040 || this.x + this.width <= 50) {
                 this.collision = true;
+                //alert("Game over");
             }
-            if (this.y + this.height >= 715) {
+            if (this.y + this.height >= 726) {
                 this.collision = true;
+                //alert("Game over");
             }
         };
         Snake.prototype.addBody = function () {

@@ -37,8 +37,6 @@ module scenes {
             this.addChild(this.levelLabel);
             this.addChild(this.scoreLabel);
             this.addChild(this.snake);
-           
-
             // Register for click events
             
         }
