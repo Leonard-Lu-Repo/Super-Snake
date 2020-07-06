@@ -4,10 +4,10 @@ download or git clone the repo:
 	git clone https://github.com/Lenard-Lu/Super-Snake.git
 
 2. work on your PC
-  2.1 install packages.json files
+ - 2.1 install packages.json files
     -  npm install     or  
     -  npm i
-  2.2 start application
+  -2.2 start application
 	-  npm start
 3. work on your local repo: 
 	-	git add .
