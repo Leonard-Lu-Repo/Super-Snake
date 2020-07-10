@@ -23,25 +23,22 @@
       "name": "Charles Thomson",
       "email": "cthoms14@my.centennialcollege.ca",
       "gitaccount": "Laocha1004"
-    }      
+    }
   ],
   "scripts": {
     "start": "lite-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lenard-Lu/Super-Snake.git"
   },
-
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": " "
   },
   "homepage": "https://github.com/Lenard-Lu/",
-
   "dependencies": {
     "easeljs": "^1.0.2",
     "lite-server": "^2.5.4",
@@ -49,7 +46,6 @@
     "soundjs": "^1.0.1",
     "tweenjs": "^1.0.2"
   },
-
   "devDependencies": {
     "@types/easeljs": "^1.0.0",
     "@types/preloadjs": "^0.6.32",

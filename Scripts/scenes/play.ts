@@ -8,7 +8,7 @@ module scenes {
         private score:number=0;
         private scoreLabel:objects.Label;
        
-
+public mouse;
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager);
@@ -23,7 +23,11 @@ module scenes {
             this.scoreLabel=new objects.Label(this.score+"" , "40px", "Consolas", "#000000", 800, 80, true)
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.Snake(this.assetManager);
-
+            this.snake = new objects.Snake(this.assetManager);
+            this.mouse = new createjs.Shape();
+            this.mouse.graphics.beginFill("#000")
+                .drawCircle(200, 200, 20);
+           
             this.Main();
         }
 
@@ -37,6 +41,7 @@ module scenes {
             this.addChild(this.levelLabel);
             this.addChild(this.scoreLabel);
             this.addChild(this.snake);
+            this.addChild(this.mouse);
             // Register for click events
             
         }
