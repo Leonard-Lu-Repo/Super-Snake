@@ -17,8 +17,9 @@ module objects {
 
         private Init():void {
             // Initialize all the properties of my object
-            this.width = this.getBounds().width;
             this.height = this.getBounds().height;
+            this.width = this.getBounds().width;
+            
             this.halfW = this.width * 0.5;
             this.halfH = this.height * 0.5;
 

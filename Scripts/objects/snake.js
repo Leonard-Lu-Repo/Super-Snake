@@ -76,10 +76,12 @@ var objects;
             if (this.x + this.halfW >= 930 || this.x <= this.halfW) {
                 this.collision = true;
                 console.log("Game over");
+                objects.Game.currentScene = config.Scene.OVER;
             }
             if (this.y + this.halfH >= 690 || this.y <= this.halfH) {
                 this.collision = true;
                 console.log("Game over");
+                objects.Game.currentScene = config.Scene.OVER;
             }
         };
         Snake.prototype.addBody = function () {

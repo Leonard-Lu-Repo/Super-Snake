@@ -16,17 +16,18 @@ var objects;
     var Mouse = /** @class */ (function (_super) {
         __extends(Mouse, _super);
         // Constructor
-        function Mouse(assetManager) {
-            var _this = _super.call(this, assetManager, "Mouse") || this;
+        function Mouse(imageOrUrl) {
+            var _this = _super.call(this, "./Assets/mouse.png") || this;
             _this.Start();
             return _this;
         }
         Mouse.prototype.Start = function () {
-            this.x = 200;
-            this.y = 200;
+            this.x = Math.floor(Math.random() * (600 - 50 + 1)) + 50;
+            this.y = Math.floor(Math.random() * (900 - 50 + 1)) + 50;
+            this.scaleX = 0.10;
+            this.scaleY = 0.10;
         };
         Mouse.prototype.Update = function () {
-            //   this.Move();
             this.CheckBound();
         };
         Mouse.prototype.Reset = function () { };
@@ -38,7 +39,7 @@ var objects;
         };
         Mouse.prototype.CheckBound = function () { };
         return Mouse;
-    }(objects.GameObject));
+    }(createjs.Bitmap));
     objects.Mouse = Mouse;
 })(objects || (objects = {}));
 //# sourceMappingURL=mouse.js.map

@@ -1,23 +1,22 @@
 module objects {
-    export class Mouse extends objects.GameObject {
+    export class Mouse extends createjs.Bitmap {
         // Variables
         public  x: number;
         public  y: number;
         // Constructor
-        constructor(assetManager:createjs.LoadQueue) {
-            super(assetManager, "Mouse");
+        constructor(imageOrUrl: HTMLImageElement) {
+            super( "./Assets/mouse.png");
             this.Start();
-
         }
 
         public Start():void {
-            this.x = 200;
-            this.y = 200;      
- 
-           
+            this.x = Math.floor(Math.random() * (600 - 50 + 1)) + 50;  
+            this.y = Math.floor(Math.random() * (900 - 50 + 1))+ 50; 
+            this.scaleX= 0.10;             
+            this.scaleY = 0.10;           
         }
-        public Update():void {
-         //   this.Move();
+
+        public Update():void {        
             this.CheckBound();
         }
         public Reset():void {}

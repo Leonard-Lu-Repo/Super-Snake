@@ -15,6 +15,7 @@
         //{id:"tryAgainBtn",src:"./Assets/TryAgainBtn.png"},
         { id: "gameLogo", src: "./Assets/SnakeLogo-Background.png" },
         { id: "snake", src: "./Assets/placeholder.png" },
+        { id: "mouse", src: "./Assets/mouse.png" }
     ];
     function Init() {
         console.log("Initializing Start");
