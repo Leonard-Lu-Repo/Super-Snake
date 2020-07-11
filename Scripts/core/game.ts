@@ -15,6 +15,7 @@
 
     assetManifest = [
         {id:"background",src:"./Assets/background.png"},
+
         {id:"startButton", src:"./Assets/StartBtn.png"},        
         {id:"nextButton", src:"./Assets/NextButton.png"},
         {id:"backButton", src:"./Assets/BackButton.png"},
@@ -24,7 +25,8 @@
         //{id:"tryAgainBtn",src:"./Assets/TryAgainBtn.png"},
         {id:"gameLogo", src:"./Assets/SnakeLogo-Background.png"},
         {id:"snake", src:"./Assets/placeholder.png"},
-        {id: "mouse", src: "./Assets/mouse.png"}
+        {id: "mouse", src: "./Assets/mouse.png"},
+        {id: "bomb", src: "./Assets/bomb.png"}
     ];
 
     function Init() {

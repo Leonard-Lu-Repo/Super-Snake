@@ -36,6 +36,7 @@ var scenes;
             this.backButton = new objects.Button(this.assetManager, "backButton", 0, 660, 1.0);
             this.snake = new objects.Snake(this.assetManager);
             this.mouse = new objects.Mouse(this.assetManager);
+            this.bomb = new objects.Bomb(this.assetManager);
             this.step = 30;
             console.log("Initial Score is " + PlayScene.prototype.score);
             PlayScene.prototype.score = 0;
@@ -45,7 +46,9 @@ var scenes;
             this.background.Update();
             this.snake.Update();
             this.mouse.Update();
+            this.bomb.Update();
             this.checkEatMouse();
+            this.beatByBomb();
         };
         PlayScene.prototype.Main = function () {
             //always add background first
@@ -56,6 +59,7 @@ var scenes;
             // add objects
             this.addChild(this.snake);
             this.addChild(this.mouse);
+            this.addChild(this.bomb);
             //add buttons
             this.addChild(this.nextButton);
             this.addChild(this.backButton);
@@ -82,6 +86,21 @@ var scenes;
                 }
                 //regenerate a new mouse                 
                 this.mouse.Reset();
+            }
+        };
+        PlayScene.prototype.beatByBomb = function () {
+            console.log("checking beat by Bomb");
+            console.log("snake x: " + this.snake.x + "   bomb x: " + this.bomb.x);
+            console.log("snake y: " + this.snake.y + "    bomb y: " + this.bomb.y);
+            if (Math.abs(this.snake.x - this.bomb.x) <= this.step &&
+                Math.abs(this.snake.y - this.bomb.y) <= this.step) {
+                //update score
+                PlayScene.prototype.score = 0;
+                PlayScene.prototype.win = false;
+                console.log("After beat by bomb, Score is " + PlayScene.prototype.score);
+                this.scoreLabel.text = "Score: " + PlayScene.prototype.score + "/ " + this.targetScore;
+                //Game Scene change to Game Over
+                objects.Game.currentScene = config.Scene.OVER;
             }
         };
         PlayScene.prototype.nextButtonClick = function () {

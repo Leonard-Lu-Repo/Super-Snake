@@ -34,7 +34,7 @@ module scenes {
               
             } else{
                 this.gameOverLabel = new objects.Label(
-                    "You gave up! Try it again?", "40px", "Consolas", "#FFFFFF", 400, 240, true);
+                    "Oops! Try it again?", "40px", "Consolas", "#FFFFFF", 400, 240, true);
                 this.scoreLabel = new objects.Label(
                     "Your score: "  + this.score, "40px", "Consolas", "#FFFFFF", 320, 340, true);            
             }

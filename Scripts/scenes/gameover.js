@@ -33,7 +33,7 @@ var scenes;
                 this.scoreLabel = new objects.Label("Your score: " + this.score, "40px", "Consolas", "#FFFFFF", 320, 340, true);
             }
             else {
-                this.gameOverLabel = new objects.Label("You gave up! Try it again?", "40px", "Consolas", "#FFFFFF", 400, 240, true);
+                this.gameOverLabel = new objects.Label("Oops! Try it again?", "40px", "Consolas", "#FFFFFF", 400, 240, true);
                 this.scoreLabel = new objects.Label("Your score: " + this.score, "40px", "Consolas", "#FFFFFF", 320, 340, true);
             }
             this.replayButton = new objects.Button(this.assetManager, "replayButton", 450, 440, 0.25);
