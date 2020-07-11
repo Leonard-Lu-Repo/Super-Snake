@@ -27,8 +27,9 @@ var scenes;
             console.log("Play scene start");
             // Initialize our variables
             this.score = 0;
+            this.targetScore = 3;
             this.levelLabel = new objects.Label("Level " + this.count, "40px", "Consolas", "#000000", 100, 50, true);
-            this.scoreLabel = new objects.Label(this.score + "", "40px", "Consolas", "#000000", 600, 50, true);
+            this.scoreLabel = new objects.Label(this.score + "/" + this.targetScore, "40px", "Consolas", "#000000", 600, 50, true);
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.Snake(this.assetManager);
             this.mouse = new objects.Mouse(this.assetManager);
@@ -62,7 +63,11 @@ var scenes;
                 Math.abs(this.snake.y - this.mouse.y) <= this.step) {
                 this.score++;
                 console.log("After checkEatMouse, Score is " + this.score);
-                this.scoreLabel.text = "Score: " + this.score;
+                this.scoreLabel.text = "Score: " + this.score + "/ " + this.targetScore;
+                if (this.score >= this.targetScore) {
+                    console.log("Level1 finish, go to level 2 or game over");
+                    objects.Game.currentScene = config.Scene.OVER;
+                }
                 //regenerate a new mouse                 
                 this.mouse.Reset();
             }
