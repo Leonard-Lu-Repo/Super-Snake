@@ -26,6 +26,7 @@ var objects;
             this.y = Math.floor(Math.random() * (600 - 50 + 1)) + 50;
             this.scaleX = 0.20;
             this.scaleY = 0.20;
+            this.interval = 1000; //every 1000ms(1s), the bomb relocate at a new location            
             this.startTimer();
         };
         Bomb.prototype.Update = function () {
