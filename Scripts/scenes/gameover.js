@@ -24,18 +24,37 @@ var scenes;
         // Method
         GameOverScene.prototype.Start = function () {
             // Initialize our variables
-            this.gameOverLabel = new objects.Label("Game Over!", "40px", "Consolas", "#000000", 320, 240, true);
-            this.backButton = new objects.Button(this.assetManager, "backButton", 320, 340);
+            this.background = new objects.Background(this.assetManager);
+            this.win = scenes.PlayScene.prototype.win; //get the win value from PlayScene
+            this.score = scenes.PlayScene.prototype.score; ////get the score value from PlayScene
+            //if win or fail, the game over page will update for different situation           
+            if (this.win == true) {
+                this.gameOverLabel = new objects.Label("Good Job!  You are good to Level2", "40px", "Consolas", "#FFFFFF", 220, 240, true);
+                this.scoreLabel = new objects.Label("Your score: " + this.score, "40px", "Consolas", "#FFFFFF", 250, 340, true);
+            }
+            else {
+                this.gameOverLabel = new objects.Label("You gave up! Try it again?", "40px", "Consolas", "#FFFFFF", 320, 240, true);
+                this.scoreLabel = new objects.Label("Your score: " + this.score, "40px", "Consolas", "#FFFFFF", 250, 340, true);
+            }
+            this.replayButton = new objects.Button(this.assetManager, "replayButton", 350, 440, 0.25);
+            this.homeButton = new objects.Button(this.assetManager, "homeButton", 200, 445, 0.12);
             this.Main();
         };
         GameOverScene.prototype.Update = function () { };
         GameOverScene.prototype.Main = function () {
+            this.addChild(this.background);
             this.addChild(this.gameOverLabel);
-            this.addChild(this.backButton);
-            this.backButton.on("click", this.backButtonClick);
+            this.addChild(this.replayButton);
+            this.addChild(this.homeButton);
+            this.addChild(this.scoreLabel);
+            this.homeButton.on("click", this.homeButtonClick);
+            this.replayButton.on("click", this.replayButtonClick);
         };
-        GameOverScene.prototype.backButtonClick = function () {
+        GameOverScene.prototype.replayButtonClick = function () {
             objects.Game.currentScene = config.Scene.GAME;
+        };
+        GameOverScene.prototype.homeButtonClick = function () {
+            objects.Game.currentScene = config.Scene.START;
         };
         return GameOverScene;
     }(objects.Scene));

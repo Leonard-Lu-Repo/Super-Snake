@@ -14,8 +14,12 @@
     let currentState:number;
 
     assetManifest = [
-        {id:"startButton", src:"./Assets/StartBtn.png"},
         {id:"background",src:"./Assets/background.png"},
+        {id:"startButton", src:"./Assets/StartBtn.png"},        
+        {id:"nextButton", src:"./Assets/NextButton.png"},
+        {id:"backButton", src:"./Assets/BackButton.png"},
+        {id:"replayButton", src:"./Assets/ReplayButton.png"},
+        {id:"homeButton", src:"./Assets/HomeButton.png"},
         //{id:"mainPageBtn",src:"./Assets/MainPageBtn.png"},
         //{id:"tryAgainBtn",src:"./Assets/TryAgainBtn.png"},
         {id:"gameLogo", src:"./Assets/SnakeLogo-Background.png"},
