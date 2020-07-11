@@ -15,6 +15,7 @@ var scenes;
 (function (scenes) {
     var PlayScene = /** @class */ (function (_super) {
         __extends(PlayScene, _super);
+        // public collision:boolean;
         // Constructor
         function PlayScene(assetManager) {
             var _this = _super.call(this, assetManager) || this;
@@ -30,8 +31,9 @@ var scenes;
             this.scoreLabel = new objects.Label(this.score + "", "40px", "Consolas", "#000000", 600, 50, true);
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.Snake(this.assetManager);
-            this.mouse = new objects.Mouse();
+            this.mouse = new objects.Mouse(this.assetManager);
             this.step = 30;
+            //  this.collision = false;
             console.log("Initial Score is " + this.score);
             /* this.mouse.graphics.beginFill("#000")
                  .drawCircle(200, 200, 20); */
@@ -61,6 +63,8 @@ var scenes;
                 this.score++;
                 console.log("After checkEatMouse, Score is " + this.score);
                 this.scoreLabel.text = "Score: " + this.score;
+                //regenerate a new mouse                 
+                this.mouse.Reset();
             }
         };
         return PlayScene;

@@ -10,6 +10,7 @@ module scenes {
         public score:number;
         public win: boolean;
         public step ; 
+       // public collision:boolean;
 
 
         
@@ -28,8 +29,9 @@ module scenes {
             this.scoreLabel=new objects.Label(this.score+"" , "40px", "Consolas", "#000000", 600, 50, true)
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.Snake(this.assetManager);            
-            this.mouse =  new objects.Mouse(); 
+            this.mouse =  new objects.Mouse(this.assetManager); 
             this.step = 30;
+          //  this.collision = false;
          
             console.log("Initial Score is "+this.score);
            /* this.mouse.graphics.beginFill("#000")
@@ -66,11 +68,29 @@ module scenes {
             Math.abs(this.snake.y - this.mouse.y) <= this.step ) {
                 this.score ++;
                 console.log("After checkEatMouse, Score is "+this.score);
-                this.scoreLabel.text = "Score: " + this.score; 
+                this.scoreLabel.text = "Score: " + this.score;
+                
+                //regenerate a new mouse                 
+                this.mouse.Reset(); 
             }
 
-
         }
+
+        /*
+
+        //If snake's head touch the stage bound make collision true and game over
+        public CheckBound():void {
+            if(this.snake.x+this.snake.halfW>=930||this.snake.x<=this.snake.halfW){
+                this.collision=true;
+                console.log("Game over");
+                objects.Game.currentScene = config.Scene.OVER;      
+            }
+            if(this.snake.y+this.snake.halfH>=690||this.snake.y<=this.snake.halfH){
+                this.collision=true;
+                console.log("Game over");
+                objects.Game.currentScene = config.Scene.OVER;      
+            }
+        }*/
 
 
     }

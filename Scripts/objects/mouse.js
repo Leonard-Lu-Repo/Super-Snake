@@ -16,28 +16,28 @@ var objects;
     var Mouse = /** @class */ (function (_super) {
         __extends(Mouse, _super);
         // Constructor
-        function Mouse(imageOrUrl) {
+        function Mouse(assetManager) {
             var _this = _super.call(this, "./Assets/mouse.png") || this;
             _this.Start();
             return _this;
         }
         Mouse.prototype.Start = function () {
-            this.x = Math.floor(Math.random() * (600 - 50 + 1)) + 50;
-            this.y = Math.floor(Math.random() * (900 - 50 + 1)) + 50;
+            this.x = Math.floor(Math.random() * (700 - 50 + 1)) + 50;
+            this.y = Math.floor(Math.random() * (600 - 50 + 1)) + 50;
             this.scaleX = 0.10;
             this.scaleY = 0.10;
         };
         Mouse.prototype.Update = function () {
-            this.CheckBound();
         };
-        Mouse.prototype.Reset = function () { };
+        Mouse.prototype.Reset = function () {
+            this.Start();
+        };
         Mouse.prototype.Move = function () {
             // I need a reference to the "STAGE" createjs object to get mouse position
             this.x = objects.Game.stage.mouseX;
             // This will eventually be replaced with keyboard input
             // Maybe xbox controller....maybe...
         };
-        Mouse.prototype.CheckBound = function () { };
         return Mouse;
     }(createjs.Bitmap));
     objects.Mouse = Mouse;
