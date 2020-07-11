@@ -1,18 +1,20 @@
 module objects {
     export class Snake extends objects.GameObject {
         // Variables
+
         gridPosX = 1;
         gridPosY = 2;
         direction:managers.Keyboard; 
         newCoords: Array<number>;
         public timer;
+       
         private collision:boolean=false;
         // Charlie comment: add List containing all bodies
         //List<Body> listOfBodies = new List<Body>();
 
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
-            super(assetManager, "snake");
+            super(assetManager, "snake");            
             this.direction=new managers.Keyboard();
             this.Start();
         }
@@ -62,6 +64,9 @@ module objects {
             this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
+
+                  
+
             this.CheckBound();
             
         }
@@ -76,6 +81,7 @@ module objects {
                 console.log("Game over");
             }
         }
+       
         
         public addBody() {
 

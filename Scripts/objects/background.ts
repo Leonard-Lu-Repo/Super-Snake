@@ -5,7 +5,7 @@ module objects {
         // Constructor
         constructor(assetManager:createjs.LoadQueue)
         {
-            super(assetManager.getResult("backgroud"));
+            super(assetManager.getResult("background"));
             console.log("Creating the background");
             
 

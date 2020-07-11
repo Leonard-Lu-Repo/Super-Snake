@@ -4,11 +4,15 @@ module scenes {
         private levelLabel: objects.Label;
         private snake:objects.Snake;
         private background: objects.Background;
-        private count:number=1;
-        private score:number=0;
-        private scoreLabel:objects.Label;
-       
-public mouse;
+        private count:number=1;        
+        private scoreLabel:objects.Label;        
+        public mouse :objects.Mouse;
+        public score:number;
+        public win: boolean;
+        public step ; 
+
+
+        
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager);
@@ -18,15 +22,20 @@ public mouse;
 
         public Start():void {
             console.log("Play scene start");
-            // Inintialize our variables
+            // Initialize our variables
+            this.score = 0;
             this.levelLabel = new objects.Label( "Level "+this.count, "40px", "Consolas", "#000000", 100, 80, true);
-            this.scoreLabel=new objects.Label(this.score+"" , "40px", "Consolas", "#000000", 800, 80, true)
+            this.scoreLabel=new objects.Label(this.score+"" , "40px", "Consolas", "#000000", 600, 80, true)
             this.background = new objects.Background(this.assetManager);
-            this.snake = new objects.Snake(this.assetManager);
-            this.snake = new objects.Snake(this.assetManager);
+            this.snake = new objects.Snake(this.assetManager);            
             this.mouse = new createjs.Shape();
+            this.step = 30;
+         
+            console.log("Initial Score is "+this.score);
             this.mouse.graphics.beginFill("#000")
                 .drawCircle(200, 200, 20);
+
+             PlayScene.prototype.score = 0;      
            
             this.Main();
         }
@@ -34,6 +43,7 @@ public mouse;
         public Update():void {
             this.background.Update();
             this.snake.Update();
+            this.checkEatMouse();    
         }
 
         public Main():void {
@@ -45,5 +55,26 @@ public mouse;
             // Register for click events
             
         }
+
+        public checkEatMouse(): void {  
+            console.log("checking eat mouse");  
+            console.log("snake x: " + this.snake.x + "   mouse x: " + this.mouse.x);   
+           // console.log("mouse x: " + this.mouse.x);  
+          //  console.log("abs x difference: " + Math.abs(this.snake.x - this.mouse.x));   
+            console.log("snake y: " + this.snake.y +"    mouse y: " + this.mouse.y);   
+         //   console.log("mouse y: " + this.mouse.y);  
+         //   console.log("abs y difference: " + Math.abs(this.snake.y - this.mouse.y));        
+
+            if (Math.abs(this.snake.x - 200) <= this.step  &&
+            Math.abs(this.snake.y - 200) <= this.step ) {
+                this.score ++;
+                console.log("After checkEatMouse, Score is "+this.score);
+                this.scoreLabel.text = "Score: " + this.score; 
+            }
+
+
+        }
+
+
     }
 }

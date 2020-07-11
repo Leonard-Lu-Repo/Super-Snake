@@ -19,26 +19,29 @@ var scenes;
         function PlayScene(assetManager) {
             var _this = _super.call(this, assetManager) || this;
             _this.count = 1;
-            _this.score = 0;
             _this.Start();
             return _this;
         }
         PlayScene.prototype.Start = function () {
             console.log("Play scene start");
-            // Inintialize our variables
+            // Initialize our variables
+            this.score = 0;
             this.levelLabel = new objects.Label("Level " + this.count, "40px", "Consolas", "#000000", 100, 80, true);
-            this.scoreLabel = new objects.Label(this.score + "", "40px", "Consolas", "#000000", 800, 80, true);
+            this.scoreLabel = new objects.Label(this.score + "", "40px", "Consolas", "#000000", 600, 80, true);
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.Snake(this.assetManager);
-            this.snake = new objects.Snake(this.assetManager);
             this.mouse = new createjs.Shape();
+            this.step = 30;
+            console.log("Initial Score is " + this.score);
             this.mouse.graphics.beginFill("#000")
                 .drawCircle(200, 200, 20);
+            PlayScene.prototype.score = 0;
             this.Main();
         };
         PlayScene.prototype.Update = function () {
             this.background.Update();
             this.snake.Update();
+            this.checkEatMouse();
         };
         PlayScene.prototype.Main = function () {
             this.addChild(this.background);
@@ -47,6 +50,21 @@ var scenes;
             this.addChild(this.snake);
             this.addChild(this.mouse);
             // Register for click events
+        };
+        PlayScene.prototype.checkEatMouse = function () {
+            console.log("checking eat mouse");
+            console.log("snake x: " + this.snake.x + "   mouse x: " + this.mouse.x);
+            // console.log("mouse x: " + this.mouse.x);  
+            //  console.log("abs x difference: " + Math.abs(this.snake.x - this.mouse.x));   
+            console.log("snake y: " + this.snake.y + "    mouse y: " + this.mouse.y);
+            //   console.log("mouse y: " + this.mouse.y);  
+            //   console.log("abs y difference: " + Math.abs(this.snake.y - this.mouse.y));        
+            if (Math.abs(this.snake.x - 200) <= this.step &&
+                Math.abs(this.snake.y - 200) <= this.step) {
+                this.score++;
+                console.log("After checkEatMouse, Score is " + this.score);
+                this.scoreLabel.text = "Score: " + this.score;
+            }
         };
         return PlayScene;
     }(objects.Scene));

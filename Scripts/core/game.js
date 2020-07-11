@@ -10,11 +10,11 @@
     var currentState;
     assetManifest = [
         { id: "startButton", src: "./Assets/StartBtn.png" },
-        { id: "backgroud", src: "./Assets/background.png" },
+        { id: "background", src: "./Assets/background.png" },
         //{id:"mainPageBtn",src:"./Assets/MainPageBtn.png"},
         //{id:"tryAgainBtn",src:"./Assets/TryAgainBtn.png"},
         { id: "gameLogo", src: "./Assets/SnakeLogo-Background.png" },
-        { id: "snake", src: "./Assets/placeholder.png" }
+        { id: "snake", src: "./Assets/placeholder.png" },
     ];
     function Init() {
         console.log("Initializing Start");
