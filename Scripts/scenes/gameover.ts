@@ -1,11 +1,14 @@
 module scenes {
     export class GameOverScene extends objects.Scene {
         // Variables
+        private background: objects.Background;  
+
         private gameOverLabel: objects.Label;
         private scoreLabel:objects.Label;     
-        private background: objects.Background;      
+          
         private replayButton: objects.Button;
         private homeButton: objects.Button;
+
         public score: number;
         private win: boolean;
 
@@ -25,7 +28,7 @@ module scenes {
             //if win or fail, the game over page will update for different situation           
             if (this.win == true ){
                 this.gameOverLabel = new objects.Label(
-                    "Good Job!  You are good to Level2", "40px", "Consolas", "#FFFFFF", 220, 240, true);
+                    "Good Job! ", "40px", "Consolas", "#FFFFFF", 320, 240, true);
                 this.scoreLabel = new objects.Label(
                     "Your score: " + this.score, "40px", "Consolas", "#FFFFFF", 250, 340, true);
               
@@ -34,35 +37,40 @@ module scenes {
                     "You gave up! Try it again?", "40px", "Consolas", "#FFFFFF", 320, 240, true);
                 this.scoreLabel = new objects.Label(
                     "Your score: "  + this.score, "40px", "Consolas", "#FFFFFF", 250, 340, true);            
-
             }
-
-
            
             this.replayButton = new objects.Button(this.assetManager, "replayButton", 350, 440, 0.25);
             this.homeButton = new objects.Button(this.assetManager, "homeButton", 200, 445, 0.12);
+           
             this.Main();
-        }
+        } //end of Start()
 
         public Update():void {}
 
         public Main():void {
-            this.addChild(this.background)
+            //always add background first           
+            this.addChild(this.background); 
+
+            //add labels
             this.addChild(this.gameOverLabel);
-            this.addChild(this.replayButton);
-            this.addChild(this.homeButton);
             this.addChild(this.scoreLabel);
 
-
+            //add buttons
+            this.addChild(this.replayButton);
+            this.addChild(this.homeButton);
+           
+            // add event clicks
             this.homeButton.on("click", this.homeButtonClick);
             this.replayButton.on("click", this.replayButtonClick);
-        }
+        } //end of Main()
 
         private replayButtonClick():void {
             objects.Game.currentScene = config.Scene.GAME;
         }
+
         private homeButtonClick():void {
             objects.Game.currentScene = config.Scene.START;
         }
-    }
+
+    } //end of GameOverScene class
 }

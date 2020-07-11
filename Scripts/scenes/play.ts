@@ -36,18 +36,15 @@ module scenes {
             this.levelLabel = new objects.Label( "Level "+this.level, "40px", "Consolas", "#000000", 100, 50, true);
             this.scoreLabel=new objects.Label(PlayScene.prototype.score+"/"+ this.targetScore , "40px", "Consolas", "#000000", 600, 50, true)
             this.background = new objects.Background(this.assetManager);
-            this.nextButton = new objects.Button(this.assetManager, "nextButton", 800, 650, 1.0);
-            this.backButton = new objects.Button(this.assetManager, "backButton", 20, 650, 1.0);
+            this.nextButton = new objects.Button(this.assetManager, "nextButton", 890, 650, 1.0);
+            this.backButton = new objects.Button(this.assetManager, "backButton", 10, 650, 1.0);
             this.snake = new objects.Snake(this.assetManager);            
             this.mouse =  new objects.Mouse(this.assetManager); 
-            this.step = 30;
-          //  this.collision = false;
+            this.step = 30;           
          
             console.log("Initial Score is "+ PlayScene.prototype.score);
-           /* this.mouse.graphics.beginFill("#000")
-                .drawCircle(200, 200, 20); */
-
-             PlayScene.prototype.score = 0;      
+          
+            PlayScene.prototype.score = 0;      
            
             this.Main();
         }
@@ -60,11 +57,18 @@ module scenes {
         }
 
         public Main():void {
-            this.addChild(this.background);
+            //always add background first
+            this.addChild(this.background); 
+            
+            //add labels
             this.addChild(this.levelLabel);
             this.addChild(this.scoreLabel);
+
+            // add objects
             this.addChild(this.snake);
             this.addChild(this.mouse);
+
+            //add buttons
             this.addChild(this.nextButton);
             this.addChild(this.backButton);
 

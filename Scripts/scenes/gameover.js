@@ -29,7 +29,7 @@ var scenes;
             this.score = scenes.PlayScene.prototype.score; ////get the score value from PlayScene
             //if win or fail, the game over page will update for different situation           
             if (this.win == true) {
-                this.gameOverLabel = new objects.Label("Good Job!  You are good to Level2", "40px", "Consolas", "#FFFFFF", 220, 240, true);
+                this.gameOverLabel = new objects.Label("Good Job! ", "40px", "Consolas", "#FFFFFF", 320, 240, true);
                 this.scoreLabel = new objects.Label("Your score: " + this.score, "40px", "Consolas", "#FFFFFF", 250, 340, true);
             }
             else {
@@ -39,17 +39,21 @@ var scenes;
             this.replayButton = new objects.Button(this.assetManager, "replayButton", 350, 440, 0.25);
             this.homeButton = new objects.Button(this.assetManager, "homeButton", 200, 445, 0.12);
             this.Main();
-        };
+        }; //end of Start()
         GameOverScene.prototype.Update = function () { };
         GameOverScene.prototype.Main = function () {
+            //always add background first           
             this.addChild(this.background);
+            //add labels
             this.addChild(this.gameOverLabel);
+            this.addChild(this.scoreLabel);
+            //add buttons
             this.addChild(this.replayButton);
             this.addChild(this.homeButton);
-            this.addChild(this.scoreLabel);
+            // add event clicks
             this.homeButton.on("click", this.homeButtonClick);
             this.replayButton.on("click", this.replayButtonClick);
-        };
+        }; //end of Main()
         GameOverScene.prototype.replayButtonClick = function () {
             objects.Game.currentScene = config.Scene.GAME;
         };
@@ -57,7 +61,7 @@ var scenes;
             objects.Game.currentScene = config.Scene.START;
         };
         return GameOverScene;
-    }(objects.Scene));
+    }(objects.Scene)); //end of GameOverScene class
     scenes.GameOverScene = GameOverScene;
 })(scenes || (scenes = {}));
 //# sourceMappingURL=gameover.js.map
