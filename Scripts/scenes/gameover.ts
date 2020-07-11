@@ -28,19 +28,19 @@ module scenes {
             //if win or fail, the game over page will update for different situation           
             if (this.win == true ){
                 this.gameOverLabel = new objects.Label(
-                    "Good Job! ", "40px", "Consolas", "#FFFFFF", 320, 240, true);
+                    "Good Job! Ready for Level2 ", "40px", "Consolas", "#FFFFFF", 400, 240, true);
                 this.scoreLabel = new objects.Label(
-                    "Your score: " + this.score, "40px", "Consolas", "#FFFFFF", 250, 340, true);
+                    "Your score: " + this.score, "40px", "Consolas", "#FFFFFF", 320, 340, true);
               
             } else{
                 this.gameOverLabel = new objects.Label(
-                    "You gave up! Try it again?", "40px", "Consolas", "#FFFFFF", 320, 240, true);
+                    "You gave up! Try it again?", "40px", "Consolas", "#FFFFFF", 400, 240, true);
                 this.scoreLabel = new objects.Label(
-                    "Your score: "  + this.score, "40px", "Consolas", "#FFFFFF", 250, 340, true);            
+                    "Your score: "  + this.score, "40px", "Consolas", "#FFFFFF", 320, 340, true);            
             }
            
-            this.replayButton = new objects.Button(this.assetManager, "replayButton", 350, 440, 0.25);
-            this.homeButton = new objects.Button(this.assetManager, "homeButton", 200, 445, 0.12);
+            this.replayButton = new objects.Button(this.assetManager, "replayButton", 450, 440, 0.25);
+            this.homeButton = new objects.Button(this.assetManager, "homeButton", 300, 445, 0.12);
            
             this.Main();
         } //end of Start()
