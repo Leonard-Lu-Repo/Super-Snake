@@ -8,8 +8,7 @@ module objects {
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super( "./Assets/bomb.png");
-            this.Start();
-            
+            this.Start();            
         }
 
         public Start():void {
@@ -17,7 +16,7 @@ module objects {
             this.y = Math.floor(Math.random() * (600 - 50 + 1))+ 50; 
             this.scaleX= 0.20;             
             this.scaleY = 0.20; 
-            this.interval = 1000;  //every 1000ms(1s), the bomb relocate at a new location            
+            this.interval = 30000;  //every 30000ms(30s), the bomb relocate at a new location            
             this.startTimer();        
         }
 
@@ -35,11 +34,11 @@ module objects {
             // Maybe xbox controller....maybe...
         }
 
-         //Use a timer to locate snake's head
-         public startTimer():void{
-            this.bombTimer=setInterval(() => {
-                this.Start();
-            }, 10000);
+         //Use a timer to locate bomb's head
+        public startTimer():void{
+        this.bombTimer=setInterval(() => {
+            this.Start();
+        }, this.interval);
         }
         //Clear timer
         public stopTimer():void{

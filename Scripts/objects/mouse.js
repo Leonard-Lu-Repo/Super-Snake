@@ -26,17 +26,30 @@ var objects;
             this.y = Math.floor(Math.random() * (600 - 50 + 1)) + 50;
             this.scaleX = 0.10;
             this.scaleY = 0.10;
+            this.mouseInterval = 50000; //every 50000ms(50s), the mouse relocate at a new location   
+            this.startTimer();
         };
         Mouse.prototype.Update = function () {
         };
         Mouse.prototype.Reset = function () {
-            this.Start();
+            this.stopTimer();
         };
         Mouse.prototype.Move = function () {
             // I need a reference to the "STAGE" createjs object to get mouse position
             this.x = objects.Game.stage.mouseX;
             // This will eventually be replaced with keyboard input
             // Maybe xbox controller....maybe...
+        };
+        //Use a timer to locate mouse
+        Mouse.prototype.startTimer = function () {
+            var _this = this;
+            this.mouseTimer = setInterval(function () {
+                _this.Start();
+            }, this.mouseInterval);
+        };
+        //Clear timer
+        Mouse.prototype.stopTimer = function () {
+            clearInterval(this.mouseTimer);
         };
         return Mouse;
     }(createjs.Bitmap));

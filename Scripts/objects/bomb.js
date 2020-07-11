@@ -26,7 +26,7 @@ var objects;
             this.y = Math.floor(Math.random() * (600 - 50 + 1)) + 50;
             this.scaleX = 0.20;
             this.scaleY = 0.20;
-            this.interval = 1000; //every 1000ms(1s), the bomb relocate at a new location            
+            this.interval = 30000; //every 30000ms(30s), the bomb relocate at a new location            
             this.startTimer();
         };
         Bomb.prototype.Update = function () {
@@ -40,12 +40,12 @@ var objects;
             // This will eventually be replaced with keyboard input
             // Maybe xbox controller....maybe...
         };
-        //Use a timer to locate snake's head
+        //Use a timer to locate bomb's head
         Bomb.prototype.startTimer = function () {
             var _this = this;
             this.bombTimer = setInterval(function () {
                 _this.Start();
-            }, 10000);
+            }, this.interval);
         };
         //Clear timer
         Bomb.prototype.stopTimer = function () {
