@@ -26,17 +26,29 @@ var objects;
             this.y = Math.floor(Math.random() * (600 - 50 + 1)) + 50;
             this.scaleX = 0.20;
             this.scaleY = 0.20;
+            this.startTimer();
         };
         Bomb.prototype.Update = function () {
         };
         Bomb.prototype.Reset = function () {
-            this.Start();
+            this.stopTimer();
         };
         Bomb.prototype.Move = function () {
             // I need a reference to the "STAGE" createjs object to get mouse position
             this.x = objects.Game.stage.mouseX;
             // This will eventually be replaced with keyboard input
             // Maybe xbox controller....maybe...
+        };
+        //Use a timer to locate snake's head
+        Bomb.prototype.startTimer = function () {
+            var _this = this;
+            this.bombTimer = setInterval(function () {
+                _this.Start();
+            }, 10000);
+        };
+        //Clear timer
+        Bomb.prototype.stopTimer = function () {
+            clearInterval(this.bombTimer);
         };
         return Bomb;
     }(createjs.Bitmap));

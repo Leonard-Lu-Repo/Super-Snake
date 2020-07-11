@@ -9,16 +9,15 @@ module scenes {
         private backButton: objects.Button;
         
         private snake:objects.Snake;
-        public mouse :objects.Mouse;
-        public bomb :objects.Bomb;
+        private mouse :objects.Mouse;
+        private bomb :objects.Bomb;
 
         private level:number=1;         
         public score:number;
         private targetScore: number;
         public win: boolean;
         public step ; 
-       // public collision:boolean;
-
+       
 
         
         // Constructor
@@ -87,10 +86,10 @@ module scenes {
         public checkEatMouse(): void {  
             console.log("checking eat mouse");  
             console.log("snake x: " + this.snake.x + "   mouse x: " + this.mouse.x);   
-            console.log("snake y: " + this.snake.y +"    mouse y: " + this.mouse.y);   
+            console.log("snake y: " + this.snake.y +"    mouse y: " + this.mouse.y );   
          
-            if (Math.abs(this.snake.x - this.mouse.x) <= this.step  &&
-                 Math.abs(this.snake.y - this.mouse.y) <= this.step ) {
+            if (Math.abs(this.snake.x - (this.mouse.x+20) ) <= this.step  &&
+                 Math.abs(this.snake.y - (this.mouse.y+20) ) <= this.step ) {
                     
                     //update score
                     PlayScene.prototype.score ++;
@@ -116,14 +115,14 @@ module scenes {
             console.log("snake x: " + this.snake.x + "   bomb x: " + this.bomb.x);   
             console.log("snake y: " + this.snake.y +"    bomb y: " + this.bomb.y);   
          
-            if (Math.abs(this.snake.x - this.bomb.x) <= this.step  &&
-                 Math.abs(this.snake.y - this.bomb.y) <= this.step ) {
+            if (Math.abs(this.snake.x - (this.bomb.x+20)) <= this.step  &&
+                 Math.abs(this.snake.y - (this.bomb.y+20)) <= this.step ) {
                     
                     //update score
                     PlayScene.prototype.score = 0;
                     PlayScene.prototype.win = false;
                     console.log("After beat by bomb, Score is "+PlayScene.prototype.score);
-                    this.scoreLabel.text = "Score: " + PlayScene.prototype.score +"/ "+ this.targetScore;
+                    this.scoreLabel.text = "Score: " + PlayScene.prototype.score +" / "+ this.targetScore;
                 
                    //Game Scene change to Game Over
                     objects.Game.currentScene = config.Scene.OVER;                    
