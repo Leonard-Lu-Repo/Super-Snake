@@ -73,14 +73,24 @@ var objects;
         };
         Snake.prototype.CheckBound = function () {
             if (this.x + this.halfW >= 930 || this.x <= this.halfW) {
-                this.collision = true;
-                console.log("Game over");
-                objects.Game.currentScene = config.Scene.OVER;
+                if (this.direction.moveLeft) {
+                    this.direction.moveLeft = false;
+                    this.direction.moveRight = true;
+                }
+                else {
+                    this.direction.moveLeft = true;
+                    this.direction.moveRight = false;
+                }
             }
             if (this.y + this.halfH >= 690 || this.y <= this.halfH) {
-                this.collision = true;
-                console.log("Game over");
-                objects.Game.currentScene = config.Scene.OVER;
+                if (this.direction.moveUp) {
+                    this.direction.moveUp = false;
+                    this.direction.moveDown = true;
+                }
+                else {
+                    this.direction.moveUp = true;
+                    this.direction.moveDown = false;
+                }
             }
         };
         Snake.prototype.addBody = function () {
