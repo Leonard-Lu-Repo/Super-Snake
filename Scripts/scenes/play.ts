@@ -4,13 +4,17 @@ module scenes {
         private background: objects.Background;        
         private levelLabel: objects.Label;
         private scoreLabel:objects.Label; 
+        private completeLabel: objects.Label;
         private snake:objects.Snake;
         private count:number=1;
         private score:number=0;
         private bomb:objects.Bomb;
         private mouse :objects.Mouse;
+        private explosion:objects.Explosion;
+        private thumbsUp:createjs.Bitmap;
         private level:number=1;         
-        private targetScore: number;
+        private targetScore: number = 30;
+        private paused:boolean; // Whether the game is paused or not
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager);
@@ -23,10 +27,13 @@ module scenes {
             // Inintialize our variables
             this.levelLabel = new objects.Label( "Level "+this.count, "40px", "Comic", "#FF9A36", 100, 80, true);
             this.scoreLabel=new objects.Label(this.score+"" , "40px", "Comic", "#FF9A36", 800, 80, true)
+            this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.Snake(this.assetManager);
             this.mouse=new objects.Mouse(this.assetManager);
-            this.bomb=new objects.Bomb(this.assetManager);           
+            this.bomb=new objects.Bomb(this.assetManager);
+            this.explosion = new objects.Explosion(this.assetManager);
+            this.thumbsUp = new createjs.Bitmap(this.assetManager.getResult("thumbsUp"));
             this.Main();
         }
 
@@ -50,6 +57,8 @@ module scenes {
             this.addChild(this.snake);
             this.addChild(this.mouse);
             this.addChild(this.bomb);
+
+            this.paused = false;
         }
         public DetectEatMouse():void{
             let eatMouse:boolean;
@@ -66,17 +75,30 @@ module scenes {
             bombCollision=managers.Collision.AABBCollisionCheck(this.snake,this.bomb);
             if(bombCollision){
                 this.snake.stopTimer();
+                this.addChild(this.explosion);
+                this.explosion.Explode(this.bomb.x, this.bomb.y);
                 this.removeChild(this.bomb);
-                objects.Game.currentScene = config.Scene.OVER;
+                setTimeout(function(){
+                    objects.Game.currentScene = config.Scene.OVER;
+                }, 2000);
             }
         }
         private moveToEndScene():void {
-            // Change from PLAY to GAMEOVER scene
-            if(this.score==30){
+            // Change to next level
+            if(this.score >= this.targetScore && !this.paused){
                 this.snake.stopTimer();
                 setTimeout(function(){
-                    objects.Game.currentScene = config.Scene.SECONDLEVEL; 
+                    objects.Game.currentScene = config.Scene.SECONDLEVEL;
+                    this.paused = false;
                 },2000);
+                this.removeChild(this.mouse);
+                this.addChild(this.completeLabel);
+                this.thumbsUp.regX = this.thumbsUp.getBounds().width * 0.5;
+                this.thumbsUp.regY = this.thumbsUp.getBounds().height * 0.5;
+                this.thumbsUp.x = 480;
+                this.thumbsUp.y = 400;
+                this.addChild(this.thumbsUp);
+                this.paused = true;
             }
         }
     }
