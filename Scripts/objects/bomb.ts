@@ -45,5 +45,6 @@ module objects {
             this.x = this.coordinates[0];
             this.y = this.coordinates[1]; 
         }
+
     }
 }

@@ -20,6 +20,7 @@ var scenes;
             var _this = _super.call(this, assetManager) || this;
             _this.count = 1;
             _this.score = 0;
+            _this.level = 1;
             _this.Start();
             return _this;
         }
@@ -42,9 +43,12 @@ var scenes;
             this.moveToEndScene();
         };
         PlayScene.prototype.Main = function () {
+            //always add background first
             this.addChild(this.background);
+            //add labels
             this.addChild(this.levelLabel);
             this.addChild(this.scoreLabel);
+            // add objects
             this.addChild(this.snake);
             this.addChild(this.mouse);
             this.addChild(this.bomb);

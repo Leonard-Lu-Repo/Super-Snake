@@ -1,15 +1,16 @@
 module scenes {
     export class PlayScene extends objects.Scene {
         // Variables
+        private background: objects.Background;        
         private levelLabel: objects.Label;
+        private scoreLabel:objects.Label; 
         private snake:objects.Snake;
-        private background: objects.Background;
         private count:number=1;
         private score:number=0;
-        private scoreLabel:objects.Label;
-        private mouse:objects.Mouse;
         private bomb:objects.Bomb;
-       
+        private mouse :objects.Mouse;
+        private level:number=1;         
+        private targetScore: number;
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager);
@@ -25,7 +26,7 @@ module scenes {
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.Snake(this.assetManager);
             this.mouse=new objects.Mouse(this.assetManager);
-            this.bomb=new objects.Bomb(this.assetManager);
+            this.bomb=new objects.Bomb(this.assetManager);           
             this.Main();
         }
 
@@ -38,13 +39,17 @@ module scenes {
         }
 
         public Main():void {
-            this.addChild(this.background);
+            //always add background first
+            this.addChild(this.background); 
+            
+            //add labels
             this.addChild(this.levelLabel);
             this.addChild(this.scoreLabel);
+
+            // add objects
             this.addChild(this.snake);
             this.addChild(this.mouse);
             this.addChild(this.bomb);
-            
         }
         public DetectEatMouse():void{
             let eatMouse:boolean;
@@ -74,6 +79,5 @@ module scenes {
                 },2000);
             }
         }
-        
     }
 }

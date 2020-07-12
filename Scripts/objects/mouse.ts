@@ -1,4 +1,5 @@
 module objects {
+
     export class Mouse extends objects.GameObject {
         // Variables
         private  gridX: number;
@@ -10,11 +11,13 @@ module objects {
         }
 
         public Start():void {
+
             this.setMouseLocation();
         }
 
         public Update():void { 
             
+
 
         }
        

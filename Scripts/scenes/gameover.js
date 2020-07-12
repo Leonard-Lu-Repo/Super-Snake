@@ -29,7 +29,7 @@ var scenes;
             this.mainButton = new objects.Button(this.assetManager, "mainButton", 400, 340);
             this.replayButton = new objects.Button(this.assetManager, "replayButton", 400, 500);
             this.Main();
-        };
+        }; //end of Start()
         GameOverScene.prototype.Update = function () { };
         GameOverScene.prototype.Main = function () {
             this.addChild(this.background);
@@ -46,7 +46,7 @@ var scenes;
             objects.Game.currentScene = config.Scene.GAME;
         };
         return GameOverScene;
-    }(objects.Scene));
+    }(objects.Scene)); //end of GameOverScene class
     scenes.GameOverScene = GameOverScene;
 })(scenes || (scenes = {}));
 //# sourceMappingURL=gameover.js.map

@@ -84,7 +84,6 @@ var objects;
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
         };
-        //If snake's head touch the stage bound make collision true and game over
         Snake.prototype.CheckBound = function () {
             if (this.x + this.halfW > 960 || this.x < this.halfW) {
                 this.collision = true;

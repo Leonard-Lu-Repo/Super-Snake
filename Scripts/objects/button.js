@@ -17,13 +17,16 @@ var objects;
         __extends(Button, _super);
         // Variables
         // Constructor
-        function Button(assetManager, imageString, x, y) {
+        function Button(assetManager, imageString, x, y, scale) {
             if (x === void 0) { x = 0; }
             if (y === void 0) { y = 0; }
+            if (scale === void 0) { scale = 1.0; }
             var _this = _super.call(this, assetManager.getResult(imageString)) || this;
             // Default position
             _this.x = x;
             _this.y = y;
+            _this.scaleX = scale;
+            _this.scaleY = scale;
             // Set up event handlers
             _this.on("mouseover", _this.mouseOver);
             _this.on("mouseout", _this.mouseOut);

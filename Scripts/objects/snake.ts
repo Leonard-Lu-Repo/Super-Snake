@@ -7,12 +7,13 @@ module objects {
         private newCoords: Array<number>;
         private timer;
         private collision:boolean=false;
+
         // Charlie comment: add List containing all bodies
         //List<Body> listOfBodies = new List<Body>();
 
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
-            super(assetManager, "snake");
+            super(assetManager, "snake");            
             this.direction=new managers.Keyboard();
             this.Start();
         }
@@ -73,8 +74,8 @@ module objects {
             this.newCoords=this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1]; 
+
         }
-      //If snake's head touch the stage bound make collision true and game over
         public CheckBound():void {
             if(this.x+this.halfW>960||this.x<this.halfW){
                     this.collision=true;
@@ -83,6 +84,8 @@ module objects {
                     this.collision=true;
             }
         }
+      
+       
         
         public addBody() {
 

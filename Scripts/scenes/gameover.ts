@@ -1,15 +1,14 @@
 module scenes {
     export class GameOverScene extends objects.Scene {
         // Variables
+        private background: objects.Background;  
         private gameOverLabel: objects.Label;
         private mainButton: objects.Button;
         private replayButton:objects.Button;
-        private background: objects.Background;
 
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager);
-
             this.Start();
         }
 
@@ -22,7 +21,7 @@ module scenes {
             this.mainButton = new objects.Button(this.assetManager, "mainButton", 400, 340);
             this.replayButton=new objects.Button(this.assetManager,"replayButton",400,500);
             this.Main();
-        }
+        } //end of Start()
 
         public Update():void {}
 
@@ -38,8 +37,9 @@ module scenes {
         private mainButtonClick():void {
             objects.Game.currentScene = config.Scene.START;
         }
-        private replayButtonClick():void{
+
+        private replayButtonClick():void {
             objects.Game.currentScene = config.Scene.GAME;
         }
-    }
+    } //end of GameOverScene class
 }
