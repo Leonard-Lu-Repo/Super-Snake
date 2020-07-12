@@ -24,17 +24,25 @@ var scenes;
         // Method
         GameOverScene.prototype.Start = function () {
             // Initialize our variables
-            this.gameOverLabel = new objects.Label("Game Over!", "40px", "Consolas", "#000000", 320, 240, true);
-            this.backButton = new objects.Button(this.assetManager, "backButton", 320, 340);
+            this.gameOverLabel = new objects.Label("Game Over!", "60px", "Comic", "#FF9A36", 470, 240, true);
+            this.background = new objects.Background(this.assetManager);
+            this.mainButton = new objects.Button(this.assetManager, "mainButton", 400, 340);
+            this.replayButton = new objects.Button(this.assetManager, "replayButton", 400, 500);
             this.Main();
         };
         GameOverScene.prototype.Update = function () { };
         GameOverScene.prototype.Main = function () {
+            this.addChild(this.background);
             this.addChild(this.gameOverLabel);
-            this.addChild(this.backButton);
-            this.backButton.on("click", this.backButtonClick);
+            this.addChild(this.mainButton);
+            this.addChild(this.replayButton);
+            this.mainButton.on("click", this.mainButtonClick);
+            this.replayButton.on("click", this.replayButtonClick);
         };
-        GameOverScene.prototype.backButtonClick = function () {
+        GameOverScene.prototype.mainButtonClick = function () {
+            objects.Game.currentScene = config.Scene.START;
+        };
+        GameOverScene.prototype.replayButtonClick = function () {
             objects.Game.currentScene = config.Scene.GAME;
         };
         return GameOverScene;

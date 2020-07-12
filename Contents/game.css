@@ -1,10 +1,14 @@
+@font-face{
+    font-family: "Comic";
+    src: url('../Fonts/HVD-Comic-Serif-Pro/HVD_Comic_Serif_Pro.otf');
+}
 *{
     margin: 0;
     padding: 0;
 }
 #outerContainer{
-    width: 1080px;
-    height: 728px;
+    width: 1100px;
+    height: 770px;
     background: url(../Assets/grass.png) no-repeat;
     margin: 0px auto;
 }

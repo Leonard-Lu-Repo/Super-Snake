@@ -40,25 +40,18 @@ var objects;
         GameObject.prototype.getGridPosition = function (squareX, squareY) {
             // TODO: These variables that describe the grid position should probably be somewhere else
             // Size of the grid in pixels
-            var gridWidth = 900;
-            var gridHeight = 700;
-            // Top-left position of the grid on-screen
-            /*  let gridTopLeftX = 40;
-             let gridTopLeftY = 0; */
-            var gridTopLeftX = 0;
-            var gridTopLeftY = 0;
-            // Number of squares in the grid
-            /*  let numSquareRows = 30;
-             let numSquareColumns = 30; */
-            var numSquareRows = gridHeight / this.height;
-            var numSquareColumns = gridWidth / this.width;
+            this.gridWidth = 960;
+            this.gridHeight = 690;
+            // Number of squares in the grid, now the stage is filld by 48*35 squares.
+            this.numSquareColumns = 32;
+            this.numSquareRows = 23;
             // Calculate middle point of square for posX and posY
-            var widthOfSquare = gridWidth / numSquareColumns;
-            var heightOfSquare = gridHeight / numSquareRows;
-            var x = (widthOfSquare * (squareX - 1)) + (widthOfSquare / 2) + gridTopLeftX;
-            var y = (heightOfSquare * (squareY - 1)) + (heightOfSquare / 2) + gridTopLeftY;
-            var coordinates = new Array(x, y);
-            return coordinates;
+            var widthOfSquare = this.gridWidth / this.numSquareColumns; //square width : 30
+            var heightOfSquare = this.gridHeight / this.numSquareRows; //square height: 30
+            var x = (widthOfSquare * (squareX - 1)) + (widthOfSquare / 2);
+            var y = (heightOfSquare * (squareY - 1)) + (heightOfSquare / 2);
+            this.coordinates = new Array(x, y);
+            return this.coordinates;
         };
         return GameObject;
     }(createjs.Bitmap));

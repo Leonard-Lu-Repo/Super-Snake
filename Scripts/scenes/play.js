@@ -26,22 +26,55 @@ var scenes;
         PlayScene.prototype.Start = function () {
             console.log("Play scene start");
             // Inintialize our variables
-            this.levelLabel = new objects.Label("Level " + this.count, "40px", "Consolas", "#000000", 100, 80, true);
-            this.scoreLabel = new objects.Label(this.score + "", "40px", "Consolas", "#000000", 800, 80, true);
+            this.levelLabel = new objects.Label("Level " + this.count, "40px", "Comic", "#FF9A36", 100, 80, true);
+            this.scoreLabel = new objects.Label(this.score + "", "40px", "Comic", "#FF9A36", 800, 80, true);
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.Snake(this.assetManager);
+            this.mouse = new objects.Mouse(this.assetManager);
+            this.bomb = new objects.Bomb(this.assetManager);
             this.Main();
         };
         PlayScene.prototype.Update = function () {
-            this.background.Update();
             this.snake.Update();
+            this.bomb.Update();
+            this.DetectEatMouse();
+            this.DetectBombCollision();
+            this.moveToEndScene();
         };
         PlayScene.prototype.Main = function () {
             this.addChild(this.background);
             this.addChild(this.levelLabel);
             this.addChild(this.scoreLabel);
             this.addChild(this.snake);
-            // Register for click events
+            this.addChild(this.mouse);
+            this.addChild(this.bomb);
+        };
+        PlayScene.prototype.DetectEatMouse = function () {
+            var eatMouse;
+            eatMouse = managers.Collision.AABBCollisionCheck(this.snake, this.mouse);
+            if (eatMouse) {
+                this.score += 10;
+                this.scoreLabel.text = this.score.toString();
+                this.mouse.ResetMouseLocation();
+            }
+        };
+        PlayScene.prototype.DetectBombCollision = function () {
+            var bombCollision;
+            bombCollision = managers.Collision.AABBCollisionCheck(this.snake, this.bomb);
+            if (bombCollision) {
+                this.snake.stopTimer();
+                this.removeChild(this.bomb);
+                objects.Game.currentScene = config.Scene.OVER;
+            }
+        };
+        PlayScene.prototype.moveToEndScene = function () {
+            // Change from PLAY to GAMEOVER scene
+            if (this.score == 30) {
+                this.snake.stopTimer();
+                setTimeout(function () {
+                    objects.Game.currentScene = config.Scene.SECONDLEVEL;
+                }, 2000);
+            }
         };
         return PlayScene;
     }(objects.Scene));

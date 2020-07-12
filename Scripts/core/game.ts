@@ -16,10 +16,12 @@
     assetManifest = [
         {id:"startButton", src:"./Assets/StartBtn.png"},
         {id:"backgroud",src:"./Assets/background.png"},
-        //{id:"mainPageBtn",src:"./Assets/MainPageBtn.png"},
-        //{id:"tryAgainBtn",src:"./Assets/TryAgainBtn.png"},
         {id:"gameLogo", src:"./Assets/SnakeLogo-Background.png"},
-        {id:"snake", src:"./Assets/placeholder.png"}
+        {id:"snake", src:"./Assets/placeholder.png"},
+        {id:"mouse",src:"./Assets/mouse.png"},
+        {id:"bomb",src:"./Assets/bomb.png"},
+        {id:"mainButton",src:"./Assets/MainPageBtn.png"},
+        {id:"replayButton",src:"./Assets/TryAgainBtn.png"}
     ];
 
     function Init() {
@@ -75,6 +77,11 @@
             case config.Scene.GAME:
                 stage.removeAllChildren();
                 currentScene = new scenes.PlayScene(assetManager);
+                stage.addChild(currentScene);
+            break;
+            case config.Scene.SECONDLEVEL:
+                stage.removeAllChildren();
+                currentScene = new scenes.SecondLevel(assetManager);
                 stage.addChild(currentScene);
             break;
             case config.Scene.OVER:

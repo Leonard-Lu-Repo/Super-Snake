@@ -22,7 +22,7 @@ var objects;
             var _this = _super.call(this, assetManager, "snake") || this;
             // Variables
             _this.gridPosX = 1;
-            _this.gridPosY = 2;
+            _this.gridPosY = 1;
             _this.collision = false;
             _this.direction = new managers.Keyboard();
             _this.Start();
@@ -30,24 +30,38 @@ var objects;
         }
         Snake.prototype.Start = function () {
             this.Move();
-            this.startTimer();
+            this.startTimer(500);
         };
         Snake.prototype.Update = function () {
-            if (this.collision) {
-                this.Reset();
-            }
+            console.log("X: " + this.x + " Y: " + this.y);
+            this.CheckBound();
+            this.Reset();
         };
         Snake.prototype.Reset = function () {
-            this.stopTimer();
+            if (this.x + this.halfW > 960) {
+                this.x = 960 - this.halfW;
+            }
+            if (this.x < this.halfW) {
+                this.x = Math.abs(this.x);
+            }
+            if (this.y + this.halfH > 700) {
+                this.y = 690 - this.halfH;
+            }
+            if (this.y < this.halfH) {
+                this.y = Math.abs(this.y);
+            }
+            if (this.collision) {
+                this.stopTimer();
+                objects.Game.currentScene = config.Scene.OVER;
+            }
         };
         //Use a timer to locate snake's head
-        Snake.prototype.startTimer = function () {
+        Snake.prototype.startTimer = function (speed) {
             var _this = this;
             this.timer = setInterval(function () {
                 _this.Move();
-            }, 800);
+            }, speed);
         };
-        //Clear timer
         Snake.prototype.stopTimer = function () {
             clearInterval(this.timer);
         };
@@ -69,17 +83,14 @@ var objects;
             this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
-            this.CheckBound();
         };
         //If snake's head touch the stage bound make collision true and game over
         Snake.prototype.CheckBound = function () {
-            if (this.x + this.halfW >= 930 || this.x <= this.halfW) {
+            if (this.x + this.halfW > 960 || this.x < this.halfW) {
                 this.collision = true;
-                console.log("Game over");
             }
-            if (this.y + this.halfH >= 690 || this.y <= this.halfH) {
+            if (this.y + this.halfH > 690 || this.y < this.halfH) {
                 this.collision = true;
-                console.log("Game over");
             }
         };
         Snake.prototype.addBody = function () {
