@@ -32,7 +32,7 @@ module scenes {
             // Initialize our variables
             PlayScene.prototype.score = 0;
             PlayScene.prototype.win = false;
-            this.targetScore = 3;
+            this.targetScore = 10000;
             this.levelLabel = new objects.Label( "Level "+this.level, "40px", "Consolas", "#000000", 100, 50, true);
             this.scoreLabel=new objects.Label(PlayScene.prototype.score+"/"+ this.targetScore , "40px", "Consolas", "#000000", 600, 50, true)
             this.background = new objects.Background(this.assetManager);
@@ -106,7 +106,7 @@ module scenes {
                     }
                     
                     //regenerate a new mouse                 
-                    this.mouse.Reset(); 
+                    this.mouse.Start(); 
             }
         }
 
