@@ -18,22 +18,24 @@ var objects;
         // Charlie comment: add List containing all bodies
         //List<Body> listOfBodies = new List<Body>();
         // Constructor
-        function Snake(assetManager) {
-            var _this = _super.call(this, assetManager, "snake") || this;
-            // Variables
-            _this.gridPosX = 1;
-            _this.gridPosY = 1;
+        function Snake(assetManager, imageString, gridX, gridY) {
+            if (gridX === void 0) { gridX = 0; }
+            if (gridY === void 0) { gridY = 0; }
+            var _this = _super.call(this, assetManager, imageString) || this;
             _this.collision = false;
+            _this.gridPosX = gridX;
+            _this.gridPosY = gridY;
             _this.direction = new managers.Keyboard();
             _this.Start();
             return _this;
         }
         Snake.prototype.Start = function () {
             this.Move();
-            this.startTimer(500);
+            this.startTimer(200);
         };
         Snake.prototype.Update = function () {
-            console.log("X: " + this.x + " Y: " + this.y);
+            //console.log("X: "+this.x+" Y: "+this.y);
+            console.log("gridX: " + Snake.prototype.gridX + " gridY: " + Snake.prototype.gridY);
             this.CheckBound();
             this.Reset();
         };
@@ -83,6 +85,8 @@ var objects;
             this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
+            Snake.prototype.gridX = this.gridPosX;
+            Snake.prototype.gridY = this.gridPosY;
         };
         Snake.prototype.CheckBound = function () {
             if (this.x + this.halfW > 960 || this.x < this.halfW) {
@@ -92,18 +96,8 @@ var objects;
                 this.collision = true;
             }
         };
-        Snake.prototype.addBody = function () {
-        };
         return Snake;
     }(objects.GameObject));
     objects.Snake = Snake;
-    var Body = /** @class */ (function () {
-        function Body() {
-            this.posX = 1;
-            this.posY = 1;
-        }
-        return Body;
-    }());
-    objects.Body = Body;
 })(objects || (objects = {}));
 //# sourceMappingURL=snake.js.map

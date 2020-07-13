@@ -1,8 +1,10 @@
 module objects {
     export class Snake extends objects.GameObject {
         // Variables
-        private gridPosX = 1;
-        private gridPosY = 1;
+        public gridPosX ;
+        public gridPosY ;
+        public gridX;
+        public gridY;
         private direction:managers.Keyboard; 
         private newCoords: Array<number>;
         private timer;
@@ -10,20 +12,22 @@ module objects {
 
         // Charlie comment: add List containing all bodies
         //List<Body> listOfBodies = new List<Body>();
-
         // Constructor
-        constructor(assetManager:createjs.LoadQueue) {
-            super(assetManager, "snake");            
+        constructor(assetManager:createjs.LoadQueue, imageString:string,gridX:number=0, gridY:number=0) {
+            super(assetManager, imageString);   
+            this.gridPosX=gridX;
+            this.gridPosY=gridY;         
             this.direction=new managers.Keyboard();
             this.Start();
         }
 
         public Start():void {
             this.Move();
-            this.startTimer(500); 
+            this.startTimer(200); 
         }
         public Update():void {
-            console.log("X: "+this.x+" Y: "+this.y);
+            //console.log("X: "+this.x+" Y: "+this.y);
+            console.log("gridX: "+Snake.prototype.gridX+" gridY: "+Snake.prototype.gridY);
             this.CheckBound();   
             this.Reset();
         }
@@ -42,7 +46,6 @@ module objects {
                 this.y=Math.abs(this.y);                   
             }
             if(this.collision){
-
                 this.stopTimer();
                 objects.Game.currentScene = config.Scene.OVER;
             }
@@ -62,7 +65,7 @@ module objects {
                 this.gridPosX--;
             }
             if(this.direction.moveRight){
-                this.gridPosX++;
+               this.gridPosX++;
             }
             if(this.direction.moveDown){
                 this.gridPosY++;
@@ -74,6 +77,8 @@ module objects {
             this.newCoords=this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1]; 
+            Snake.prototype.gridX=this.gridPosX;
+            Snake.prototype.gridY=this.gridPosY;
 
         }
         public CheckBound():void {
@@ -84,16 +89,6 @@ module objects {
                     this.collision=true;
             }
         }
-      
-       
         
-        public addBody() {
-
-        }
-    }
-
-    export class Body {
-        posX = 1;
-        posY = 1;
     }
 }

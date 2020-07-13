@@ -35,7 +35,7 @@ module objects {
         public Start():void {}
         public Update():void {}
         public Reset():void {}
-        public Move():void {}
+        public Move(posx:number=0,posy:number=0):void {}
         public CheckBound():void {}
 
         public getGridPosition(squareX, squareY):Array<number> {

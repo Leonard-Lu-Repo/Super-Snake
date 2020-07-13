@@ -21,6 +21,8 @@ var scenes;
             _this.count = 1;
             _this.score = 0;
             _this.level = 1;
+            _this.targetScore = 100;
+            _this.snakeList = new Array();
             _this.Start();
             return _this;
         }
@@ -28,16 +30,19 @@ var scenes;
             console.log("Play scene start");
             // Inintialize our variables
             this.levelLabel = new objects.Label("Level " + this.count, "40px", "Comic", "#FF9A36", 100, 80, true);
-            this.scoreLabel = new objects.Label(this.score + "", "40px", "Comic", "#FF9A36", 800, 80, true);
+            this.scoreLabel = new objects.Label(this.score.toString() + "/" + this.targetScore.toString(), "40px", "Comic", "#FF9A36", 800, 80, true);
             this.background = new objects.Background(this.assetManager);
-            this.snake = new objects.Snake(this.assetManager);
+            this.snake = new objects.Snake(this.assetManager, "snake", 2, 1);
+            this.snakeBody = new objects.SnakeBody(this.assetManager, "snake");
             this.mouse = new objects.Mouse(this.assetManager);
             this.bomb = new objects.Bomb(this.assetManager);
             this.Main();
+            createjs.Ticker.interval = 1000;
         };
         PlayScene.prototype.Update = function () {
             this.snake.Update();
             this.bomb.Update();
+            this.snakeBody.Update();
             this.DetectEatMouse();
             this.DetectBombCollision();
             this.moveToEndScene();
@@ -50,6 +55,7 @@ var scenes;
             this.addChild(this.scoreLabel);
             // add objects
             this.addChild(this.snake);
+            this.addChild(this.snakeBody);
             this.addChild(this.mouse);
             this.addChild(this.bomb);
         };
