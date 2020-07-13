@@ -15,6 +15,8 @@
         { id: "snake", src: "./Assets/placeholder.png" },
         { id: "mouse", src: "./Assets/mouse.png" },
         { id: "bomb", src: "./Assets/bomb.png" },
+        { id: "explosion", src: "./Assets/explosion.png" },
+        { id: "thumbsUp", src: "./Assets/thumbsUp.png" },
         { id: "mainButton", src: "./Assets/MainPageBtn.png" },
         { id: "replayButton", src: "./Assets/TryAgainBtn.png" }
     ];
