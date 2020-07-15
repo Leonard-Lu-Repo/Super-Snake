@@ -18,11 +18,11 @@ module objects{
             this.Move(this.snakeHeadX,this.snakeHeadY);
         }
         public Update():void{
-           setTimeout(()=>{
-            this.snakeHeadX=Snake.prototype.gridX;
+            setTimeout(()=>{
+                this.snakeHeadX=Snake.prototype.gridX;
                 this.snakeHeadY=Snake.prototype.gridY;
-                this.Move(this.snakeHeadX,this.snakeHeadY); 
-           },500);
+                this.Move(this.snakeHeadX,this.snakeHeadY);
+               },50);
                        
         }
         public Move(snakeHeadX:number,snakeHeadY:number):void{

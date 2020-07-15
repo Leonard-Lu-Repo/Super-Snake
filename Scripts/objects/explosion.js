@@ -19,7 +19,8 @@ var objects;
         function Explosion(assetManager) {
             var _this = _super.call(this, assetManager, "explosion") || this;
             _this.Start();
-            _this.scale *= 0.8;
+            _this.scaleX *= 0.8;
+            _this.scaleY *= 0.8;
             return _this;
         }
         Explosion.prototype.Start = function () {

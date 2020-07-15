@@ -52,9 +52,9 @@ var objects;
                 this.gridY = Math.round(Math.random() * 23 + 1);
                 // This loop ensures the bomb isn't in the same position as the mouse
             } while (objects.Game.currentMouseGridPos[0] == this.gridX && objects.Game.currentMouseGridPos[1] == this.gridY);
-            this.coordinates = this.getGridPosition(this.gridX, this.gridY);
-            this.x = this.coordinates[0];
-            this.y = this.coordinates[1];
+            this.newCoords = this.getGridPosition(this.gridX, this.gridY);
+            this.x = this.newCoords[0];
+            this.y = this.newCoords[1];
         };
         return Bomb;
     }(objects.GameObject));

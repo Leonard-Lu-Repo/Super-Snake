@@ -1,32 +1,31 @@
 module objects {
     export class Snake extends objects.GameObject {
-        // Variables
-        public gridPosX ;
-        public gridPosY ;
+       // Variables
+        gridPosX=1;
+        gridPosY=2;
         public gridX;
-        public gridY;
-        private direction:managers.Keyboard; 
-        private newCoords: Array<number>;
-        private timer;
-        private collision:boolean=false;
+        public gridY; 
+        direction:managers.Keyboard; 
+        newCoords: Array<number>;
+        public timer;
+        public collision:boolean=false;
 
         // Charlie comment: add List containing all bodies
         //List<Body> listOfBodies = new List<Body>();
         // Constructor
-        constructor(assetManager:createjs.LoadQueue, imageString:string,gridX:number=0, gridY:number=0) {
-            super(assetManager, imageString);   
-            this.gridPosX=gridX;
-            this.gridPosY=gridY;         
+        constructor(assetManager:createjs.LoadQueue, imageString:string) {
+            super(assetManager, imageString);         
             this.direction=new managers.Keyboard();
             this.Start();
         }
 
         public Start():void {
             this.Move();
-            this.startTimer(200); 
+            this.startTimer();
         }
         public Update():void {
-            //console.log("X: "+this.x+" Y: "+this.y);
+            //console.log("X: "+this.x+" Y: "+this.y); 
+            
             console.log("gridX: "+Snake.prototype.gridX+" gridY: "+Snake.prototype.gridY);
             this.CheckBound();   
             this.Reset();
@@ -51,11 +50,11 @@ module objects {
             }
         }
        //Use a timer to locate snake's head
-        public startTimer(speed:number):void{
+        public startTimer():void{
             this.timer= setInterval(() => {
                 this.Move();  
-            }, speed);                                  
-        }
+            }, 200);                                  
+        } 
         public stopTimer():void{
             clearInterval(this.timer); 
         }
@@ -80,7 +79,7 @@ module objects {
             Snake.prototype.gridX=this.gridPosX;
             Snake.prototype.gridY=this.gridPosY;
 
-        }
+       }
         public CheckBound():void {
             if(this.x+this.halfW>960||this.x<this.halfW){
                     this.collision=true;
@@ -90,5 +89,7 @@ module objects {
             }
         }
         
+       
+      
     }
 }

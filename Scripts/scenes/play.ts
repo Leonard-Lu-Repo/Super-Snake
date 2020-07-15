@@ -30,14 +30,13 @@ module scenes {
             this.scoreLabel=new objects.Label(this.score+"" , "40px", "Comic", "#FF9A36", 800, 80, true)
             this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
             this.background = new objects.Background(this.assetManager);
-            this.snake=new objects.Snake(this.assetManager,"snake",2,1);
+            this.snake=new objects.Snake(this.assetManager,"snake");
             this.snakeBody=new objects.SnakeBody(this.assetManager,"snake");
             this.mouse=new objects.Mouse(this.assetManager);
             this.bomb=new objects.Bomb(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
             this.thumbsUp = new createjs.Bitmap(this.assetManager.getResult("thumbsUp"));
             this.Main();
-            createjs.Ticker.interval=1000;
         }
 
         public Update():void {

@@ -31,7 +31,7 @@ var objects;
                 _this.snakeHeadX = objects.Snake.prototype.gridX;
                 _this.snakeHeadY = objects.Snake.prototype.gridY;
                 _this.Move(_this.snakeHeadX, _this.snakeHeadY);
-            }, 500);
+            }, 50);
         };
         SnakeBody.prototype.Move = function (snakeHeadX, snakeHeadY) {
             //To set new location of snakeBody

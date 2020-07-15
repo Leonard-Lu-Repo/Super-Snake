@@ -5,11 +5,6 @@ module objects {
         public height: number;
         public halfW: number;  
         public halfH: number;
-        public gridWidth:number;           
-        public gridHeight:number;
-        public numSquareColumns :number;
-        public numSquareRows :number;
-        public coordinates : Array<number>;
         // Constructor
         constructor(assetManager:createjs.LoadQueue, imageString:string) {
             super(assetManager.getResult(imageString));
@@ -42,19 +37,20 @@ module objects {
             
             // TODO: These variables that describe the grid position should probably be somewhere else
             // Size of the grid in pixels
-            this.gridWidth = 960;           
-            this.gridHeight = 690;
+            let gridWidth = 960;           
+            let gridHeight = 690;
             // Number of squares in the grid, now the stage is filld by 48*35 squares.
-            this.numSquareColumns = 32;
-            this.numSquareRows = 23;
+            let numSquareColumns = 32;
+            let numSquareRows = 23;
+
 
             // Calculate middle point of square for posX and posY
-            let widthOfSquare = this.gridWidth / this.numSquareColumns;//square width : 30
-            let heightOfSquare = this.gridHeight / this.numSquareRows;//square height: 30
+            let widthOfSquare = gridWidth / numSquareColumns;//square width : 30
+            let heightOfSquare = gridHeight /numSquareRows;//square height: 30
             let x = (widthOfSquare * (squareX-1)) + (widthOfSquare / 2);
             let y = (heightOfSquare * (squareY-1)) + (heightOfSquare / 2);
-            this.coordinates=new Array(x,y);
-            return this.coordinates;
+            let coordinates=new Array(x,y);
+            return coordinates;
         }
     }
 }

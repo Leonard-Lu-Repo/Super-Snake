@@ -18,23 +18,22 @@ var objects;
         // Charlie comment: add List containing all bodies
         //List<Body> listOfBodies = new List<Body>();
         // Constructor
-        function Snake(assetManager, imageString, gridX, gridY) {
-            if (gridX === void 0) { gridX = 0; }
-            if (gridY === void 0) { gridY = 0; }
+        function Snake(assetManager, imageString) {
             var _this = _super.call(this, assetManager, imageString) || this;
+            // Variables
+            _this.gridPosX = 1;
+            _this.gridPosY = 2;
             _this.collision = false;
-            _this.gridPosX = gridX;
-            _this.gridPosY = gridY;
             _this.direction = new managers.Keyboard();
             _this.Start();
             return _this;
         }
         Snake.prototype.Start = function () {
             this.Move();
-            this.startTimer(200);
+            this.startTimer();
         };
         Snake.prototype.Update = function () {
-            //console.log("X: "+this.x+" Y: "+this.y);
+            //console.log("X: "+this.x+" Y: "+this.y); 
             console.log("gridX: " + Snake.prototype.gridX + " gridY: " + Snake.prototype.gridY);
             this.CheckBound();
             this.Reset();
@@ -58,11 +57,11 @@ var objects;
             }
         };
         //Use a timer to locate snake's head
-        Snake.prototype.startTimer = function (speed) {
+        Snake.prototype.startTimer = function () {
             var _this = this;
             this.timer = setInterval(function () {
                 _this.Move();
-            }, speed);
+            }, 200);
         };
         Snake.prototype.stopTimer = function () {
             clearInterval(this.timer);
