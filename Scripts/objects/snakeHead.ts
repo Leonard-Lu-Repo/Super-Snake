@@ -1,17 +1,13 @@
 module objects {
-    export class Snake extends objects.GameObject {
+    export class SnakeHead extends objects.GameObject {
        // Variables
-        gridPosX=1;
-        gridPosY=2;
-        public gridX;
-        public gridY; 
+        gridPosX=2;
+        gridPosY=2;  
+        public snakeSpeed=800; 
         direction:managers.Keyboard; 
         newCoords: Array<number>;
         public timer;
         public collision:boolean=false;
-
-        // Charlie comment: add List containing all bodies
-        //List<Body> listOfBodies = new List<Body>();
         // Constructor
         constructor(assetManager:createjs.LoadQueue, imageString:string) {
             super(assetManager, imageString);         
@@ -21,12 +17,10 @@ module objects {
 
         public Start():void {
             this.Move();
-            this.startTimer();
+            this.startTimer(this.snakeSpeed);
+            objects.Game.snakeHeadSpeed=this.snakeSpeed;
         }
         public Update():void {
-            //console.log("X: "+this.x+" Y: "+this.y); 
-            
-            console.log("gridX: "+Snake.prototype.gridX+" gridY: "+Snake.prototype.gridY);
             this.CheckBound();   
             this.Reset();
         }
@@ -50,10 +44,11 @@ module objects {
             }
         }
        //Use a timer to locate snake's head
-        public startTimer():void{
-            this.timer= setInterval(() => {
-                this.Move();  
-            }, 200);                                  
+        public startTimer(speed:number):void{
+            this.timer=setTimeout(()=>{
+                this.Move();
+                this.startTimer(speed);
+            },speed);                                  
         } 
         public stopTimer():void{
             clearInterval(this.timer); 
@@ -62,22 +57,25 @@ module objects {
              //according to the keyboard event to decide direction to change snake's move
              if(this.direction.moveLeft){
                 this.gridPosX--;
+                this.rotation=0;
             }
             if(this.direction.moveRight){
                this.gridPosX++;
+               this.rotation=180;
             }
             if(this.direction.moveDown){
                 this.gridPosY++;
+                this.rotation=-90;
             }
             if(this.direction.moveUp){
                 this.gridPosY--;
+                this.rotation=90;
             }
              //To set new location of snake
             this.newCoords=this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1]; 
-            Snake.prototype.gridX=this.gridPosX;
-            Snake.prototype.gridY=this.gridPosY;
+            objects.Game.snakeHeadGridPos=new Array(this.gridPosX,this.gridPosY);
 
        }
         public CheckBound():void {
@@ -87,6 +85,7 @@ module objects {
             if(this.y+this.halfH>690||this.y<this.halfH){
                     this.collision=true;
             }
+            objects.Game.snakeBoundCollision=this.collision;
         }
         
        

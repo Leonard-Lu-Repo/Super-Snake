@@ -5,5 +5,8 @@ module objects {
         public static assetManager: createjs.LoadQueue;
         public static currentScene: number;
         public static currentMouseGridPos:Array<number>;
+        public static snakeHeadSpeed:number;
+        public static snakeHeadGridPos:Array<number>;
+        public static snakeBoundCollision:boolean;
     }
 }

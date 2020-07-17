@@ -13,32 +13,30 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var objects;
 (function (objects) {
-    var Snake = /** @class */ (function (_super) {
-        __extends(Snake, _super);
-        // Charlie comment: add List containing all bodies
-        //List<Body> listOfBodies = new List<Body>();
+    var SnakeHead = /** @class */ (function (_super) {
+        __extends(SnakeHead, _super);
         // Constructor
-        function Snake(assetManager, imageString) {
+        function SnakeHead(assetManager, imageString) {
             var _this = _super.call(this, assetManager, imageString) || this;
             // Variables
-            _this.gridPosX = 1;
+            _this.gridPosX = 2;
             _this.gridPosY = 2;
+            _this.snakeSpeed = 800;
             _this.collision = false;
             _this.direction = new managers.Keyboard();
             _this.Start();
             return _this;
         }
-        Snake.prototype.Start = function () {
+        SnakeHead.prototype.Start = function () {
             this.Move();
-            this.startTimer();
+            this.startTimer(this.snakeSpeed);
+            objects.Game.snakeHeadSpeed = this.snakeSpeed;
         };
-        Snake.prototype.Update = function () {
-            //console.log("X: "+this.x+" Y: "+this.y); 
-            console.log("gridX: " + Snake.prototype.gridX + " gridY: " + Snake.prototype.gridY);
+        SnakeHead.prototype.Update = function () {
             this.CheckBound();
             this.Reset();
         };
-        Snake.prototype.Reset = function () {
+        SnakeHead.prototype.Reset = function () {
             if (this.x + this.halfW > 960) {
                 this.x = 960 - this.halfW;
             }
@@ -57,46 +55,51 @@ var objects;
             }
         };
         //Use a timer to locate snake's head
-        Snake.prototype.startTimer = function () {
+        SnakeHead.prototype.startTimer = function (speed) {
             var _this = this;
-            this.timer = setInterval(function () {
+            this.timer = setTimeout(function () {
                 _this.Move();
-            }, 200);
+                _this.startTimer(speed);
+            }, speed);
         };
-        Snake.prototype.stopTimer = function () {
+        SnakeHead.prototype.stopTimer = function () {
             clearInterval(this.timer);
         };
-        Snake.prototype.Move = function () {
+        SnakeHead.prototype.Move = function () {
             //according to the keyboard event to decide direction to change snake's move
             if (this.direction.moveLeft) {
                 this.gridPosX--;
+                this.rotation = 0;
             }
             if (this.direction.moveRight) {
                 this.gridPosX++;
+                this.rotation = 180;
             }
             if (this.direction.moveDown) {
                 this.gridPosY++;
+                this.rotation = -90;
             }
             if (this.direction.moveUp) {
                 this.gridPosY--;
+                this.rotation = 90;
             }
             //To set new location of snake
             this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
-            Snake.prototype.gridX = this.gridPosX;
-            Snake.prototype.gridY = this.gridPosY;
+            objects.Game.snakeHeadGridPos = new Array(this.gridPosX, this.gridPosY);
         };
-        Snake.prototype.CheckBound = function () {
+        SnakeHead.prototype.CheckBound = function () {
             if (this.x + this.halfW > 960 || this.x < this.halfW) {
                 this.collision = true;
             }
             if (this.y + this.halfH > 690 || this.y < this.halfH) {
                 this.collision = true;
             }
+            objects.Game.snakeBoundCollision = this.collision;
         };
-        return Snake;
+        return SnakeHead;
     }(objects.GameObject));
-    objects.Snake = Snake;
+    objects.SnakeHead = SnakeHead;
 })(objects || (objects = {}));
-//# sourceMappingURL=snake.js.map
+//# sourceMappingURL=snakeHead.js.map

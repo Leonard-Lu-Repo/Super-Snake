@@ -5,7 +5,7 @@ module scenes {
         private levelLabel: objects.Label;
         private scoreLabel:objects.Label; 
         private completeLabel: objects.Label;
-        private snake:objects.Snake;
+        private snake:objects.SnakeHead;
         private snakeBody:objects.SnakeBody;
         private count:number=1;
         private score:number=0;
@@ -30,8 +30,8 @@ module scenes {
             this.scoreLabel=new objects.Label(this.score+"" , "40px", "Comic", "#FF9A36", 800, 80, true)
             this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
             this.background = new objects.Background(this.assetManager);
-            this.snake=new objects.Snake(this.assetManager,"snake");
-            this.snakeBody=new objects.SnakeBody(this.assetManager,"snake");
+            this.snake=new objects.SnakeHead(this.assetManager,"snakeHead");
+            this.snakeBody=new objects.SnakeBody(this.assetManager,"snakeBody");
             this.mouse=new objects.Mouse(this.assetManager);
             this.bomb=new objects.Bomb(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
