@@ -21,29 +21,26 @@ var objects;
             return _this;
         }
         SnakeBody.prototype.Start = function () {
-            this.snakeHeadX = objects.Game.snakeHeadGridPos[0] - 1;
-            this.snakeHeadY = objects.Game.snakeHeadGridPos[1];
-            this.Move(this.snakeHeadX, this.snakeHeadY);
-            this.startTimer(objects.Game.snakeHeadSpeed + 10);
         };
-        SnakeBody.prototype.Update = function () {
-            console.log(objects.Game.snakeBoundCollision);
+        SnakeBody.prototype.Update = function (snakeX, snakeY) {
+            if (objects.Game.mouseCollision) {
+                this.startMove(objects.Game.snakeHeadSpeed + 10);
+            }
+            this.snakeHeadX = snakeX;
+            this.snakeHeadY = snakeY;
+            console.log(objects.Game.mouseCollision);
             console.log("snakebodyX " + this.snakeHeadX + " snabodyY " + this.snakeHeadY);
-            console.log("gridX: " + objects.Game.snakeHeadGridPos[0] + " gridY: " + objects.Game.snakeHeadGridPos[1]);
+            console.log("gridX: " + objects.Game.snakeHeadPos[0] + " gridY: " + objects.Game.snakeHeadPos[1]);
         };
-        SnakeBody.prototype.Move = function (snakeX, snakeY) {
-            this.newCoords = this.getGridPosition(snakeX, snakeY);
-            this.x = this.newCoords[0];
-            this.y = this.newCoords[1];
+        SnakeBody.prototype.Move = function () {
         };
-        SnakeBody.prototype.startTimer = function (speed) {
+        SnakeBody.prototype.startMove = function (speed) {
             var _this = this;
             createjs.Ticker.interval = objects.Game.snakeHeadSpeed;
             this.timer = setTimeout(function () {
-                _this.snakeHeadX = objects.Game.snakeHeadGridPos[0];
-                _this.snakeHeadY = objects.Game.snakeHeadGridPos[1];
-                _this.Move(_this.snakeHeadX, _this.snakeHeadY);
-                _this.startTimer(speed);
+                _this.x = _this.snakeHeadX;
+                _this.y = _this.snakeHeadY;
+                _this.startMove(speed);
             }, speed);
         };
         return SnakeBody;

@@ -5,6 +5,7 @@ module objects {
         private  gridX: number;
         private  gridY: number;
         newCoords: Array<number>;
+        public mouseCollision:boolean=false;
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager,"mouse");
@@ -12,7 +13,6 @@ module objects {
         }
 
         public Start():void {
-
             this.setMouseLocation();
         }
 

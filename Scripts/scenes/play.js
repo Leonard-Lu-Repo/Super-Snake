@@ -18,6 +18,7 @@ var scenes;
         // Constructor
         function PlayScene(assetManager) {
             var _this = _super.call(this, assetManager) || this;
+            _this.snakeList = new Array();
             _this.count = 1;
             _this.score = 0;
             _this.level = 1;
@@ -34,6 +35,7 @@ var scenes;
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.SnakeHead(this.assetManager, "snakeHead");
             this.snakeBody = new objects.SnakeBody(this.assetManager, "snakeBody");
+            this.snakeList[0] = new objects.SnakeBody(this.assetManager, "snakeBody");
             this.mouse = new objects.Mouse(this.assetManager);
             this.bomb = new objects.Bomb(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
@@ -43,10 +45,12 @@ var scenes;
         PlayScene.prototype.Update = function () {
             this.snake.Update();
             this.bomb.Update();
-            this.snakeBody.Update();
+            this.snakeBody.Update(objects.Game.snakeHeadPos[0], objects.Game.snakeHeadPos[1]);
+            this.snakeList[0].Update(this.snakeBody.x, this.snakeBody.y);
             this.DetectEatMouse();
             this.DetectBombCollision();
             this.moveToEndScene();
+            this.Main();
         };
         PlayScene.prototype.Main = function () {
             //always add background first
@@ -56,7 +60,10 @@ var scenes;
             this.addChild(this.scoreLabel);
             // add objects
             this.addChild(this.snake);
-            this.addChild(this.snakeBody);
+            if (this.mouse.mouseCollision) {
+                this.addChild(this.snakeBody);
+                this.addChild(this.snakeList[0]);
+            }
             this.addChild(this.mouse);
             this.addChild(this.bomb);
             this.paused = false;
@@ -67,6 +74,8 @@ var scenes;
             if (eatMouse) {
                 this.score += 10;
                 this.scoreLabel.text = this.score.toString();
+                this.mouse.mouseCollision = true;
+                objects.Game.mouseCollision = this.mouse.mouseCollision;
                 this.mouse.ResetMouseLocation();
             }
         };

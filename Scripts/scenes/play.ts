@@ -7,6 +7,7 @@ module scenes {
         private completeLabel: objects.Label;
         private snake:objects.SnakeHead;
         private snakeBody:objects.SnakeBody;
+        private snakeList:objects.SnakeBody[]=new Array();
         private count:number=1;
         private score:number=0;
         private bomb:objects.Bomb;
@@ -32,6 +33,7 @@ module scenes {
             this.background = new objects.Background(this.assetManager);
             this.snake=new objects.SnakeHead(this.assetManager,"snakeHead");
             this.snakeBody=new objects.SnakeBody(this.assetManager,"snakeBody");
+            this.snakeList[0]=new objects.SnakeBody(this.assetManager,"snakeBody");
             this.mouse=new objects.Mouse(this.assetManager);
             this.bomb=new objects.Bomb(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
@@ -42,10 +44,12 @@ module scenes {
         public Update():void {
             this.snake.Update();
             this.bomb.Update();
-            this.snakeBody.Update();
+            this.snakeBody.Update(objects.Game.snakeHeadPos[0],objects.Game.snakeHeadPos[1]);
+            this.snakeList[0].Update(this.snakeBody.x,this.snakeBody.y);
             this.DetectEatMouse();
             this.DetectBombCollision();
             this.moveToEndScene();
+            this.Main();
         }
       
         public Main():void {
@@ -58,7 +62,11 @@ module scenes {
 
             // add objects
             this.addChild(this.snake);
-            this.addChild(this.snakeBody);
+            if(this.mouse.mouseCollision){
+
+                this.addChild(this.snakeBody);
+                this.addChild(this.snakeList[0]);
+            }
             this.addChild(this.mouse);
             this.addChild(this.bomb);
 
@@ -70,6 +78,8 @@ module scenes {
             if(eatMouse){
                 this.score+=10;
                 this.scoreLabel.text = this.score.toString();
+                this.mouse.mouseCollision=true;
+                objects.Game.mouseCollision=this.mouse.mouseCollision;
                 this.mouse.ResetMouseLocation();
             }
         }

@@ -21,7 +21,7 @@ var objects;
             // Variables
             _this.gridPosX = 2;
             _this.gridPosY = 2;
-            _this.snakeSpeed = 800;
+            _this.snakeSpeed = 200;
             _this.collision = false;
             _this.direction = new managers.Keyboard();
             _this.Start();
@@ -87,7 +87,7 @@ var objects;
             this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
-            objects.Game.snakeHeadGridPos = new Array(this.gridPosX, this.gridPosY);
+            objects.Game.snakeHeadPos = new Array(this.x, this.y);
         };
         SnakeHead.prototype.CheckBound = function () {
             if (this.x + this.halfW > 960 || this.x < this.halfW) {

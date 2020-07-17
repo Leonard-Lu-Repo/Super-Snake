@@ -3,7 +3,7 @@ module objects {
        // Variables
         gridPosX=2;
         gridPosY=2;  
-        public snakeSpeed=800; 
+        public snakeSpeed=200; 
         direction:managers.Keyboard; 
         newCoords: Array<number>;
         public timer;
@@ -75,7 +75,7 @@ module objects {
             this.newCoords=this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1]; 
-            objects.Game.snakeHeadGridPos=new Array(this.gridPosX,this.gridPosY);
+            objects.Game.snakeHeadPos=new Array(this.x,this.y);
 
        }
         public CheckBound():void {

@@ -6,7 +6,8 @@ module objects {
         public static currentScene: number;
         public static currentMouseGridPos:Array<number>;
         public static snakeHeadSpeed:number;
-        public static snakeHeadGridPos:Array<number>;
+        public static snakeHeadPos:Array<number>;
         public static snakeBoundCollision:boolean;
+        public static mouseCollision:boolean;
     }
 }

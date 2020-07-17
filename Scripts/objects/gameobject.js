@@ -33,12 +33,12 @@ var objects;
             this.regY = this.halfH;
         };
         GameObject.prototype.Start = function () { };
-        GameObject.prototype.Update = function () { };
-        GameObject.prototype.Reset = function () { };
-        GameObject.prototype.Move = function (posx, posy) {
+        GameObject.prototype.Update = function (posx, posy) {
             if (posx === void 0) { posx = 0; }
             if (posy === void 0) { posy = 0; }
         };
+        GameObject.prototype.Reset = function () { };
+        GameObject.prototype.Move = function () { };
         GameObject.prototype.CheckBound = function () { };
         GameObject.prototype.getGridPosition = function (squareX, squareY) {
             // TODO: These variables that describe the grid position should probably be somewhere else
