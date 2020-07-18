@@ -8,6 +8,7 @@ module objects {
         public static snakeHeadSpeed:number;
         public static snakeHeadPos:Array<number>;
         public static snakeBoundCollision:boolean;
-        public static mouseCollision:boolean;
+        public static bombCollision:boolean;
+        public static achieveTargetScore:boolean
     }
 }

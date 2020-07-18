@@ -21,16 +21,14 @@ var objects;
             return _this;
         }
         SnakeBody.prototype.Start = function () {
+            this.startMove(objects.Game.snakeHeadSpeed);
         };
         SnakeBody.prototype.Update = function (snakeX, snakeY) {
-            if (objects.Game.mouseCollision) {
-                this.startMove(objects.Game.snakeHeadSpeed + 10);
-            }
             this.snakeHeadX = snakeX;
             this.snakeHeadY = snakeY;
-            console.log(objects.Game.mouseCollision);
-            console.log("snakebodyX " + this.snakeHeadX + " snabodyY " + this.snakeHeadY);
-            console.log("gridX: " + objects.Game.snakeHeadPos[0] + " gridY: " + objects.Game.snakeHeadPos[1]);
+            this.stopMove();
+            console.log(objects.Game.bombCollision);
+            console.log(createjs.Ticker.interval);
         };
         SnakeBody.prototype.Move = function () {
         };
@@ -42,6 +40,11 @@ var objects;
                 _this.y = _this.snakeHeadY;
                 _this.startMove(speed);
             }, speed);
+        };
+        SnakeBody.prototype.stopMove = function () {
+            if (objects.Game.snakeBoundCollision || objects.Game.bombCollision || objects.Game.achieveTargetScore) {
+                clearTimeout(this.timer);
+            }
         };
         return SnakeBody;
     }(objects.GameObject));

@@ -17,9 +17,6 @@ module objects {
         }
 
         public Update():void { 
-            
-
-
         }
        
        public Move():void{

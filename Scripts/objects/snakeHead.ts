@@ -39,6 +39,7 @@ module objects {
                 this.y=Math.abs(this.y);                   
             }
             if(this.collision){
+                objects.Game.snakeBoundCollision=this.collision;
                 this.stopTimer();
                 objects.Game.currentScene = config.Scene.OVER;
             }
@@ -85,10 +86,6 @@ module objects {
             if(this.y+this.halfH>690||this.y<this.halfH){
                     this.collision=true;
             }
-            objects.Game.snakeBoundCollision=this.collision;
         }
-        
-       
-      
     }
 }

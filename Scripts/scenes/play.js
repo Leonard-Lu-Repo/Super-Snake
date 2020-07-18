@@ -34,7 +34,6 @@ var scenes;
             this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.SnakeHead(this.assetManager, "snakeHead");
-            this.snakeBody = new objects.SnakeBody(this.assetManager, "snakeBody");
             this.snakeList[0] = new objects.SnakeBody(this.assetManager, "snakeBody");
             this.mouse = new objects.Mouse(this.assetManager);
             this.bomb = new objects.Bomb(this.assetManager);
@@ -45,12 +44,15 @@ var scenes;
         PlayScene.prototype.Update = function () {
             this.snake.Update();
             this.bomb.Update();
-            this.snakeBody.Update(objects.Game.snakeHeadPos[0], objects.Game.snakeHeadPos[1]);
-            this.snakeList[0].Update(this.snakeBody.x, this.snakeBody.y);
             this.DetectEatMouse();
             this.DetectBombCollision();
-            this.moveToEndScene();
+            this.snakeList[0].Update(objects.Game.snakeHeadPos[0], objects.Game.snakeHeadPos[1]);
+            for (var i = 1; i < this.snakeList.length; i++) {
+                this.snakeList[i].Update(this.snakeList[i - 1].x, this.snakeList[i - 1].y);
+            }
+            this.moveToNextLevel();
             this.Main();
+            console.log(this.snakeList.length);
         };
         PlayScene.prototype.Main = function () {
             //always add background first
@@ -60,9 +62,11 @@ var scenes;
             this.addChild(this.scoreLabel);
             // add objects
             this.addChild(this.snake);
+            //this.addChild(this.snakeList[0]);
             if (this.mouse.mouseCollision) {
-                this.addChild(this.snakeBody);
-                this.addChild(this.snakeList[0]);
+                for (var i = 0; i < this.snakeList.length; i++) {
+                    this.addChild(this.snakeList[i]);
+                }
             }
             this.addChild(this.mouse);
             this.addChild(this.bomb);
@@ -75,7 +79,7 @@ var scenes;
                 this.score += 10;
                 this.scoreLabel.text = this.score.toString();
                 this.mouse.mouseCollision = true;
-                objects.Game.mouseCollision = this.mouse.mouseCollision;
+                this.snakeList.push(new objects.SnakeBody(this.assetManager, "snakeBody"));
                 this.mouse.ResetMouseLocation();
             }
         };
@@ -83,23 +87,20 @@ var scenes;
             var bombCollision;
             bombCollision = managers.Collision.AABBCollisionCheck(this.snake, this.bomb);
             if (bombCollision) {
-                this.snake.stopTimer();
+                objects.Game.bombCollision = true;
                 this.addChild(this.explosion);
                 this.explosion.Explode(this.bomb.x, this.bomb.y);
                 this.removeChild(this.bomb);
-                setTimeout(function () {
-                    objects.Game.currentScene = config.Scene.OVER;
-                }, 2000);
-            }
-        };
-        PlayScene.prototype.moveToEndScene = function () {
-            // Change to next level
-            if (this.score >= this.targetScore && !this.paused) {
                 this.snake.stopTimer();
                 setTimeout(function () {
-                    objects.Game.currentScene = config.Scene.SECONDLEVEL;
-                    this.paused = false;
-                }, 2000);
+                    objects.Game.currentScene = config.Scene.OVER;
+                }, 3000);
+            }
+        };
+        PlayScene.prototype.moveToNextLevel = function () {
+            // Change to next level
+            if (this.score >= this.targetScore && !this.paused) {
+                objects.Game.achieveTargetScore = true;
                 this.removeChild(this.mouse);
                 this.addChild(this.completeLabel);
                 this.thumbsUp.regX = this.thumbsUp.getBounds().width * 0.5;
@@ -108,6 +109,11 @@ var scenes;
                 this.thumbsUp.y = 400;
                 this.addChild(this.thumbsUp);
                 this.paused = true;
+                this.snake.stopTimer();
+                setTimeout(function () {
+                    objects.Game.currentScene = config.Scene.SECONDLEVEL;
+                    this.paused = false;
+                }, 3000);
             }
         };
         return PlayScene;
