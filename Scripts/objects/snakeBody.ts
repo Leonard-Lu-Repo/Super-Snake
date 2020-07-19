@@ -5,7 +5,7 @@ module objects{
         public timer;
 
         constructor(assetManager:createjs.LoadQueue, imageString:string) {
-            super(assetManager, imageString); 
+            super(assetManager, imageString);
             this.Start();
 
         }
@@ -29,10 +29,11 @@ module objects{
                 this.x=this.snakeHeadX;
                 this.y=this.snakeHeadY;
                 this.startMove(speed);
-            },speed);                                  
+            },speed);                                
         }
         public stopMove():void{
-            if(objects.Game.snakeBoundCollision||objects.Game.bombCollision||objects.Game.achieveTargetScore){
+            if(objects.Game.snakeBoundCollision||objects.Game.bombCollision||objects.Game.achieveTargetScore||objects.Game.slefCollison){
+                this.Update(this.x,this.y);
                 clearTimeout(this.timer);
             }
         }

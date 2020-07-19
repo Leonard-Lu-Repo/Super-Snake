@@ -44,6 +44,7 @@ var scenes;
         };
         GameOverScene.prototype.replayButtonClick = function () {
             objects.Game.currentScene = config.Scene.GAME;
+            console.log(scenes.PlayScene.prototype.snakeBodyNumber);
         };
         return GameOverScene;
     }(objects.Scene)); //end of GameOverScene class

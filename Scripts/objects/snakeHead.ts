@@ -3,7 +3,7 @@ module objects {
        // Variables
         gridPosX=2;
         gridPosY=2;  
-        public snakeSpeed=200; 
+        public snakeSpeed=300; 
         direction:managers.Keyboard; 
         newCoords: Array<number>;
         public timer;

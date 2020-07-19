@@ -21,7 +21,7 @@ var objects;
             // Variables
             _this.gridPosX = 2;
             _this.gridPosY = 2;
-            _this.snakeSpeed = 200;
+            _this.snakeSpeed = 300;
             _this.collision = false;
             _this.direction = new managers.Keyboard();
             _this.Start();

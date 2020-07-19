@@ -40,6 +40,7 @@ module scenes {
 
         private replayButtonClick():void {
             objects.Game.currentScene = config.Scene.GAME;
+            console.log(PlayScene.prototype.snakeBodyNumber);
         }
     } //end of GameOverScene class
 }

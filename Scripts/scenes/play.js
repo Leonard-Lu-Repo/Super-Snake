@@ -19,22 +19,23 @@ var scenes;
         function PlayScene(assetManager) {
             var _this = _super.call(this, assetManager) || this;
             _this.snakeList = new Array();
-            _this.count = 1;
             _this.score = 0;
             _this.level = 1;
-            _this.targetScore = 30;
+            _this.targetScore = 80;
             _this.Start();
             return _this;
         }
         PlayScene.prototype.Start = function () {
             console.log("Play scene start");
             // Inintialize our variables
-            this.levelLabel = new objects.Label("Level " + this.count, "40px", "Comic", "#FF9A36", 100, 80, true);
+            this.levelLabel = new objects.Label("Level " + this.level, "40px", "Comic", "#FF9A36", 100, 80, true);
             this.scoreLabel = new objects.Label(this.score + "", "40px", "Comic", "#FF9A36", 800, 80, true);
             this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
             this.background = new objects.Background(this.assetManager);
             this.snake = new objects.SnakeHead(this.assetManager, "snakeHead");
             this.snakeList[0] = new objects.SnakeBody(this.assetManager, "snakeBody");
+            this.snakeList[0].x = objects.Game.snakeHeadPos[0] - 30;
+            this.snakeList[0].y = objects.Game.snakeHeadPos[1];
             this.mouse = new objects.Mouse(this.assetManager);
             this.bomb = new objects.Bomb(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
@@ -46,6 +47,7 @@ var scenes;
             this.bomb.Update();
             this.DetectEatMouse();
             this.DetectBombCollision();
+            this.snakeSelfCollisionDetect();
             this.snakeList[0].Update(objects.Game.snakeHeadPos[0], objects.Game.snakeHeadPos[1]);
             for (var i = 1; i < this.snakeList.length; i++) {
                 this.snakeList[i].Update(this.snakeList[i - 1].x, this.snakeList[i - 1].y);
@@ -62,36 +64,43 @@ var scenes;
             this.addChild(this.scoreLabel);
             // add objects
             this.addChild(this.snake);
-            //this.addChild(this.snakeList[0]);
+            this.addChild(this.snakeList[0]);
             if (this.mouse.mouseCollision) {
-                for (var i = 0; i < this.snakeList.length; i++) {
+                for (var i = 1; i < this.snakeList.length; i++) {
                     this.addChild(this.snakeList[i]);
                 }
             }
             this.addChild(this.mouse);
             this.addChild(this.bomb);
+            this.DetectBombCollision();
+            this.moveToNextLevel();
             this.paused = false;
         };
         PlayScene.prototype.DetectEatMouse = function () {
             var eatMouse;
-            eatMouse = managers.Collision.AABBCollisionCheck(this.snake, this.mouse);
+            eatMouse = managers.Collision.AABBCollisionCheck(this.snakeList[0], this.mouse);
             if (eatMouse) {
                 this.score += 10;
                 this.scoreLabel.text = this.score.toString();
                 this.mouse.mouseCollision = true;
                 this.snakeList.push(new objects.SnakeBody(this.assetManager, "snakeBody"));
+                for (var i = 1; i < this.snakeList.length; i++) {
+                    this.snakeList[i].x = this.snakeList[i - 1].x;
+                    this.snakeList[i].y = this.snakeList[i - 1].y;
+                }
                 this.mouse.ResetMouseLocation();
             }
         };
         PlayScene.prototype.DetectBombCollision = function () {
             var bombCollision;
-            bombCollision = managers.Collision.AABBCollisionCheck(this.snake, this.bomb);
+            bombCollision = managers.Collision.AABBCollisionCheck(this.snakeList[0], this.bomb);
             if (bombCollision) {
                 objects.Game.bombCollision = true;
                 this.addChild(this.explosion);
                 this.explosion.Explode(this.bomb.x, this.bomb.y);
                 this.removeChild(this.bomb);
                 this.snake.stopTimer();
+                PlayScene.prototype.snakeBodyNumber = this.snakeList.length;
                 setTimeout(function () {
                     objects.Game.currentScene = config.Scene.OVER;
                 }, 3000);
@@ -108,12 +117,24 @@ var scenes;
                 this.thumbsUp.x = 480;
                 this.thumbsUp.y = 400;
                 this.addChild(this.thumbsUp);
-                this.paused = true;
-                this.snake.stopTimer();
                 setTimeout(function () {
                     objects.Game.currentScene = config.Scene.SECONDLEVEL;
                     this.paused = false;
                 }, 3000);
+                this.snake.stopTimer();
+            }
+        };
+        PlayScene.prototype.snakeSelfCollisionDetect = function () {
+            var selfCollision;
+            for (var i = 0; i < this.snakeList.length; i++) {
+                selfCollision = managers.Collision.AABBCollisionCheck(this.snake, this.snakeList[i]);
+                objects.Game.slefCollison = selfCollision;
+            }
+            if (selfCollision) {
+                this.snake.stopTimer();
+                for (var i = 0; i < this.snakeList.length; i++) {
+                    this.snakeList[i].stopMove();
+                }
             }
         };
         return PlayScene;

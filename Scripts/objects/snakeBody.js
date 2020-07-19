@@ -42,7 +42,8 @@ var objects;
             }, speed);
         };
         SnakeBody.prototype.stopMove = function () {
-            if (objects.Game.snakeBoundCollision || objects.Game.bombCollision || objects.Game.achieveTargetScore) {
+            if (objects.Game.snakeBoundCollision || objects.Game.bombCollision || objects.Game.achieveTargetScore || objects.Game.slefCollison) {
+                this.Update(this.x, this.y);
                 clearTimeout(this.timer);
             }
         };
