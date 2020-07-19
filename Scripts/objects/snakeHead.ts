@@ -3,7 +3,7 @@ module objects {
        // Variables
         gridPosX=2;
         gridPosY=2;  
-        public snakeSpeed=300; 
+        public snakeSpeed=200; 
         direction:managers.Keyboard; 
         newCoords: Array<number>;
         public timer;
@@ -53,7 +53,7 @@ module objects {
             },speed);                                  
         } 
         public stopTimer():void{
-            clearInterval(this.timer); 
+            clearTimeout(this.timer); 
         }
         public Move():void {
              //according to the keyboard event to decide direction to change snake's move

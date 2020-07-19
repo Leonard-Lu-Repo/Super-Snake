@@ -21,7 +21,7 @@ var objects;
             // Variables
             _this.gridPosX = 2;
             _this.gridPosY = 2;
-            _this.snakeSpeed = 300;
+            _this.snakeSpeed = 200;
             _this.collision = false;
             _this.timeToUpdateBodies = false;
             _this.direction = new managers.Keyboard();
@@ -65,7 +65,7 @@ var objects;
             }, speed);
         };
         SnakeHead.prototype.stopTimer = function () {
-            clearInterval(this.timer);
+            clearTimeout(this.timer);
         };
         SnakeHead.prototype.Move = function () {
             //according to the keyboard event to decide direction to change snake's move

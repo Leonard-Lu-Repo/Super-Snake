@@ -24,6 +24,7 @@ module scenes {
 
         public Start():void {
             console.log("Play scene start");
+
             // Load Level 1
             this.loadLevel(1);
 
@@ -34,8 +35,6 @@ module scenes {
             this.background = new objects.Background(this.assetManager);
             this.snake=new objects.SnakeHead(this.assetManager,"snakeHead");
             this.snakeList[0]=new objects.SnakeBody(this.assetManager,"snakeBody");
-            this.snakeList[0].x=objects.Game.snakeHeadPos[0]-30;
-            this.snakeList[0].y=objects.Game.snakeHeadPos[1];
             this.mouse=new objects.Mouse(this.assetManager);
             this.bomb=new objects.Bomb(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
@@ -60,6 +59,7 @@ module scenes {
             if (this.score >= this.targetScore && !this.paused) {
                 this.moveToNextLevel();
             }
+           
             console.log(this.snakeList.length);
         }
       
@@ -79,8 +79,7 @@ module scenes {
             this.addChild(this.snake);
             this.addChild(this.mouse);
             this.addChild(this.bomb);
-            this.DetectBombCollision();
-            this.moveToNextLevel()
+
             this.paused = false;
         }
 
@@ -93,7 +92,7 @@ module scenes {
 
         public DetectEatMouse():void{
             let eatMouse:boolean;
-            eatMouse=managers.Collision.AABBCollisionCheck(this.snakeList[0],this.mouse);
+            eatMouse=managers.Collision.AABBCollisionCheck(this.snake,this.mouse);
             if(eatMouse){
                 this.score+=10;
                 this.scoreLabel.text = this.score.toString();
@@ -107,7 +106,7 @@ module scenes {
 
         public DetectBombCollision():void{
             let bombCollision:boolean;
-            bombCollision=managers.Collision.AABBCollisionCheck(this.snakeList[0],this.bomb);
+            bombCollision=managers.Collision.AABBCollisionCheck(this.snake,this.bomb);
             if(bombCollision){
                 objects.Game.bombCollision=true;
                 this.addChild(this.explosion);
