@@ -23,6 +23,7 @@ var objects;
             _this.gridPosY = 2;
             _this.snakeSpeed = 300;
             _this.collision = false;
+            _this.timeToUpdateBodies = false;
             _this.direction = new managers.Keyboard();
             _this.Start();
             return _this;
@@ -89,6 +90,8 @@ var objects;
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
             objects.Game.snakeHeadPos = new Array(this.x, this.y);
+            //Update the other bodies
+            this.timeToUpdateBodies = true;
         };
         SnakeHead.prototype.CheckBound = function () {
             if (this.x + this.halfW > 960 || this.x < this.halfW) {
@@ -97,6 +100,14 @@ var objects;
             if (this.y + this.halfH > 690 || this.y < this.halfH) {
                 this.collision = true;
             }
+        };
+        SnakeHead.prototype.ResetSnakeStatus = function () {
+            this.gridPosX = 2;
+            this.gridPosY = 2;
+            this.direction.moveUp = false;
+            this.direction.moveDown = false;
+            this.direction.moveLeft = false;
+            this.direction.moveRight = true;
         };
         return SnakeHead;
     }(objects.GameObject));

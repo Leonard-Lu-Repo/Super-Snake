@@ -21,25 +21,12 @@ var objects;
             return _this;
         }
         SnakeBody.prototype.Start = function () {
-            this.startMove(objects.Game.snakeHeadSpeed);
         };
         SnakeBody.prototype.Update = function (snakeX, snakeY) {
-            this.snakeHeadX = snakeX;
-            this.snakeHeadY = snakeY;
-            this.stopMove();
-            console.log(objects.Game.bombCollision);
-            console.log(createjs.Ticker.interval);
+            this.x = snakeX;
+            this.y = snakeY;
         };
         SnakeBody.prototype.Move = function () {
-        };
-        SnakeBody.prototype.startMove = function (speed) {
-            var _this = this;
-            createjs.Ticker.interval = objects.Game.snakeHeadSpeed;
-            this.timer = setTimeout(function () {
-                _this.x = _this.snakeHeadX;
-                _this.y = _this.snakeHeadY;
-                _this.startMove(speed);
-            }, speed);
         };
         SnakeBody.prototype.stopMove = function () {
             if (objects.Game.snakeBoundCollision || objects.Game.bombCollision || objects.Game.achieveTargetScore || objects.Game.slefCollison) {
