@@ -8,6 +8,7 @@ module objects {
         newCoords: Array<number>;
         public timer;
         public collision:boolean=false;
+        public timeToUpdateBodies:boolean = false;
         // Constructor
         constructor(assetManager:createjs.LoadQueue, imageString:string) {
             super(assetManager, imageString);         
@@ -77,7 +78,8 @@ module objects {
             this.x = this.newCoords[0];
             this.y = this.newCoords[1]; 
             objects.Game.snakeHeadPos=new Array(this.x,this.y);
-
+            //Update the other bodies
+            this.timeToUpdateBodies = true;
        }
         public CheckBound():void {
             if(this.x+this.halfW>960||this.x<this.halfW){
@@ -86,6 +88,14 @@ module objects {
             if(this.y+this.halfH>690||this.y<this.halfH){
                     this.collision=true;
             }
+        }
+        public ResetSnakeStatus() {
+            this.gridPosX = 2;
+            this.gridPosY = 2;
+            this.direction.moveUp = false;
+            this.direction.moveDown = false;
+            this.direction.moveLeft = false;
+            this.direction.moveRight = true;
         }
     }
 }
