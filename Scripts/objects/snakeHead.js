@@ -69,11 +69,11 @@ var objects;
         };
         SnakeHead.prototype.Move = function () {
             //according to the keyboard event to decide direction to change snake's move
-            if (this.direction.moveLeft) {
+            if (this.direction.moveLeft && this.direction.moveRight == false) {
                 this.gridPosX--;
                 this.rotation = 0;
             }
-            if (this.direction.moveRight) {
+            if (this.direction.moveRight && this.direction.moveLeft == false) {
                 this.gridPosX++;
                 this.rotation = 180;
             }

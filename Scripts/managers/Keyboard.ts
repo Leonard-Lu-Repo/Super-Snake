@@ -7,6 +7,7 @@ module managers
         public moveDown:boolean=false;
         public moveLeft:boolean=false;
         public moveRight:boolean=true;
+        public moveDirection:string="right";
 
         //constructor
         constructor()
@@ -21,38 +22,51 @@ module managers
 
         private onkeyDown(event:KeyboardEvent):void
         {
-
-            switch(event.keyCode)
+             switch(event.keyCode)
             {
                 case enums.Keys.W:
                 case enums.Keys.UP_ARROW:
-                    this.moveUp=true;
-                    this.moveDown=false;
-                    this.moveLeft=false;
-                    this.moveRight=false;
-                    break;
-                case enums.Keys.A:
-                case enums.Keys.LEFT_ARROW:
-                    this.moveLeft=true;
-                    this.moveUp=false;
-                    this.moveDown=false;
-                    this.moveRight=false;
+                    event.preventDefault();
+                    if(this.moveDirection!="down"){
+                        this.moveUp=true;
+                        this.moveDown=false;
+                        this.moveLeft=false;
+                        this.moveRight=false;
+                        this.moveDirection="up";
+                    }
                     break;
                 case enums.Keys.S:
                 case enums.Keys.DOWN_ARROW:
-                    this.moveDown=true;
-                    this.moveUp=false;
-                    this.moveLeft=false;
-                    this.moveRight=false;
+                    event.preventDefault();
+                    if(this.moveDirection!="up"){
+                        this.moveDown=true;
+                        this.moveUp=false;
+                        this.moveLeft=false;
+                        this.moveRight=false;
+                        this.moveDirection="down";
+                    }
+                    break;
+                case enums.Keys.A:
+                case enums.Keys.LEFT_ARROW:
+                    if(this.moveDirection!="right"){
+                        this.moveLeft=true;
+                        this.moveUp=false;
+                        this.moveDown=false;
+                        this.moveRight=false;
+                        this.moveDirection="left";
+                    }
                     break;
                 case enums.Keys.D:
                 case enums.Keys.RIGHT_ARROW:
-                    this.moveRight=true;
-                    this.moveUp=false;
-                    this.moveDown=false;
-                    this.moveLeft=false;
+                    if(this.moveDirection!="left"){
+                        this.moveRight=true;
+                        this.moveUp=false;
+                        this.moveDown=false;
+                        this.moveLeft=false;
+                        this.moveDirection="right";
+                    }
                     break;
-            }
+            } 
         }
 
         // onkeyup event listener

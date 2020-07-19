@@ -17,7 +17,7 @@ var managers;
             return collisionX && conllisionY;
         };
         Collision.squaredRadiusCheck = function (obj1, obj2) {
-            var objetRad = obj1.halfH + obj2.halfH;
+            var objetRad = obj1.halfH + obj2.getBounds().height * 0.5;
             var sqrDistance = Math.pow(Math.abs((obj1.x - obj2.x)), 2) + Math.pow(Math.abs(obj1.y - obj2.y), 2);
             if (sqrDistance < Math.pow(objetRad, 2)) {
                 return true;

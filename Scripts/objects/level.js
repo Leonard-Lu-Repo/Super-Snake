@@ -25,7 +25,7 @@ var objects;
             }
             if (levelNo == 2) {
                 levelData.setLevelNo(2);
-                levelData.setTargetScore(50);
+                levelData.setTargetScore(80);
             }
             // Add extra levels here...
             return levelData;

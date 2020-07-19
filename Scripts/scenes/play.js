@@ -32,7 +32,7 @@ var scenes;
             this.scoreLabel = new objects.Label(this.score + "", "40px", "Comic", "#FF9A36", 800, 80, true);
             this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
             this.background = new objects.Background(this.assetManager);
-            this.snake = new objects.SnakeHead(this.assetManager, "snakeHead");
+            this.snakeHead = new objects.SnakeHead(this.assetManager, "snakeHead");
             this.snakeList[0] = new objects.SnakeBody(this.assetManager, "snakeBody");
             this.mouse = new objects.Mouse(this.assetManager);
             this.bomb = new objects.Bomb(this.assetManager);
@@ -45,19 +45,19 @@ var scenes;
             this.Main();
         };
         PlayScene.prototype.Update = function () {
-            this.snake.Update();
+            this.snakeHead.Update();
             this.bomb.Update();
             this.DetectEatMouse();
             this.DetectBombCollision();
-            if (this.snake.timeToUpdateBodies) {
-                this.snake.timeToUpdateBodies = false;
+            this.DetectSnakeslefCollision();
+            if (this.snakeHead.timeToUpdateBodies) {
+                this.snakeHead.timeToUpdateBodies = false;
                 this.UpdateSnakeBodies();
             }
             // Check if score is achieved
             if (this.score >= this.targetScore && !this.paused) {
                 this.moveToNextLevel();
             }
-            console.log(this.snakeList.length);
         };
         PlayScene.prototype.Main = function () {
             //always add background first
@@ -70,7 +70,7 @@ var scenes;
             this.addChild(this.thumbsUp);
             this.thumbsUp.visible = false;
             // add objects
-            this.addChild(this.snake);
+            this.addChild(this.snakeHead);
             this.addChild(this.mouse);
             this.addChild(this.bomb);
             this.paused = false;
@@ -83,7 +83,7 @@ var scenes;
         };
         PlayScene.prototype.DetectEatMouse = function () {
             var eatMouse;
-            eatMouse = managers.Collision.AABBCollisionCheck(this.snake, this.mouse);
+            eatMouse = managers.Collision.AABBCollisionCheck(this.snakeHead, this.mouse);
             if (eatMouse) {
                 this.score += 10;
                 this.scoreLabel.text = this.score.toString();
@@ -96,16 +96,30 @@ var scenes;
         };
         PlayScene.prototype.DetectBombCollision = function () {
             var bombCollision;
-            bombCollision = managers.Collision.AABBCollisionCheck(this.snake, this.bomb);
+            bombCollision = managers.Collision.AABBCollisionCheck(this.snakeHead, this.bomb);
             if (bombCollision) {
                 objects.Game.bombCollision = true;
                 this.addChild(this.explosion);
                 this.explosion.Explode(this.bomb.x, this.bomb.y);
                 this.removeChild(this.bomb);
-                this.snake.stopTimer();
+                this.snakeHead.stopTimer();
                 setTimeout(function () {
                     objects.Game.currentScene = config.Scene.OVER;
-                }, 3000);
+                }, 2000);
+            }
+        };
+        PlayScene.prototype.DetectSnakeslefCollision = function () {
+            var selfCollision;
+            for (var i = this.snakeList.length - 1; i > 0; i--) {
+                if (this.snakeHead.x == this.snakeList[i].x && this.snakeHead.y == this.snakeList[i].y) {
+                    selfCollision = true;
+                }
+            }
+            if (selfCollision) {
+                this.snakeHead.stopTimer();
+                setTimeout(function () {
+                    objects.Game.currentScene = config.Scene.OVER;
+                }, 2000);
             }
         };
         PlayScene.prototype.loadLevel = function (levelNo) {
@@ -123,26 +137,26 @@ var scenes;
             this.completeLabel.visible = true;
             this.thumbsUp.visible = true;
             this.paused = true;
-            this.snake.stopTimer();
+            this.snakeHead.stopTimer();
             setTimeout(function () {
                 // Load new level
                 _this.loadLevel(_this.currentLevel.getLevelNo() + 1);
                 // Reset everything
                 _this.score = 0;
                 _this.scoreLabel.text = _this.score.toString();
-                _this.snake.ResetSnakeStatus();
+                _this.snakeHead.ResetSnakeStatus();
                 for (var i = _this.snakeList.length - 1; i > 0; i--) { // Avoid removing the head
                     _this.removeChild(_this.snakeList[i]);
                     _this.snakeList.pop();
                 }
-                _this.snake.startTimer(200); // NOTE: Currently hard-coding in 200 for speed
+                _this.snakeHead.startTimer(200); // NOTE: Currently hard-coding in 200 for speed
                 _this.addChild(_this.mouse);
                 _this.levelLabel.text = "Level " + _this.currentLevel.getLevelNo();
                 _this.completeLabel.visible = false;
                 _this.thumbsUp.visible = false;
                 // Unpause
                 _this.paused = false;
-            }, 3000);
+            }, 2000);
         };
         return PlayScene;
     }(objects.Scene));
