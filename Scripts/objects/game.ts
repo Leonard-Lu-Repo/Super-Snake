@@ -7,7 +7,6 @@ module objects {
         public static currentMouseGridPos:Array<number>;
         public static snakeHeadSpeed:number;
         public static snakeHeadPos:Array<number>;
-        public static snakeBoundCollision:boolean;
         public static bombCollision:boolean;
         public static achieveTargetScore:boolean
     }

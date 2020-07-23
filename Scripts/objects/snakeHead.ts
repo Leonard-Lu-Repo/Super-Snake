@@ -42,8 +42,8 @@ module objects {
             if(this.gridPosY<0){
                 this.gridPosY=0;
             }
-            if(this.gridPosY>18){
-                this.gridPosY=18;                   
+            if(this.gridPosY>16){
+                this.gridPosY=16;                   
             }
            
         }
@@ -95,11 +95,10 @@ module objects {
             if(this.gridPosX>30||this.gridPosX<0){
                 this.collision=true;
             }
-            if(this.gridPosY>18||this.gridPosY<0){
+            if(this.gridPosY>16||this.gridPosY<0){
                 this.collision=true;
             }
             if(this.collision){
-                objects.Game.snakeBoundCollision=this.collision;
                 this.stopTimer();
                 setTimeout(function(){
                     objects.Game.currentScene = config.Scene.OVER;

@@ -49,7 +49,7 @@ var objects;
         Bomb.prototype.setBombLocation = function () {
             do {
                 this.gridX = Math.round(Math.random() * 28 + 1);
-                this.gridY = Math.round(Math.random() * 16 + 1);
+                this.gridY = Math.round(Math.random() * 14 + 1);
                 // This loop ensures the bomb isn't in the same position as the mouse
             } while (objects.Game.currentMouseGridPos[0] == this.gridX && objects.Game.currentMouseGridPos[1] == this.gridY);
             this.newCoords = this.getGridPosition(this.gridX, this.gridY);
