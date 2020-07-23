@@ -34,8 +34,8 @@ var objects;
         };
         //To set new location of mouse
         Mouse.prototype.setMouseLocation = function () {
-            this.gridX = Math.round(Math.random() * 30 + 1);
-            this.gridY = Math.round(Math.random() * 21 + 1);
+            this.gridX = Math.round(Math.random() * 28 + 1);
+            this.gridY = Math.round(Math.random() * 16 + 1);
             this.newCoords = this.getGridPosition(this.gridX, this.gridY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];

@@ -39,6 +39,8 @@ module objects {
             // Size of the grid in pixels
             let gridWidth = 960;           
             let gridHeight = 690;
+            let offsetTop=120;
+            let offsetLeft=30;
             // Number of squares in the grid, now the stage is filld by 48*35 squares.
             let numSquareColumns = 32;
             let numSquareRows = 23;
@@ -47,8 +49,8 @@ module objects {
             // Calculate middle point of square for posX and posY
             let widthOfSquare = gridWidth / numSquareColumns;//square width : 30
             let heightOfSquare = gridHeight /numSquareRows;//square height: 30
-            let x = (widthOfSquare * (squareX-1)) + (widthOfSquare / 2);
-            let y = (heightOfSquare * (squareY-1)) + (heightOfSquare / 2);
+            let x = (widthOfSquare * (squareX-1)) + (widthOfSquare / 2)+offsetLeft;
+            let y = (heightOfSquare * (squareY-1)) + (heightOfSquare / 2)+offsetTop;
             let coordinates=new Array(x,y);
             return coordinates;
         }

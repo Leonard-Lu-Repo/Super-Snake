@@ -2,11 +2,12 @@ module objects {
     export class Background extends createjs.Bitmap {
         // Variables
         // Constructor
-        constructor(assetManager:createjs.LoadQueue)
+        constructor(assetManager:createjs.LoadQueue, imageString:string, x:number=0,y:number=0)
         {
-            super(assetManager.getResult("backgroud"));
+            super(assetManager.getResult(imageString));
             console.log("Creating the background");
-            
+            this.x=x;
+            this.y=y;
 
             this.Start();
         }

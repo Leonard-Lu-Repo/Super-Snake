@@ -17,7 +17,7 @@ module scenes {
             // Initialize our variables
             this.gameOverLabel = new objects.Label(
                 "Game Over!", "60px", "Comic", "#FF9A36", 470, 240, true);
-            this.background=new objects.Background(this.assetManager);
+            this.background=new objects.Background(this.assetManager,"background");
             this.mainButton = new objects.Button(this.assetManager, "mainButton", 400, 340);
             this.replayButton=new objects.Button(this.assetManager,"replayButton",400,500);
             this.Main();

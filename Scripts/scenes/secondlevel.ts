@@ -14,7 +14,7 @@ module scenes {
         public Start():void {
             // Initialize our variables
             this.playlabel = new objects.Label("This is second level!", "60px", "Comic", "#FF9A36", 400, 240, true);
-            this.background = new objects.Background(this.assetManager);
+            this.background = new objects.Background(this.assetManager,"background");
             this.Main();
         }
 

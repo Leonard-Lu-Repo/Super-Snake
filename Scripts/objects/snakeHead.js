@@ -18,9 +18,10 @@ var objects;
         // Constructor
         function SnakeHead(assetManager, imageString) {
             var _this = _super.call(this, assetManager, imageString) || this;
-            // Variables
-            _this.gridPosX = 2;
-            _this.gridPosY = 2;
+            _this.gridPosX = 0;
+            _this.gridPosY = 0;
+            _this.nextGridPosX = 0;
+            _this.nextGridPosY = 0;
             _this.snakeSpeed = 200;
             _this.collision = false;
             _this.timeToUpdateBodies = false;
@@ -35,25 +36,20 @@ var objects;
         };
         SnakeHead.prototype.Update = function () {
             this.CheckBound();
-            this.Reset();
+            console.log(this.gridPosX);
         };
         SnakeHead.prototype.Reset = function () {
-            if (this.x + this.halfW > 960) {
-                this.x = 960 - this.halfW;
+            if (this.gridPosX > 30) {
+                this.gridPosX = 30;
             }
-            if (this.x < this.halfW) {
-                this.x = Math.abs(this.x);
+            if (this.gridPosX < 1) {
+                this.gridPosX = 1;
             }
-            if (this.y + this.halfH > 700) {
-                this.y = 690 - this.halfH;
+            if (this.gridPosY < 0) {
+                this.gridPosY = 0;
             }
-            if (this.y < this.halfH) {
-                this.y = Math.abs(this.y);
-            }
-            if (this.collision) {
-                objects.Game.snakeBoundCollision = this.collision;
-                this.stopTimer();
-                objects.Game.currentScene = config.Scene.OVER;
+            if (this.gridPosY > 18) {
+                this.gridPosY = 18;
             }
         };
         //Use a timer to locate snake's head
@@ -69,41 +65,56 @@ var objects;
         };
         SnakeHead.prototype.Move = function () {
             //according to the keyboard event to decide direction to change snake's move
-            if (this.direction.moveLeft && this.direction.moveRight == false) {
+            if (this.direction.moveLeft) {
                 this.gridPosX--;
+                this.nextGridPosX = this.gridPosX - 1;
                 this.rotation = 0;
             }
-            if (this.direction.moveRight && this.direction.moveLeft == false) {
+            if (this.direction.moveRight) {
                 this.gridPosX++;
+                this.nextGridPosX = this.gridPosX + 1;
                 this.rotation = 180;
             }
             if (this.direction.moveDown) {
                 this.gridPosY++;
+                this.nextGridPosY = this.gridPosY + 1;
                 this.rotation = -90;
             }
             if (this.direction.moveUp) {
                 this.gridPosY--;
+                this.nextGridPosY = this.gridPosY - 1;
                 this.rotation = 90;
             }
             //To set new location of snake
             this.newCoords = this.getGridPosition(this.gridPosX, this.gridPosY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
+            this.nextCoords = this.getGridPosition(this.nextGridPosX, this.nextGridPosY);
+            this.nextX = this.nextCoords[0];
+            this.nextY = this.nextCoords[1];
             objects.Game.snakeHeadPos = new Array(this.x, this.y);
             //Update the other bodies
             this.timeToUpdateBodies = true;
         };
         SnakeHead.prototype.CheckBound = function () {
-            if (this.x + this.halfW > 960 || this.x < this.halfW) {
+            if (this.gridPosX > 30 || this.gridPosX < 0) {
                 this.collision = true;
             }
-            if (this.y + this.halfH > 690 || this.y < this.halfH) {
+            if (this.gridPosY > 18 || this.gridPosY < 0) {
                 this.collision = true;
             }
+            if (this.collision) {
+                objects.Game.snakeBoundCollision = this.collision;
+                this.stopTimer();
+                setTimeout(function () {
+                    objects.Game.currentScene = config.Scene.OVER;
+                }, 2000);
+            }
+            this.Reset();
         };
         SnakeHead.prototype.ResetSnakeStatus = function () {
-            this.gridPosX = 2;
-            this.gridPosY = 2;
+            this.gridPosX = 1;
+            this.gridPosY = 1;
             this.direction.moveUp = false;
             this.direction.moveDown = false;
             this.direction.moveLeft = false;

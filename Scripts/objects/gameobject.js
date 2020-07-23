@@ -45,14 +45,16 @@ var objects;
             // Size of the grid in pixels
             var gridWidth = 960;
             var gridHeight = 690;
+            var offsetTop = 120;
+            var offsetLeft = 30;
             // Number of squares in the grid, now the stage is filld by 48*35 squares.
             var numSquareColumns = 32;
             var numSquareRows = 23;
             // Calculate middle point of square for posX and posY
             var widthOfSquare = gridWidth / numSquareColumns; //square width : 30
             var heightOfSquare = gridHeight / numSquareRows; //square height: 30
-            var x = (widthOfSquare * (squareX - 1)) + (widthOfSquare / 2);
-            var y = (heightOfSquare * (squareY - 1)) + (heightOfSquare / 2);
+            var x = (widthOfSquare * (squareX - 1)) + (widthOfSquare / 2) + offsetLeft;
+            var y = (heightOfSquare * (squareY - 1)) + (heightOfSquare / 2) + offsetTop;
             var coordinates = new Array(x, y);
             return coordinates;
         };

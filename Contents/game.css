@@ -11,9 +11,9 @@
     height: 770px;
     background: url(../Assets/grass.png) no-repeat;
     margin: 0px auto;
+    border: 1px solid transparent;
 }
 #canvas {
     display: block;
-    margin: 0px auto;
-    border: 1px black solid;
+    margin: 10px auto 0px auto;
 }

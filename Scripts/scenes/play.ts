@@ -1,7 +1,8 @@
 module scenes {
     export class PlayScene extends objects.Scene {
         // Variables
-        private background: objects.Background;        
+        private background: objects.Background;  
+        private thornsWall:objects.Background;
         private levelLabel: objects.Label;
         private scoreLabel:objects.Label; 
         private completeLabel: objects.Label;
@@ -29,10 +30,11 @@ module scenes {
             this.loadLevel(1);
 
             // Intialize our variables
-            this.levelLabel = new objects.Label( "Level "+ this.currentLevel.getLevelNo(), "40px", "Comic", "#FF9A36", 100, 80, true);
-            this.scoreLabel=new objects.Label(this.score+"" , "40px", "Comic", "#FF9A36", 800, 80, true)
+            this.background = new objects.Background(this.assetManager,"background");
+            this.thornsWall=new objects.Background(this.assetManager,"thornsWall",0,60);
+            this.levelLabel = new objects.Label( "Level "+ this.currentLevel.getLevelNo(), "40px", "Comic", "#FF9A36", 100, 40, true);
+            this.scoreLabel=new objects.Label(this.score+"" , "40px", "Comic", "#FF9A36", 900, 40, true)
             this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
-            this.background = new objects.Background(this.assetManager);
             this.snakeHead=new objects.SnakeHead(this.assetManager,"snakeHead");
             this.snakeList[0]=new objects.SnakeBody(this.assetManager,"snakeBody");
             this.mouse=new objects.Mouse(this.assetManager);
@@ -65,7 +67,7 @@ module scenes {
         public Main():void {
             //always add background first
             this.addChild(this.background); 
-            
+            this.addChild(this.thornsWall);
             //add labels
             this.addChild(this.levelLabel);
             this.addChild(this.scoreLabel);
@@ -121,7 +123,7 @@ module scenes {
         public DetectSnakeslefCollision():void{
             let selfCollision:boolean;
             for(let i=this.snakeList.length-1;i>0;i--){
-                if(this.snakeHead.x==this.snakeList[i].x&&this.snakeHead.y==this.snakeList[i].y){
+                if(this.snakeHead.nextX==this.snakeList[i].x&&this.snakeHead.nextY==this.snakeList[i].y){
                     selfCollision=true;
                 }
             }
