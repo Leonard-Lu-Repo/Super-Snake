@@ -12,6 +12,7 @@
         { id: "startButton", src: "./Assets/StartBtn.png" },
         { id: "background", src: "./Assets/background.png" },
         { id: "thornsWall", src: "./Assets/thornsWall.png" },
+        { id: "instruction", src: "./Assets/instruction.png" },
         { id: "gameLogo", src: "./Assets/SnakeLogo-Background.png" },
         { id: "snakeHead", src: "./Assets/snakeHead.png" },
         { id: "snakeBody", src: "./Assets/snakeBody.png" },

@@ -3,6 +3,7 @@ module scenes {
         // Variables
         private background: objects.Background;  
         private thornsWall:objects.Background;
+        private instruction:objects.Background;
         private levelLabel: objects.Label;
         private scoreLabel:objects.Label; 
         private completeLabel: objects.Label;
@@ -32,8 +33,9 @@ module scenes {
             // Intialize our variables
             this.background = new objects.Background(this.assetManager,"background");
             this.thornsWall=new objects.Background(this.assetManager,"thornsWall",0,60);
+            this.instruction=new objects.Background(this.assetManager,"instruction",0,650);
             this.levelLabel = new objects.Label( "Level "+ this.currentLevel.getLevelNo(), "40px", "Comic", "#FF9A36", 100, 40, true);
-            this.scoreLabel=new objects.Label(this.score+"" , "40px", "Comic", "#FF9A36", 900, 40, true)
+            this.scoreLabel=new objects.Label(this.score.toString()+"/"+this.targetScore.toString(), "40px", "Comic", "#FF9A36", 800, 40, true)
             this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
             this.snakeHead=new objects.SnakeHead(this.assetManager,"snakeHead");
             this.snakeList[0]=new objects.SnakeBody(this.assetManager,"snakeBody");
@@ -68,6 +70,7 @@ module scenes {
             //always add background first
             this.addChild(this.background); 
             this.addChild(this.thornsWall);
+            this.addChild(this.instruction);
             //add labels
             this.addChild(this.levelLabel);
             this.addChild(this.scoreLabel);
@@ -95,7 +98,7 @@ module scenes {
             eatMouse=managers.Collision.AABBCollisionCheck(this.snakeHead,this.mouse);
             if(eatMouse){
                 this.score+=10;
-                this.scoreLabel.text = this.score.toString();
+                this.scoreLabel.text = this.score.toString()+"/"+this.targetScore.toString();
                 this.mouse.mouseCollision=true;
                 this.mouse.ResetMouseLocation();
                 // Add new snake body
@@ -156,7 +159,7 @@ module scenes {
                 this.loadLevel(this.currentLevel.getLevelNo() + 1);
                 // Reset everything
                 this.score = 0;
-                this.scoreLabel.text = this.score.toString();
+                this.scoreLabel.text = this.score.toString()+"/"+this.targetScore.toString();
                 this.snakeHead.ResetSnakeStatus();
                 for (let i = this.snakeList.length-1; i > 0; i--) {// Avoid removing the head
                     this.removeChild(this.snakeList[i]);

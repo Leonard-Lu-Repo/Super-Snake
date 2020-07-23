@@ -5,8 +5,6 @@ module objects {
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager,"explosion");
             this.Start();
-            this.scaleX *= 0.8;
-            this.scaleY*=0.8;
         }
 
         public Start():void {

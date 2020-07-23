@@ -30,8 +30,9 @@ var scenes;
             // Intialize our variables
             this.background = new objects.Background(this.assetManager, "background");
             this.thornsWall = new objects.Background(this.assetManager, "thornsWall", 0, 60);
+            this.instruction = new objects.Background(this.assetManager, "instruction", 0, 650);
             this.levelLabel = new objects.Label("Level " + this.currentLevel.getLevelNo(), "40px", "Comic", "#FF9A36", 100, 40, true);
-            this.scoreLabel = new objects.Label(this.score + "", "40px", "Comic", "#FF9A36", 900, 40, true);
+            this.scoreLabel = new objects.Label(this.score.toString() + "/" + this.targetScore.toString(), "40px", "Comic", "#FF9A36", 800, 40, true);
             this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
             this.snakeHead = new objects.SnakeHead(this.assetManager, "snakeHead");
             this.snakeList[0] = new objects.SnakeBody(this.assetManager, "snakeBody");
@@ -64,6 +65,7 @@ var scenes;
             //always add background first
             this.addChild(this.background);
             this.addChild(this.thornsWall);
+            this.addChild(this.instruction);
             //add labels
             this.addChild(this.levelLabel);
             this.addChild(this.scoreLabel);
@@ -88,7 +90,7 @@ var scenes;
             eatMouse = managers.Collision.AABBCollisionCheck(this.snakeHead, this.mouse);
             if (eatMouse) {
                 this.score += 10;
-                this.scoreLabel.text = this.score.toString();
+                this.scoreLabel.text = this.score.toString() + "/" + this.targetScore.toString();
                 this.mouse.mouseCollision = true;
                 this.mouse.ResetMouseLocation();
                 // Add new snake body
@@ -145,7 +147,7 @@ var scenes;
                 _this.loadLevel(_this.currentLevel.getLevelNo() + 1);
                 // Reset everything
                 _this.score = 0;
-                _this.scoreLabel.text = _this.score.toString();
+                _this.scoreLabel.text = _this.score.toString() + "/" + _this.targetScore.toString();
                 _this.snakeHead.ResetSnakeStatus();
                 for (var i = _this.snakeList.length - 1; i > 0; i--) { // Avoid removing the head
                     _this.removeChild(_this.snakeList[i]);
