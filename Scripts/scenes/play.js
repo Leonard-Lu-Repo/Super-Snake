@@ -43,10 +43,8 @@ var scenes;
                 this.bomb[i] = new objects.Bomb(this.assetManager);
             }
             this.explosion = new objects.Explosion(this.assetManager);
-            if (this.currentLevel.getLevelNo() > 1) {
-                this.speedUpShoe = new objects.SpeedShoe(this.assetManager, "speedUpShoe");
-                this.speedDownShoe = new objects.SpeedShoe(this.assetManager, "speedDownShoe");
-            }
+            this.speedUpShoe = new objects.SpeedShoe(this.assetManager, "speedUpShoe");
+            this.speedDownShoe = new objects.SpeedShoe(this.assetManager, "speedDownShoe");
             this.thumbsUp = new createjs.Bitmap(this.assetManager.getResult("thumbsUp"));
             this.thumbsUp.regX = this.thumbsUp.getBounds().width * 0.5;
             this.thumbsUp.regY = this.thumbsUp.getBounds().height * 0.5;
@@ -58,8 +56,10 @@ var scenes;
             this.snakeHead.Update();
             this.DetectEatMouse();
             this.DetectSnakeslefCollision();
-            this.DetectSpeedUpShoe();
-            this.DetectSpeedDownShoe();
+            if (this.currentLevel.getLevelNo() > 1) {
+                this.DetectSpeedUpShoe();
+                this.DetectSpeedDownShoe();
+            }
             if (this.snakeHead.timeToUpdateBodies) {
                 this.snakeHead.timeToUpdateBodies = false;
                 this.UpdateSnakeBodies();

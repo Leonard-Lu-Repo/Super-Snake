@@ -37,7 +37,6 @@ var objects;
             this.CheckBound();
             this.eatSpeedUpShoe = objects.Game.speedUpShoeCollision;
             this.eatSpeedDownShoe = objects.Game.speedDownShoeCollision;
-            console.log(this.gridPosX + ", " + this.gridPosY);
         };
         SnakeHead.prototype.Reset = function () {
             if (this.gridPosX > 30) {

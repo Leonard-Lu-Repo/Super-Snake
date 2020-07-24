@@ -32,7 +32,6 @@ module objects {
             this.CheckBound();
             this.eatSpeedUpShoe=objects.Game.speedUpShoeCollision;
             this.eatSpeedDownShoe=objects.Game.speedDownShoeCollision;       
-            console.log(this.gridPosX + ", " + this.gridPosY);
         }
         
         public Reset():void {
