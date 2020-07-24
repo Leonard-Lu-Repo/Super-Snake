@@ -37,6 +37,7 @@ var objects;
             this.CheckBound();
             this.eatSpeedUpShoe = objects.Game.speedUpShoeCollision;
             this.eatSpeedDownShoe = objects.Game.speedDownShoeCollision;
+            console.log(this.gridPosX + ", " + this.gridPosY);
         };
         SnakeHead.prototype.Reset = function () {
             if (this.gridPosX > 30) {
@@ -129,6 +130,9 @@ var objects;
             this.direction.moveLeft = false;
             this.direction.moveRight = true;
             this.direction.moveDirection = "right";
+        };
+        SnakeHead.prototype.getGridCoords = function () {
+            return new Array(this.gridPosX, this.gridPosY);
         };
         return SnakeHead;
     }(objects.GameObject));

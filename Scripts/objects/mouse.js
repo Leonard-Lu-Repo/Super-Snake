@@ -33,12 +33,25 @@ var objects;
         };
         //To set new location of mouse
         Mouse.prototype.setMouseLocation = function () {
-            this.gridX = Math.round(Math.random() * 28 + 1);
-            this.gridY = Math.round(Math.random() * 14 + 1);
+            var locationOk = false;
+            while (!locationOk) {
+                this.gridX = Math.round(Math.random() * 28 + 1);
+                this.gridY = Math.round(Math.random() * 14 + 1);
+                locationOk = true;
+                // Mouse cannot be in same position as other objects
+                if (objects.Game.usedGridPositions.length > 0) {
+                    for (var i = 0; i < objects.Game.usedGridPositions.length; i++) {
+                        if (this.gridX == objects.Game.usedGridPositions[i].x && this.gridY == objects.Game.usedGridPositions[i].y) {
+                            locationOk = false;
+                        }
+                    }
+                }
+            }
             this.newCoords = this.getGridPosition(this.gridX, this.gridY);
             this.x = this.newCoords[0];
             this.y = this.newCoords[1];
-            objects.Game.currentMouseGridPos = new Array(this.gridX, this.gridY); // Update the global variable
+            // Add coords to global variable usedGridPositions
+            objects.Game.usedGridPositions.push(new objects.Position(this.gridX, this.gridY));
         };
         return Mouse;
     }(objects.GameObject));

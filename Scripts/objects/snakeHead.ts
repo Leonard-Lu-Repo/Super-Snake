@@ -31,7 +31,8 @@ module objects {
         public Update():void {
             this.CheckBound();
             this.eatSpeedUpShoe=objects.Game.speedUpShoeCollision;
-            this.eatSpeedDownShoe=objects.Game.speedDownShoeCollision;
+            this.eatSpeedDownShoe=objects.Game.speedDownShoeCollision;       
+            console.log(this.gridPosX + ", " + this.gridPosY);
         }
         
         public Reset():void {
@@ -125,6 +126,10 @@ module objects {
             this.direction.moveLeft = false;
             this.direction.moveRight = true;
             this.direction.moveDirection="right";
+        }
+
+        public getGridCoords():Array<number> {
+            return new Array(this.gridPosX,this.gridPosY);
         }
     }
 }
