@@ -23,6 +23,8 @@
         {id:"snakeBody", src:"./Assets/snakeBody.png"},
         {id:"mouse",src:"./Assets/mouse.png"},
         {id:"bomb",src:"./Assets/bomb.png"},
+        {id:"speedUpShoe",src:"./Assets/speedUpShoe.png"},
+        {id:"speedDownShoe",src:"./Assets/speedDownShoe.png"},
         {id:"explosion", src:"./Assets/explosion.png"},
         {id:"thumbsUp", src:"./Assets/thumbsUp.png"},
         {id:"mainButton",src:"./Assets/MainPageBtn.png"},

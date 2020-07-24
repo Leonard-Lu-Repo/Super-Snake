@@ -6,14 +6,17 @@ module objects {
         private gridPosY=0;
         private nextGridPosX=0;
         private nextGridPosY=0;  
-        public snakeSpeed=200; 
+        public snakeSpeed=400; 
         public nextX:number;
         public nextY:number;
         private newCoords: Array<number>;
         private nextCoords:Array<number>;
-        public timer;
-        public collision:boolean=false;
+        private timer;
+        private collision:boolean=false;
         public timeToUpdateBodies:boolean = false;
+        private eatSpeedUpShoe:boolean;
+        private eatSpeedDownShoe:boolean;
+
         // Constructor
         constructor(assetManager:createjs.LoadQueue, imageString:string) {
             super(assetManager, imageString);         
@@ -23,13 +26,12 @@ module objects {
 
         public Start():void {
             this.Move();
-            this.startTimer(this.snakeSpeed);
-            objects.Game.snakeHeadSpeed=this.snakeSpeed;
+            this.startTimer();
         }
         public Update():void {
-            this.CheckBound();   
-            console.log(this.gridPosX);
-            
+            this.CheckBound();
+            this.eatSpeedUpShoe=objects.Game.speedUpShoeCollision;
+            this.eatSpeedDownShoe=objects.Game.speedDownShoeCollision;
         }
         
         public Reset():void {
@@ -48,12 +50,20 @@ module objects {
            
         }
        //Use a timer to locate snake's head
-        public startTimer(speed:number):void{
+        public startTimer():void{
             this.timer=setTimeout(()=>{
                 this.Move();
-                
-                this.startTimer(speed);
-            },speed);                                  
+                if(this.eatSpeedUpShoe){
+                    this.snakeSpeed=200;
+                } 
+                if(this.eatSpeedDownShoe){
+                    this.snakeSpeed=800;
+                }
+                setTimeout(() => {
+                    this.snakeSpeed=400;
+                }, 8000);
+                this.startTimer();
+            },this.snakeSpeed);                                  
         } 
         public stopTimer():void{
             clearTimeout(this.timer); 
@@ -107,12 +117,14 @@ module objects {
             this.Reset();
         }
         public ResetSnakeStatus() {
-            this.gridPosX = 1;
-            this.gridPosY = 1;
+            this.gridPosX = 0;
+            this.gridPosY = 0;
+            this.snakeSpeed=400;
             this.direction.moveUp = false;
             this.direction.moveDown = false;
             this.direction.moveLeft = false;
             this.direction.moveRight = true;
+            this.direction.moveDirection="right";
         }
     }
 }

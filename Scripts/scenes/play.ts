@@ -12,6 +12,8 @@ module scenes {
         private score:number=0;
         private bomb:objects.Bomb;
         private mouse :objects.Mouse;
+        private speedUpShoe:objects.SpeedShoe;
+        private speedDownShoe:objects.SpeedShoe;
         private explosion:objects.Explosion;
         private thumbsUp:createjs.Bitmap;
         private currentLevel:objects.Level;        
@@ -29,7 +31,7 @@ module scenes {
 
             // Load Level 1
             this.loadLevel(1);
-
+            
             // Intialize our variables
             this.background = new objects.Background(this.assetManager,"background");
             this.thornsWall=new objects.Background(this.assetManager,"thornsWall",0,60);
@@ -42,6 +44,10 @@ module scenes {
             this.mouse=new objects.Mouse(this.assetManager);
             this.bomb=new objects.Bomb(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
+            if(this.currentLevel.getLevelNo()>1){
+                this.speedUpShoe=new objects.SpeedShoe(this.assetManager,"speedUpShoe");
+                this.speedDownShoe=new objects.SpeedShoe(this.assetManager,"speedDownShoe");
+            }
             this.thumbsUp = new createjs.Bitmap(this.assetManager.getResult("thumbsUp"));
             this.thumbsUp.regX = this.thumbsUp.getBounds().width * 0.5;
             this.thumbsUp.regY = this.thumbsUp.getBounds().height * 0.5;
@@ -56,6 +62,8 @@ module scenes {
             this.DetectEatMouse();
             this.DetectBombCollision();
             this.DetectSnakeslefCollision();
+            this.DetectSpeedUpShoe();
+            this.DetectSpeedDownShoe();
             if(this.snakeHead.timeToUpdateBodies) {
                 this.snakeHead.timeToUpdateBodies = false;
                 this.UpdateSnakeBodies();
@@ -99,12 +107,10 @@ module scenes {
             if(eatMouse){
                 this.score+=10;
                 this.scoreLabel.text = this.score.toString()+"/"+this.targetScore.toString();
-                this.mouse.mouseCollision=true;
                 this.mouse.ResetMouseLocation();
                 // Add new snake body
-            this.snakeList.push(new objects.SnakeBody(this.assetManager,"snakeBody"));
+                this.snakeList.push(new objects.SnakeBody(this.assetManager,"snakeBody"));
                 this.addChild(this.snakeList[this.snakeList.length-1]);
-
             }
         }
 
@@ -120,6 +126,30 @@ module scenes {
                 setTimeout(function(){
                     objects.Game.currentScene = config.Scene.OVER;
                 }, 2000);
+            }
+        }
+
+        public DetectSpeedUpShoe():void{
+            this.speedUpShoe.shoeCollision=managers.Collision.AABBCollisionCheck(this.snakeHead,this.speedUpShoe);
+            objects.Game.speedUpShoeCollision=this.speedUpShoe.shoeCollision;
+            if(this.speedUpShoe.shoeCollision){
+                this.removeChild(this.speedUpShoe);
+                setTimeout(()=>{
+                    this.addChild(this.speedDownShoe);
+                },10000);
+            }
+            console.log(objects.Game.speedUpShoeCollision);
+            //console.log(this.speedUpShoe.x);
+        }
+
+        public DetectSpeedDownShoe():void{
+            this.speedDownShoe.shoeCollision=managers.Collision.AABBCollisionCheck(this.snakeHead,this.speedDownShoe);
+            objects.Game.speedDownShoeCollision=this.speedDownShoe.shoeCollision;
+            if(this.speedDownShoe.shoeCollision){
+                this.removeChild(this.speedDownShoe);
+                setTimeout(()=>{
+                    this.addChild(this.speedUpShoe);
+                },10000);
             }
         }
 
@@ -150,6 +180,8 @@ module scenes {
             // First pause everything and show results
             objects.Game.achieveTargetScore=true;
             this.removeChild(this.mouse);
+            this.removeChild(this.speedDownShoe);
+            this.removeChild(this.speedUpShoe);
             this.completeLabel.visible = true;
             this.thumbsUp.visible = true;
             this.paused = true;
@@ -165,8 +197,9 @@ module scenes {
                     this.removeChild(this.snakeList[i]);
                     this.snakeList.pop();
                 }
-                this.snakeHead.startTimer(200);// NOTE: Currently hard-coding in 200 for speed
+                this.snakeHead.startTimer();// NOTE: Currently hard-coding in 200 for speed
                 this.addChild(this.mouse);
+                this.addChild(this.speedUpShoe);
                 this.levelLabel.text = "Level " + this.currentLevel.getLevelNo();
                 this.completeLabel.visible = false;
                 this.thumbsUp.visible = false;

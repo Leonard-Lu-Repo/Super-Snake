@@ -21,11 +21,15 @@ var objects;
             var levelData = new Level();
             if (levelNo == 1) {
                 levelData.setLevelNo(1);
-                levelData.setTargetScore(30);
+                levelData.setTargetScore(50);
             }
             if (levelNo == 2) {
                 levelData.setLevelNo(2);
                 levelData.setTargetScore(80);
+            }
+            if (levelNo == 3) {
+                levelData.setLevelNo(3);
+                levelData.setTargetScore(100);
             }
             // Add extra levels here...
             return levelData;

@@ -18,7 +18,6 @@ var objects;
         // Constructor
         function Mouse(assetManager) {
             var _this = _super.call(this, assetManager, "mouse") || this;
-            _this.mouseCollision = false;
             _this.Start();
             return _this;
         }

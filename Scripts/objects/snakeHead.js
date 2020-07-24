@@ -22,7 +22,7 @@ var objects;
             _this.gridPosY = 0;
             _this.nextGridPosX = 0;
             _this.nextGridPosY = 0;
-            _this.snakeSpeed = 200;
+            _this.snakeSpeed = 400;
             _this.collision = false;
             _this.timeToUpdateBodies = false;
             _this.direction = new managers.Keyboard();
@@ -31,12 +31,12 @@ var objects;
         }
         SnakeHead.prototype.Start = function () {
             this.Move();
-            this.startTimer(this.snakeSpeed);
-            objects.Game.snakeHeadSpeed = this.snakeSpeed;
+            this.startTimer();
         };
         SnakeHead.prototype.Update = function () {
             this.CheckBound();
-            console.log(this.gridPosX);
+            this.eatSpeedUpShoe = objects.Game.speedUpShoeCollision;
+            this.eatSpeedDownShoe = objects.Game.speedDownShoeCollision;
         };
         SnakeHead.prototype.Reset = function () {
             if (this.gridPosX > 30) {
@@ -53,12 +53,21 @@ var objects;
             }
         };
         //Use a timer to locate snake's head
-        SnakeHead.prototype.startTimer = function (speed) {
+        SnakeHead.prototype.startTimer = function () {
             var _this = this;
             this.timer = setTimeout(function () {
                 _this.Move();
-                _this.startTimer(speed);
-            }, speed);
+                if (_this.eatSpeedUpShoe) {
+                    _this.snakeSpeed = 200;
+                }
+                if (_this.eatSpeedDownShoe) {
+                    _this.snakeSpeed = 800;
+                }
+                setTimeout(function () {
+                    _this.snakeSpeed = 400;
+                }, 8000);
+                _this.startTimer();
+            }, this.snakeSpeed);
         };
         SnakeHead.prototype.stopTimer = function () {
             clearTimeout(this.timer);
@@ -112,12 +121,14 @@ var objects;
             this.Reset();
         };
         SnakeHead.prototype.ResetSnakeStatus = function () {
-            this.gridPosX = 1;
-            this.gridPosY = 1;
+            this.gridPosX = 0;
+            this.gridPosY = 0;
+            this.snakeSpeed = 400;
             this.direction.moveUp = false;
             this.direction.moveDown = false;
             this.direction.moveLeft = false;
             this.direction.moveRight = true;
+            this.direction.moveDirection = "right";
         };
         return SnakeHead;
     }(objects.GameObject));

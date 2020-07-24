@@ -4,8 +4,7 @@ module objects {
         // Variables
         private  gridX: number;
         private  gridY: number;
-        newCoords: Array<number>;
-        public mouseCollision:boolean=false;
+        private  newCoords: Array<number>;
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager,"mouse");

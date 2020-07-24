@@ -21,7 +21,6 @@ var objects;
             if (x === void 0) { x = 0; }
             if (y === void 0) { y = 0; }
             var _this = _super.call(this, assetManager.getResult(imageString)) || this;
-            console.log("Creating the background");
             _this.x = x;
             _this.y = y;
             _this.Start();
