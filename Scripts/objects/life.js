@@ -13,27 +13,25 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var objects;
 (function (objects) {
-    var SpeedShoe = /** @class */ (function (_super) {
-        __extends(SpeedShoe, _super);
+    var Life = /** @class */ (function (_super) {
+        __extends(Life, _super);
         // Constructor
-        function SpeedShoe(assetManager, imgString) {
+        function Life(assetManager, imgString) {
             var _this = _super.call(this, assetManager, imgString) || this;
-            _this.shoeCollision = false;
             _this.Start();
             return _this;
         }
-        SpeedShoe.prototype.Start = function () {
-            this.setShoeLocation();
+        Life.prototype.Start = function () {
+            this.setLifeLocation();
         };
-        SpeedShoe.prototype.Update = function () {
+        Life.prototype.Update = function () {
         };
-        SpeedShoe.prototype.Move = function () {
+        Life.prototype.Move = function () {
         };
-        SpeedShoe.prototype.ResetShoeLocation = function () {
-            this.setShoeLocation();
+        Life.prototype.ResetLifeLocation = function () {
+            this.setLifeLocation();
         };
-        //To set new location of shoe
-        SpeedShoe.prototype.setShoeLocation = function () {
+        Life.prototype.setLifeLocation = function () {
             var locationOk = false;
             while (!locationOk) {
                 this.gridX = Math.round(Math.random() * 28 + 1);
@@ -54,8 +52,11 @@ var objects;
             // Add coords to global variable usedGridPositions
             objects.Game.usedGridPositions.push(new objects.Position(this.gridX, this.gridY));
         };
-        return SpeedShoe;
+        Life.prototype.getGridCoords = function () {
+            return new Array(this.gridX, this.gridY);
+        };
+        return Life;
     }(objects.GameObject));
-    objects.SpeedShoe = SpeedShoe;
+    objects.Life = Life;
 })(objects || (objects = {}));
-//# sourceMappingURL=speedShoe.js.map
+//# sourceMappingURL=life.js.map

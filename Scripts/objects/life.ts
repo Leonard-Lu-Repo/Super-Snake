@@ -1,32 +1,33 @@
 module objects{
-    export class SpeedShoe extends objects.GameObject {
-        // Variables
-        private  gridX: number;
-        private  gridY: number;
+    export class Life extends objects.GameObject {
+        //  Variables
+        private gridX: number;
+        private gridY: number;
         private  coords: Array<number>;
-        public shoeCollision:boolean=false;
-    
+
         // Constructor
-        constructor(assetManager:createjs.LoadQueue,imgString:string) {
-            super(assetManager,imgString);
+        constructor(assetManager:createjs.LoadQueue, imgString:string) {
+            super(assetManager, imgString);
             this.Start();
         }
-    
+
         public Start():void {
-            this.setShoeLocation();
+            this.setLifeLocation();
         }
-    
-        public Update():void { 
+
+        public Update():void {
+
         }
-       
-       public Move():void{
-    
-       }
-       public ResetShoeLocation():void {
-        this.setShoeLocation();
-       }
-        //To set new location of shoe
-        private setShoeLocation():void{
+
+        public Move():void {
+
+        }
+
+        public ResetLifeLocation():void {
+            this.setLifeLocation();
+        }
+
+        private setLifeLocation():void {
             let locationOk:boolean = false;
             while (!locationOk) {
                 this.gridX=Math.round(Math.random()*28+1);
@@ -46,6 +47,10 @@ module objects{
             this.y = this.coords[1];
             // Add coords to global variable usedGridPositions
             objects.Game.usedGridPositions.push(new objects.Position(this.gridX, this.gridY));
+        }
+
+        public getGridCoords():Array<number> {
+            return new Array(this.gridX,this.gridY);
         }
     }
 }
