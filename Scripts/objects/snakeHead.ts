@@ -28,7 +28,7 @@ module objects {
         }
         public Update():void {
             this.CheckBound();   
-            console.log(this.gridPosX);
+            console.log(this.gridPosX + ", " + this.gridPosY);
             
         }
         
@@ -113,6 +113,10 @@ module objects {
             this.direction.moveDown = false;
             this.direction.moveLeft = false;
             this.direction.moveRight = true;
+        }
+
+        public getGridCoords():Array<number> {
+            return new Array(this.gridPosX,this.gridPosY);
         }
     }
 }
