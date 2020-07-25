@@ -137,6 +137,7 @@ var scenes;
             objects.Game.speedUpShoeCollision = this.speedUpShoe.shoeCollision;
             if (this.speedUpShoe.shoeCollision) {
                 this.removeChild(this.speedUpShoe);
+                this.speedDownShoe.ResetShoeLocation();
                 setTimeout(function () {
                     _this.addChild(_this.speedDownShoe);
                 }, 10000);
@@ -150,6 +151,7 @@ var scenes;
             objects.Game.speedDownShoeCollision = this.speedDownShoe.shoeCollision;
             if (this.speedDownShoe.shoeCollision) {
                 this.removeChild(this.speedDownShoe);
+                this.speedUpShoe.ResetShoeLocation();
                 setTimeout(function () {
                     _this.addChild(_this.speedUpShoe);
                 }, 10000);

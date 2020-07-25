@@ -38,6 +38,7 @@ var objects;
             if (levelNo == 3) {
                 levelData.setLevelNo(3);
                 levelData.setTargetScore(100);
+                levelData.setBombNo(6);
             }
             // Add extra levels here...
             return levelData;

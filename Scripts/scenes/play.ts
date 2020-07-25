@@ -149,6 +149,7 @@ module scenes {
             objects.Game.speedUpShoeCollision=this.speedUpShoe.shoeCollision;
             if(this.speedUpShoe.shoeCollision){
                 this.removeChild(this.speedUpShoe);
+                this.speedDownShoe.ResetShoeLocation();
                 setTimeout(()=>{
                     this.addChild(this.speedDownShoe);
                 },10000);
@@ -162,6 +163,7 @@ module scenes {
             objects.Game.speedDownShoeCollision=this.speedDownShoe.shoeCollision;
             if(this.speedDownShoe.shoeCollision){
                 this.removeChild(this.speedDownShoe);
+                this.speedUpShoe.ResetShoeLocation();
                 setTimeout(()=>{
                     this.addChild(this.speedUpShoe);
                 },10000);
@@ -221,7 +223,6 @@ module scenes {
                 }
                 this.snakeHead.startTimer();// NOTE: Currently hard-coding in 200 for speed
                 this.addChild(this.mouse);
-
                 this.addChild(this.speedUpShoe);
 
                 this.bomb = new Array();

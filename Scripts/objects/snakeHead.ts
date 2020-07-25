@@ -49,7 +49,7 @@ module objects {
             }
            
         }
-       //Use a timer to locate snake's head
+       //Use a timer to locate snake's head and speed
         public startTimer():void{
             this.timer=setTimeout(()=>{
                 this.Move();
@@ -59,9 +59,6 @@ module objects {
                 if(this.eatSpeedDownShoe){
                     this.snakeSpeed=800;
                 }
-                setTimeout(() => {
-                    this.snakeSpeed=400;
-                }, 8000);
                 this.startTimer();
             },this.snakeSpeed);                                  
         } 

@@ -52,7 +52,7 @@ var objects;
                 this.gridPosY = 16;
             }
         };
-        //Use a timer to locate snake's head
+        //Use a timer to locate snake's head and speed
         SnakeHead.prototype.startTimer = function () {
             var _this = this;
             this.timer = setTimeout(function () {
@@ -63,9 +63,6 @@ var objects;
                 if (_this.eatSpeedDownShoe) {
                     _this.snakeSpeed = 800;
                 }
-                setTimeout(function () {
-                    _this.snakeSpeed = 400;
-                }, 8000);
                 _this.startTimer();
             }, this.snakeSpeed);
         };
