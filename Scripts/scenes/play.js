@@ -21,6 +21,7 @@ var scenes;
             _this.snakeList = new Array();
             _this.score = 0;
             _this.bomb = new Array();
+            _this.lives = new Array();
             _this.Start();
             return _this;
         }
@@ -28,19 +29,29 @@ var scenes;
             console.log("Play scene start");
             // Load Level 1
             this.loadLevel(1);
-            objects.Game.usedGridPositions = new Array();
+            this.currentLives = 3;
             // Intialize our variables
+            objects.Game.usedGridPositions = new Array();
             this.background = new objects.Background(this.assetManager, "background");
             this.thornsWall = new objects.Background(this.assetManager, "thornsWall", 0, 60);
             this.instruction = new objects.Background(this.assetManager, "instruction", 0, 650);
             this.levelLabel = new objects.Label("Level " + this.currentLevel.getLevelNo(), "40px", "Comic", "#FF9A36", 100, 40, true);
             this.scoreLabel = new objects.Label(this.score.toString() + "/" + this.targetScore.toString(), "40px", "Comic", "#FF9A36", 800, 40, true);
+            this.lifeLabel = new objects.Label(this.currentLives.toString(), "40px", "Comic", "#FF9A36", 925, 40, true);
+            this.lifeIcon = new createjs.Bitmap(this.assetManager.getResult("lifeIcon"));
+            this.lifeIcon.regX = this.lifeIcon.getBounds().width * 0.5;
+            this.lifeIcon.regY = this.lifeIcon.getBounds().height * 0.5;
+            this.lifeIcon.x = 890;
+            this.lifeIcon.y = 35;
             this.completeLabel = new objects.Label("Level Complete!", "50px", "Comic", "#FF9A36", 480, 240, true);
             this.snakeHead = new objects.SnakeHead(this.assetManager, "snakeHead");
             this.snakeList[0] = new objects.SnakeBody(this.assetManager, "snakeBody");
             this.mouse = new objects.Mouse(this.assetManager);
             for (var i = 0; i < this.bombNo; i++) {
                 this.bomb[i] = new objects.Bomb(this.assetManager);
+            }
+            for (var j = 0; j < this.lifeNo; j++) {
+                this.lives[j] = new objects.Life(this.assetManager, "life");
             }
             this.explosion = new objects.Explosion(this.assetManager);
             this.speedUpShoe = new objects.SpeedShoe(this.assetManager, "speedUpShoe");
@@ -54,16 +65,18 @@ var scenes;
         };
         PlayScene.prototype.Update = function () {
             this.snakeHead.Update();
-            this.DetectEatMouse();
-            this.DetectSnakeslefCollision();
-            if (this.currentLevel.getLevelNo() > 1) {
-                this.DetectSpeedUpShoe();
-                this.DetectSpeedDownShoe();
-            }
             if (this.snakeHead.timeToUpdateBodies) {
                 this.snakeHead.timeToUpdateBodies = false;
                 this.UpdateSnakeBodies();
                 this.DetectBombCollision();
+                this.DetectEatMouse();
+                this.DetectSnakeSelfCollision();
+                this.DetectLife();
+                this.DetectBoundary();
+                if (this.speedUpShoeAppear || this.speedDownShoeAppear) {
+                    this.DetectSpeedUpShoe();
+                    this.DetectSpeedDownShoe();
+                }
             }
             // Check if score is achieved
             if (this.score >= this.targetScore && !this.paused) {
@@ -82,12 +95,11 @@ var scenes;
             this.completeLabel.visible = false;
             this.addChild(this.thumbsUp);
             this.thumbsUp.visible = false;
+            this.addChild(this.lifeLabel);
+            this.addChild(this.lifeIcon);
             // add objects
             this.addChild(this.snakeHead);
-            this.addChild(this.mouse);
-            for (var i = 0; i < this.bombNo; i++) {
-                this.addChild(this.bomb[i]);
-            }
+            this.resetGame();
             this.paused = false;
         };
         PlayScene.prototype.UpdateSnakeBodies = function () {
@@ -109,6 +121,7 @@ var scenes;
             }
         };
         PlayScene.prototype.DetectBombCollision = function () {
+            var _this = this;
             var bombCollision;
             var snakeCoords = this.snakeHead.getGridCoords();
             var bombTouched;
@@ -127,7 +140,8 @@ var scenes;
                 this.removeChild(this.bomb[bombTouched]);
                 this.snakeHead.stopTimer();
                 setTimeout(function () {
-                    objects.Game.currentScene = config.Scene.OVER;
+                    _this.removeChild(_this.explosion);
+                    _this.processHit();
                 }, 2000);
             }
         };
@@ -157,17 +171,56 @@ var scenes;
                 }, 10000);
             }
         };
-        PlayScene.prototype.DetectSnakeslefCollision = function () {
+        PlayScene.prototype.DetectLife = function () {
+            if (this.lives.length > 0) {
+                var lifeCollision = false;
+                var snakeCoords = this.snakeHead.getGridCoords();
+                var lifeTouched = void 0;
+                for (var i = 0; i < this.lifeNo; i++) {
+                    var lifeCoords = this.lives[i].getGridCoords();
+                    if (snakeCoords[0] == lifeCoords[0] && snakeCoords[1] == lifeCoords[1]) {
+                        lifeCollision = true;
+                        lifeTouched = i;
+                        i = this.lifeNo; // End the loop
+                    }
+                }
+                if (lifeCollision) {
+                    this.removeChild(this.lives[lifeTouched]);
+                    this.currentLives++;
+                    this.lifeLabel.text = this.currentLives.toString();
+                }
+            }
+        };
+        PlayScene.prototype.DetectSnakeSelfCollision = function () {
+            var _this = this;
             var selfCollision;
             for (var i = this.snakeList.length - 1; i > 0; i--) {
-                if (this.snakeHead.nextX == this.snakeList[i].x && this.snakeHead.nextY == this.snakeList[i].y) {
+                if (this.snakeHead.x == this.snakeList[i].x && this.snakeHead.y == this.snakeList[i].y) {
                     selfCollision = true;
                 }
             }
             if (selfCollision) {
+                console.log("Self collided");
                 this.snakeHead.stopTimer();
                 setTimeout(function () {
-                    objects.Game.currentScene = config.Scene.OVER;
+                    _this.processHit();
+                }, 2000);
+            }
+        };
+        PlayScene.prototype.DetectBoundary = function () {
+            var _this = this;
+            var collision;
+            var snakeCoords = this.snakeHead.getGridCoords();
+            if (snakeCoords[0] > 30 || snakeCoords[0] < 0) {
+                collision = true;
+            }
+            if (snakeCoords[1] > 16 || snakeCoords[1] < 0) {
+                collision = true;
+            }
+            if (collision) {
+                this.snakeHead.stopTimer();
+                setTimeout(function () {
+                    _this.processHit();
                 }, 2000);
             }
         };
@@ -177,47 +230,87 @@ var scenes;
             // Load new data into variables
             this.targetScore = this.currentLevel.getTargetScore();
             this.bombNo = this.currentLevel.getBombNo();
+            this.lifeNo = this.currentLevel.getLifeNo();
+            this.speedUpShoeAppear = this.currentLevel.getSpeedUpShoe();
+            this.speedDownShoeAppear = this.currentLevel.getSpeedDownShoe();
+        };
+        PlayScene.prototype.processHit = function () {
+            this.currentLives--;
+            this.lifeLabel.text = this.currentLives.toString();
+            if (this.currentLives <= 0) {
+                objects.Game.currentScene = config.Scene.OVER;
+                return;
+            }
+            // If we still have lives, reset the level
+            this.clearGameObjects();
+            this.resetGame();
         };
         PlayScene.prototype.moveToNextLevel = function () {
             var _this = this;
             // First pause everything and show results
             objects.Game.achieveTargetScore = true;
+            this.clearGameObjects();
+            this.completeLabel.visible = true;
+            this.thumbsUp.visible = true;
+            this.paused = true;
+            this.snakeHead.stopTimer();
+            setTimeout(function () {
+                // Load new level data
+                _this.loadLevel(_this.currentLevel.getLevelNo() + 1);
+                // Reset everything
+                _this.resetGame();
+                _this.completeLabel.visible = false;
+                _this.thumbsUp.visible = false;
+                // Unpause
+                _this.paused = false;
+            }, 2000);
+        };
+        // Clears all game objects from screen (except for the snake)
+        PlayScene.prototype.clearGameObjects = function () {
             this.removeChild(this.mouse);
             this.removeChild(this.speedDownShoe);
             this.removeChild(this.speedUpShoe);
             for (var i = 0; i < this.bombNo; i++) {
                 this.removeChild(this.bomb[i]);
             }
-            this.completeLabel.visible = true;
-            this.thumbsUp.visible = true;
-            this.paused = true;
-            this.snakeHead.stopTimer();
-            setTimeout(function () {
-                // Load new level
-                _this.loadLevel(_this.currentLevel.getLevelNo() + 1);
-                // Reset everything
-                _this.score = 0;
-                objects.Game.usedGridPositions = new Array();
-                _this.scoreLabel.text = _this.score.toString() + "/" + _this.targetScore.toString();
-                _this.snakeHead.ResetSnakeStatus();
-                for (var i = _this.snakeList.length - 1; i > 0; i--) { // Avoid removing the head
-                    _this.removeChild(_this.snakeList[i]);
-                    _this.snakeList.pop();
+            for (var j = 0; j < this.lifeNo; j++) {
+                this.removeChild(this.lives[j]);
+            }
+        };
+        // Handles resetting of all game objects at beginning of each level
+        PlayScene.prototype.resetGame = function () {
+            this.score = 0;
+            objects.Game.usedGridPositions = new Array();
+            this.scoreLabel.text = this.score.toString() + "/" + this.targetScore.toString();
+            this.snakeHead.ResetSnakeStatus();
+            if (this.snakeList.length > 1) {
+                for (var i = this.snakeList.length - 1; i > 0; i--) { // Avoid removing the head
+                    this.removeChild(this.snakeList[i]);
+                    this.snakeList.pop();
                 }
-                _this.snakeHead.startTimer(); // NOTE: Currently hard-coding in 200 for speed
-                _this.addChild(_this.mouse);
-                _this.addChild(_this.speedUpShoe);
-                _this.bomb = new Array();
-                for (var i = 0; i < _this.bombNo; i++) {
-                    _this.bomb[i] = new objects.Bomb(_this.assetManager);
-                    _this.addChild(_this.bomb[i]);
-                }
-                _this.levelLabel.text = "Level " + _this.currentLevel.getLevelNo();
-                _this.completeLabel.visible = false;
-                _this.thumbsUp.visible = false;
-                // Unpause
-                _this.paused = false;
-            }, 2000);
+            }
+            this.snakeHead.Move();
+            this.snakeHead.startTimer();
+            this.addChild(this.mouse);
+            if (this.speedUpShoeAppear) {
+                this.speedUpShoe.ResetShoeLocation();
+                this.addChild(this.speedUpShoe);
+            }
+            if (this.speedDownShoeAppear) {
+                this.speedDownShoe.ResetShoeLocation();
+                this.addChild(this.speedDownShoe);
+            }
+            this.bomb = new Array();
+            for (var i = 0; i < this.bombNo; i++) {
+                this.bomb[i] = new objects.Bomb(this.assetManager);
+                this.addChild(this.bomb[i]);
+            }
+            this.lives = new Array();
+            for (var j = 0; j < this.lifeNo; j++) {
+                this.lives[j] = new objects.Life(this.assetManager, "life");
+                this.addChild(this.lives[j]);
+            }
+            this.levelLabel.text = "Level " + this.currentLevel.getLevelNo();
         };
         return PlayScene;
     }(objects.Scene));

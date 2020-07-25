@@ -25,6 +25,8 @@
         {id:"bomb",src:"./Assets/bomb.png"},
         {id:"speedUpShoe",src:"./Assets/speedUpShoe.png"},
         {id:"speedDownShoe",src:"./Assets/speedDownShoe.png"},
+        {id:"life", src:"./Assets/life.png"},
+        {id:"lifeIcon", src:"./Assets/lifeIcon.png"},
         {id:"explosion", src:"./Assets/explosion.png"},
         {id:"thumbsUp", src:"./Assets/thumbsUp.png"},
         {id:"mainButton",src:"./Assets/MainPageBtn.png"},

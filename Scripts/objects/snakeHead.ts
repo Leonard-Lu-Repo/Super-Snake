@@ -25,11 +25,8 @@ module objects {
         }
 
         public Start():void {
-            this.Move();
-            this.startTimer();
         }
         public Update():void {
-            this.CheckBound();
             this.eatSpeedUpShoe=objects.Game.speedUpShoeCollision;
             this.eatSpeedDownShoe=objects.Game.speedDownShoeCollision;       
         }
@@ -98,21 +95,6 @@ module objects {
             //Update the other bodies
             this.timeToUpdateBodies = true;
        }
-        public CheckBound():void {
-            if(this.gridPosX>30||this.gridPosX<0){
-                this.collision=true;
-            }
-            if(this.gridPosY>16||this.gridPosY<0){
-                this.collision=true;
-            }
-            if(this.collision){
-                this.stopTimer();
-                setTimeout(function(){
-                    objects.Game.currentScene = config.Scene.OVER;
-                },2000);
-            }
-            this.Reset();
-        }
         public ResetSnakeStatus() {
             this.gridPosX = 0;
             this.gridPosY = 0;

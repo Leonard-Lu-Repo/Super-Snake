@@ -30,11 +30,8 @@ var objects;
             return _this;
         }
         SnakeHead.prototype.Start = function () {
-            this.Move();
-            this.startTimer();
         };
         SnakeHead.prototype.Update = function () {
-            this.CheckBound();
             this.eatSpeedUpShoe = objects.Game.speedUpShoeCollision;
             this.eatSpeedDownShoe = objects.Game.speedDownShoeCollision;
         };
@@ -101,21 +98,6 @@ var objects;
             objects.Game.snakeHeadPos = new Array(this.x, this.y);
             //Update the other bodies
             this.timeToUpdateBodies = true;
-        };
-        SnakeHead.prototype.CheckBound = function () {
-            if (this.gridPosX > 30 || this.gridPosX < 0) {
-                this.collision = true;
-            }
-            if (this.gridPosY > 16 || this.gridPosY < 0) {
-                this.collision = true;
-            }
-            if (this.collision) {
-                this.stopTimer();
-                setTimeout(function () {
-                    objects.Game.currentScene = config.Scene.OVER;
-                }, 2000);
-            }
-            this.Reset();
         };
         SnakeHead.prototype.ResetSnakeStatus = function () {
             this.gridPosX = 0;
