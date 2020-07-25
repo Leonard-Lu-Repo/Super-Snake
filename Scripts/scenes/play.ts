@@ -26,6 +26,8 @@ module scenes {
         private lifeNo:number;
         private speedUpShoeAppear:boolean;
         private speedDownShoeAppear:boolean;
+        private speedUpTimer;// store speed up timer
+        private speedDownTimer;// store speed down timer
         private paused:boolean; // Whether the game is paused or not
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
@@ -77,18 +79,21 @@ module scenes {
 
         public Update():void {
             this.snakeHead.Update();
-            this.DetectSnakeSelfCollision();//
+            this.DetectSnakeSelfCollision();//If this method is under timeToUpdateBodies condition, then it doesn't work
+            this.DetectEatMouse();/*If this method is under timeToUpdateBodies condition, then it will cause snake body
+                                    appear at top left corner when adding new bodies, because snake head timer has a lower refresh 
+                                    frequence than createjs ticker*/
             if(this.snakeHead.timeToUpdateBodies) {
                 this.snakeHead.timeToUpdateBodies = false;
                 this.UpdateSnakeBodies();
-                this.DetectBombCollision();//
-                this.DetectEatMouse();
+                this.DetectBombCollision();
                 this.DetectLife();
-                this.DetectBoundary();//
+                this.DetectBoundary();
                 if (this.speedUpShoeAppear || this.speedDownShoeAppear) {
                     this.DetectSpeedUpShoe();
                     this.DetectSpeedDownShoe();
                 }
+                console.log(this.snakeHead.snakeSpeed);
             }
             // Check if score is achieved
             if (this.score >= this.targetScore && !this.paused) {
@@ -117,6 +122,7 @@ module scenes {
             this.paused = false;
         }
 
+        //This method makes snake body follows snake head's movement
         public UpdateSnakeBodies():void {
             for(let i=this.snakeList.length-1;i>0;i--){
                 this.snakeList[i].Update(this.snakeList[i-1].x,this.snakeList[i-1].y);
@@ -132,7 +138,7 @@ module scenes {
                 this.scoreLabel.text = this.score.toString()+"/"+this.targetScore.toString();
                 this.mouse.ResetMouseLocation();
                 // Add new snake body
-                this.snakeList.push(new objects.SnakeBody(this.assetManager,"snakeBody"));
+                this.snakeList.push(new objects.SnakeBody(this.assetManager,"snakeBody"));//add a new body to snake
                 this.addChild(this.snakeList[this.snakeList.length-1]);
             }
         }
@@ -166,8 +172,10 @@ module scenes {
             this.speedUpShoe.shoeCollision=managers.Collision.AABBCollisionCheck(this.snakeHead,this.speedUpShoe);
             objects.Game.speedUpShoeCollision=this.speedUpShoe.shoeCollision;
             if(this.speedUpShoe.shoeCollision){
+                //remove speed up shoe and add speed down shoe after 12s
                 this.removeChild(this.speedUpShoe);
-                setTimeout(()=>{
+                clearTimeout(this.speedDownTimer);
+                this.speedUpTimer=setTimeout(()=>{
                     this.speedDownShoe.ResetShoeLocation();
                     this.addChild(this.speedDownShoe);
                 },12000);
@@ -178,8 +186,10 @@ module scenes {
             this.speedDownShoe.shoeCollision=managers.Collision.AABBCollisionCheck(this.snakeHead,this.speedDownShoe);
             objects.Game.speedDownShoeCollision=this.speedDownShoe.shoeCollision;
             if(this.speedDownShoe.shoeCollision){
+                //remove speed down shoe and add speed up shoe after 12s
+                clearTimeout(this.speedUpTimer);
                 this.removeChild(this.speedDownShoe);
-                setTimeout(()=>{
+                this.speedDownTimer=setTimeout(()=>{
                     this.speedUpShoe.ResetShoeLocation();
                     this.addChild(this.speedUpShoe);
                 },12000);
@@ -209,6 +219,7 @@ module scenes {
 
         public DetectSnakeSelfCollision():void{
             let selfCollision:boolean;
+            //when snake head's next step is snake body then it slef collision is ture
             for(let i=this.snakeList.length-1;i>0;i--){
                 if(this.snakeHead.nextX==this.snakeList[i].x&&this.snakeHead.nextY==this.snakeList[i].y){
                     selfCollision=true;
@@ -220,20 +231,21 @@ module scenes {
                 setTimeout(()=>{
                     this.processHit();
                 }, 2000);
+                console.log(this.currentLives);
             }
         }
 
         public DetectBoundary():void {
             let collision:boolean;
             let snakeCoords = this.snakeHead.getGridCoords();
-            if(snakeCoords[0] > 30 || snakeCoords[0] < 0){
+            if(snakeCoords[0] > 30 || snakeCoords[0] < 1){
                 collision=true;
             }
-            if(snakeCoords[1] > 16 || snakeCoords[1] < 0){
+            if(snakeCoords[1] > 16 || snakeCoords[1] <0){
                 collision=true;
             }
             if(collision){
-                this.snakeHead.stopTimer();
+                this.snakeHead.Reset();
                 setTimeout(()=>{
                     this.processHit();
                 },2000);
@@ -290,6 +302,8 @@ module scenes {
 
             this.removeChild(this.speedDownShoe);
             this.removeChild(this.speedUpShoe);
+            clearTimeout(this.speedDownTimer);
+            clearTimeout(this.speedUpTimer);
 
             for (let i=0; i<this.bombNo; i++) {
                 this.removeChild(this.bomb[i]);
