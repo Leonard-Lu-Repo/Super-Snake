@@ -47,7 +47,7 @@ module scenes {
             this.thornsWall=new objects.Background(this.assetManager,"thornsWall",0,60);
             this.instruction=new objects.Background(this.assetManager,"instruction",0,650);
             this.levelLabel = new objects.Label( "Level "+ this.currentLevel.getLevelNo(), "40px", "Comic", "#FF9A36", 100, 40, true);
-            this.scoreLabel=new objects.Label(this.score.toString()+"/"+this.targetScore.toString(), "40px", "Comic", "#FF9A36", 800, 40, true);
+            this.scoreLabel=new objects.Label(this.score.toString()+"/"+this.targetScore.toString(), "40px", "Comic", "#FF9A36", 700, 40, true);
             this.lifeLabel = new objects.Label(this.currentLives.toString(), "40px", "Comic", "#FF9A36", 925, 40, true);
             this.lifeIcon = new createjs.Bitmap(this.assetManager.getResult("lifeIcon"));
             this.lifeIcon.regX = this.lifeIcon.getBounds().width * 0.5;
@@ -77,14 +77,14 @@ module scenes {
 
         public Update():void {
             this.snakeHead.Update();
+            this.DetectSnakeSelfCollision();//
             if(this.snakeHead.timeToUpdateBodies) {
                 this.snakeHead.timeToUpdateBodies = false;
                 this.UpdateSnakeBodies();
-                this.DetectBombCollision();
+                this.DetectBombCollision();//
                 this.DetectEatMouse();
-                this.DetectSnakeSelfCollision();
                 this.DetectLife();
-                this.DetectBoundary();
+                this.DetectBoundary();//
                 if (this.speedUpShoeAppear || this.speedDownShoeAppear) {
                     this.DetectSpeedUpShoe();
                     this.DetectSpeedDownShoe();
@@ -167,13 +167,11 @@ module scenes {
             objects.Game.speedUpShoeCollision=this.speedUpShoe.shoeCollision;
             if(this.speedUpShoe.shoeCollision){
                 this.removeChild(this.speedUpShoe);
-                this.speedDownShoe.ResetShoeLocation();
                 setTimeout(()=>{
+                    this.speedDownShoe.ResetShoeLocation();
                     this.addChild(this.speedDownShoe);
-                },10000);
+                },12000);
             }
-            console.log(objects.Game.speedUpShoeCollision);
-            //console.log(this.speedUpShoe.x);
         }
 
         public DetectSpeedDownShoe():void{
@@ -181,10 +179,10 @@ module scenes {
             objects.Game.speedDownShoeCollision=this.speedDownShoe.shoeCollision;
             if(this.speedDownShoe.shoeCollision){
                 this.removeChild(this.speedDownShoe);
-                this.speedUpShoe.ResetShoeLocation();
                 setTimeout(()=>{
+                    this.speedUpShoe.ResetShoeLocation();
                     this.addChild(this.speedUpShoe);
-                },10000);
+                },12000);
             }
         }
 
@@ -212,7 +210,7 @@ module scenes {
         public DetectSnakeSelfCollision():void{
             let selfCollision:boolean;
             for(let i=this.snakeList.length-1;i>0;i--){
-                if(this.snakeHead.x==this.snakeList[i].x&&this.snakeHead.y==this.snakeList[i].y){
+                if(this.snakeHead.nextX==this.snakeList[i].x&&this.snakeHead.nextY==this.snakeList[i].y){
                     selfCollision=true;
                 }
             }
@@ -319,12 +317,14 @@ module scenes {
             this.addChild(this.mouse);
 
             if (this.speedUpShoeAppear) {
-                this.speedUpShoe.ResetShoeLocation();
-                this.addChild(this.speedUpShoe);
+                setTimeout(()=>{
+                    this.addChild(this.speedUpShoe);
+                },8000);
             }
             if (this.speedDownShoeAppear) {
-                this.speedDownShoe.ResetShoeLocation();
-                this.addChild(this.speedDownShoe);
+                setTimeout(()=>{
+                    this.addChild(this.speedDownShoe);
+                },8000);
             }
 
             this.bomb = new Array();

@@ -36,7 +36,7 @@ var scenes;
             this.thornsWall = new objects.Background(this.assetManager, "thornsWall", 0, 60);
             this.instruction = new objects.Background(this.assetManager, "instruction", 0, 650);
             this.levelLabel = new objects.Label("Level " + this.currentLevel.getLevelNo(), "40px", "Comic", "#FF9A36", 100, 40, true);
-            this.scoreLabel = new objects.Label(this.score.toString() + "/" + this.targetScore.toString(), "40px", "Comic", "#FF9A36", 800, 40, true);
+            this.scoreLabel = new objects.Label(this.score.toString() + "/" + this.targetScore.toString(), "40px", "Comic", "#FF9A36", 700, 40, true);
             this.lifeLabel = new objects.Label(this.currentLives.toString(), "40px", "Comic", "#FF9A36", 925, 40, true);
             this.lifeIcon = new createjs.Bitmap(this.assetManager.getResult("lifeIcon"));
             this.lifeIcon.regX = this.lifeIcon.getBounds().width * 0.5;
@@ -65,14 +65,14 @@ var scenes;
         };
         PlayScene.prototype.Update = function () {
             this.snakeHead.Update();
+            this.DetectSnakeSelfCollision(); //
             if (this.snakeHead.timeToUpdateBodies) {
                 this.snakeHead.timeToUpdateBodies = false;
                 this.UpdateSnakeBodies();
-                this.DetectBombCollision();
+                this.DetectBombCollision(); //
                 this.DetectEatMouse();
-                this.DetectSnakeSelfCollision();
                 this.DetectLife();
-                this.DetectBoundary();
+                this.DetectBoundary(); //
                 if (this.speedUpShoeAppear || this.speedDownShoeAppear) {
                     this.DetectSpeedUpShoe();
                     this.DetectSpeedDownShoe();
@@ -151,13 +151,11 @@ var scenes;
             objects.Game.speedUpShoeCollision = this.speedUpShoe.shoeCollision;
             if (this.speedUpShoe.shoeCollision) {
                 this.removeChild(this.speedUpShoe);
-                this.speedDownShoe.ResetShoeLocation();
                 setTimeout(function () {
+                    _this.speedDownShoe.ResetShoeLocation();
                     _this.addChild(_this.speedDownShoe);
-                }, 10000);
+                }, 12000);
             }
-            console.log(objects.Game.speedUpShoeCollision);
-            //console.log(this.speedUpShoe.x);
         };
         PlayScene.prototype.DetectSpeedDownShoe = function () {
             var _this = this;
@@ -165,10 +163,10 @@ var scenes;
             objects.Game.speedDownShoeCollision = this.speedDownShoe.shoeCollision;
             if (this.speedDownShoe.shoeCollision) {
                 this.removeChild(this.speedDownShoe);
-                this.speedUpShoe.ResetShoeLocation();
                 setTimeout(function () {
+                    _this.speedUpShoe.ResetShoeLocation();
                     _this.addChild(_this.speedUpShoe);
-                }, 10000);
+                }, 12000);
             }
         };
         PlayScene.prototype.DetectLife = function () {
@@ -195,7 +193,7 @@ var scenes;
             var _this = this;
             var selfCollision;
             for (var i = this.snakeList.length - 1; i > 0; i--) {
-                if (this.snakeHead.x == this.snakeList[i].x && this.snakeHead.y == this.snakeList[i].y) {
+                if (this.snakeHead.nextX == this.snakeList[i].x && this.snakeHead.nextY == this.snakeList[i].y) {
                     selfCollision = true;
                 }
             }
@@ -279,6 +277,7 @@ var scenes;
         };
         // Handles resetting of all game objects at beginning of each level
         PlayScene.prototype.resetGame = function () {
+            var _this = this;
             this.score = 0;
             objects.Game.usedGridPositions = new Array();
             this.scoreLabel.text = this.score.toString() + "/" + this.targetScore.toString();
@@ -293,12 +292,14 @@ var scenes;
             this.snakeHead.startTimer();
             this.addChild(this.mouse);
             if (this.speedUpShoeAppear) {
-                this.speedUpShoe.ResetShoeLocation();
-                this.addChild(this.speedUpShoe);
+                setTimeout(function () {
+                    _this.addChild(_this.speedUpShoe);
+                }, 8000);
             }
             if (this.speedDownShoeAppear) {
-                this.speedDownShoe.ResetShoeLocation();
-                this.addChild(this.speedDownShoe);
+                setTimeout(function () {
+                    _this.addChild(_this.speedDownShoe);
+                }, 8000);
             }
             this.bomb = new Array();
             for (var i = 0; i < this.bombNo; i++) {

@@ -6,7 +6,7 @@ module objects {
         private gridPosY=0;
         private nextGridPosX=0;
         private nextGridPosY=0;  
-        public snakeSpeed=400; 
+        private snakeSpeed=400; 
         public nextX:number;
         public nextY:number;
         private newCoords: Array<number>;
@@ -26,9 +26,7 @@ module objects {
 
         public Start():void {
         }
-        public Update():void {
-            this.eatSpeedUpShoe=objects.Game.speedUpShoeCollision;
-            this.eatSpeedDownShoe=objects.Game.speedDownShoeCollision;       
+        public Update():void {     
         }
         
         public Reset():void {
@@ -50,11 +48,17 @@ module objects {
         public startTimer():void{
             this.timer=setTimeout(()=>{
                 this.Move();
-                if(this.eatSpeedUpShoe){
+                if(objects.Game.speedUpShoeCollision){
                     this.snakeSpeed=200;
+                    setTimeout(()=>{
+                        this.snakeSpeed=400;
+                    },8000);
                 } 
-                if(this.eatSpeedDownShoe){
-                    this.snakeSpeed=800;
+                if(objects.Game.speedDownShoeCollision){
+                    this.snakeSpeed=600;
+                    setTimeout(()=>{
+                        this.snakeSpeed=400;
+                    },8000);
                 }
                 this.startTimer();
             },this.snakeSpeed);                                  

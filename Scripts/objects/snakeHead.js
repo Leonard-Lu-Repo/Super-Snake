@@ -32,8 +32,6 @@ var objects;
         SnakeHead.prototype.Start = function () {
         };
         SnakeHead.prototype.Update = function () {
-            this.eatSpeedUpShoe = objects.Game.speedUpShoeCollision;
-            this.eatSpeedDownShoe = objects.Game.speedDownShoeCollision;
         };
         SnakeHead.prototype.Reset = function () {
             if (this.gridPosX > 30) {
@@ -54,11 +52,17 @@ var objects;
             var _this = this;
             this.timer = setTimeout(function () {
                 _this.Move();
-                if (_this.eatSpeedUpShoe) {
+                if (objects.Game.speedUpShoeCollision) {
                     _this.snakeSpeed = 200;
+                    setTimeout(function () {
+                        _this.snakeSpeed = 400;
+                    }, 8000);
                 }
-                if (_this.eatSpeedDownShoe) {
-                    _this.snakeSpeed = 800;
+                if (objects.Game.speedDownShoeCollision) {
+                    _this.snakeSpeed = 600;
+                    setTimeout(function () {
+                        _this.snakeSpeed = 400;
+                    }, 8000);
                 }
                 _this.startTimer();
             }, this.snakeSpeed);
