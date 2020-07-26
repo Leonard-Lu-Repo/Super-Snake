@@ -22,8 +22,7 @@ var objects;
             _this.gridPosY = 0;
             _this.nextGridPosX = 0;
             _this.nextGridPosY = 0;
-            _this.snakeSpeed = 400;
-            _this.collision = false;
+            _this.snakeSpeed = 200;
             _this.timeToUpdateBodies = false;
             _this.direction = new managers.Keyboard();
             _this.Start();
@@ -32,37 +31,42 @@ var objects;
         SnakeHead.prototype.Start = function () {
         };
         SnakeHead.prototype.Update = function () {
-            this.eatSpeedUpShoe = objects.Game.speedUpShoeCollision;
-            this.eatSpeedDownShoe = objects.Game.speedDownShoeCollision;
         };
         SnakeHead.prototype.Reset = function () {
             if (this.gridPosX > 30) {
                 this.gridPosX = 30;
+                this.stopTimer();
             }
             if (this.gridPosX < 1) {
                 this.gridPosX = 1;
+                this.stopTimer();
             }
             if (this.gridPosY < 0) {
                 this.gridPosY = 0;
+                this.stopTimer();
             }
             if (this.gridPosY > 16) {
                 this.gridPosY = 16;
+                this.stopTimer();
             }
         };
-        //Use a timer to locate snake's head
+        //Use a timer to locate snake's head and speed
         SnakeHead.prototype.startTimer = function () {
             var _this = this;
             this.timer = setTimeout(function () {
                 _this.Move();
-                if (_this.eatSpeedUpShoe) {
-                    _this.snakeSpeed = 200;
+                if (objects.Game.speedUpShoeCollision) {
+                    _this.snakeSpeed = 100;
+                    setTimeout(function () {
+                        _this.snakeSpeed = 200;
+                    }, 8000);
                 }
-                if (_this.eatSpeedDownShoe) {
-                    _this.snakeSpeed = 800;
-                }
-                setTimeout(function () {
+                if (objects.Game.speedDownShoeCollision) {
                     _this.snakeSpeed = 400;
-                }, 8000);
+                    setTimeout(function () {
+                        _this.snakeSpeed = 200;
+                    }, 8000);
+                }
                 _this.startTimer();
             }, this.snakeSpeed);
         };
@@ -105,7 +109,7 @@ var objects;
         SnakeHead.prototype.ResetSnakeStatus = function () {
             this.gridPosX = 0;
             this.gridPosY = 0;
-            this.snakeSpeed = 400;
+            this.snakeSpeed = 200;
             this.direction.moveUp = false;
             this.direction.moveDown = false;
             this.direction.moveLeft = false;

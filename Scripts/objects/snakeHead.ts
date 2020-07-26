@@ -6,16 +6,13 @@ module objects {
         private gridPosY=0;
         private nextGridPosX=0;
         private nextGridPosY=0;  
-        public snakeSpeed=400; 
+        public  snakeSpeed=200; 
         public nextX:number;
         public nextY:number;
         private newCoords: Array<number>;
         private nextCoords:Array<number>;
         private timer;
-        private collision:boolean=false;
         public timeToUpdateBodies:boolean = false;
-        private eatSpeedUpShoe:boolean;
-        private eatSpeedDownShoe:boolean;
 
         // Constructor
         constructor(assetManager:createjs.LoadQueue, imageString:string) {
@@ -26,39 +23,44 @@ module objects {
 
         public Start():void {
         }
-        public Update():void {
-            this.eatSpeedUpShoe=objects.Game.speedUpShoeCollision;
-            this.eatSpeedDownShoe=objects.Game.speedDownShoeCollision;       
+        public Update():void {   
         }
         
         public Reset():void {
             if(this.gridPosX>30){
-                this.gridPosX=30
+                this.gridPosX=30;
+                this.stopTimer();
             }
             if(this.gridPosX<1){
                 this.gridPosX=1;
+                this.stopTimer();
             }
             if(this.gridPosY<0){
                 this.gridPosY=0;
+                this.stopTimer();
             }
             if(this.gridPosY>16){
-                this.gridPosY=16;                   
+                this.gridPosY=16;  
+                this.stopTimer();                 
             }
            
         }
-       //Use a timer to locate snake's head
+       //Use a timer to locate snake's head and speed
         public startTimer():void{
             this.timer=setTimeout(()=>{
                 this.Move();
-                if(this.eatSpeedUpShoe){
-                    this.snakeSpeed=200;
+                if(objects.Game.speedUpShoeCollision){
+                    this.snakeSpeed=100;
+                    setTimeout(()=>{
+                        this.snakeSpeed=200;
+                    },8000);
                 } 
-                if(this.eatSpeedDownShoe){
-                    this.snakeSpeed=800;
-                }
-                setTimeout(() => {
+                if(objects.Game.speedDownShoeCollision){
                     this.snakeSpeed=400;
-                }, 8000);
+                    setTimeout(()=>{
+                        this.snakeSpeed=200;
+                    },8000);
+                }
                 this.startTimer();
             },this.snakeSpeed);                                  
         } 
@@ -101,7 +103,7 @@ module objects {
         public ResetSnakeStatus() {
             this.gridPosX = 0;
             this.gridPosY = 0;
-            this.snakeSpeed=400;
+            this.snakeSpeed=200;
             this.direction.moveUp = false;
             this.direction.moveDown = false;
             this.direction.moveLeft = false;

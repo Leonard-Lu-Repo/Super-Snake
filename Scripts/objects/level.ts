@@ -17,15 +17,15 @@ module objects {
         public getSpeedDownShoe():boolean {return this.speedDownShoe;}
 
         // Setters
-        public setLevelNo(levelNo) {this.levelNo = levelNo;}
-        public setTargetScore(targetScore) {this.targetScore = targetScore;}
-        public setBombNo(bombNo) {this.bombNo = bombNo;}
-        public setLifeNo(lifeNo) {this.lifeNo = lifeNo;}
-        public setSpeedUpShoe(speedUpShoe) {this.speedUpShoe = speedUpShoe;}
-        public setSpeedDownShoe(speedDownShoe) {this.speedDownShoe = speedDownShoe;}
+        public setLevelNo(levelNo:number) {this.levelNo = levelNo;}
+        public setTargetScore(targetScore:number) {this.targetScore = targetScore;}
+        public setBombNo(bombNo:number) {this.bombNo = bombNo;}
+        public setLifeNo(lifeNo:number) {this.lifeNo = lifeNo;}
+        public setSpeedUpShoe(speedUpShoe:boolean) {this.speedUpShoe = speedUpShoe;}
+        public setSpeedDownShoe(speedDownShoe:boolean) {this.speedDownShoe = speedDownShoe;}
 
         // This static function contains and outputs the data for each level.
-        public static GetLevelData(levelNo):Level {
+        public static GetLevelData(levelNo:number):Level {
 
             let levelData = new Level();
 
@@ -48,6 +48,8 @@ module objects {
             if (levelNo == 3) {
                 levelData.setLevelNo(3);
                 levelData.setTargetScore(100);
+
+                levelData.setBombNo(6);
                 levelData.setLifeNo(1);
                 levelData.setSpeedUpShoe(false);
                 levelData.setSpeedDownShoe(true);

@@ -39,6 +39,7 @@ var objects;
             if (levelNo == 3) {
                 levelData.setLevelNo(3);
                 levelData.setTargetScore(100);
+                levelData.setBombNo(6);
                 levelData.setLifeNo(1);
                 levelData.setSpeedUpShoe(false);
                 levelData.setSpeedDownShoe(true);

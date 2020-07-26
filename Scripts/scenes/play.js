@@ -36,7 +36,7 @@ var scenes;
             this.thornsWall = new objects.Background(this.assetManager, "thornsWall", 0, 60);
             this.instruction = new objects.Background(this.assetManager, "instruction", 0, 650);
             this.levelLabel = new objects.Label("Level " + this.currentLevel.getLevelNo(), "40px", "Comic", "#FF9A36", 100, 40, true);
-            this.scoreLabel = new objects.Label(this.score.toString() + "/" + this.targetScore.toString(), "40px", "Comic", "#FF9A36", 800, 40, true);
+            this.scoreLabel = new objects.Label(this.score.toString() + "/" + this.targetScore.toString(), "40px", "Comic", "#FF9A36", 700, 40, true);
             this.lifeLabel = new objects.Label(this.currentLives.toString(), "40px", "Comic", "#FF9A36", 925, 40, true);
             this.lifeIcon = new createjs.Bitmap(this.assetManager.getResult("lifeIcon"));
             this.lifeIcon.regX = this.lifeIcon.getBounds().width * 0.5;
@@ -65,18 +65,21 @@ var scenes;
         };
         PlayScene.prototype.Update = function () {
             this.snakeHead.Update();
+            this.DetectSnakeSelfCollision(); //If this method is under timeToUpdateBodies condition, then it doesn't work
+            this.DetectEatMouse(); /*If this method is under timeToUpdateBodies condition, then it will cause snake body
+                                    appear at top left corner when adding new bodies, because snake head timer has a lower refresh
+                                    frequence than createjs ticker*/
             if (this.snakeHead.timeToUpdateBodies) {
                 this.snakeHead.timeToUpdateBodies = false;
                 this.UpdateSnakeBodies();
                 this.DetectBombCollision();
-                this.DetectEatMouse();
-                this.DetectSnakeSelfCollision();
                 this.DetectLife();
                 this.DetectBoundary();
                 if (this.speedUpShoeAppear || this.speedDownShoeAppear) {
                     this.DetectSpeedUpShoe();
                     this.DetectSpeedDownShoe();
                 }
+                console.log(this.snakeHead.snakeSpeed);
             }
             // Check if score is achieved
             if (this.score >= this.targetScore && !this.paused) {
@@ -102,6 +105,7 @@ var scenes;
             this.resetGame();
             this.paused = false;
         };
+        //This method makes snake body follows snake head's movement
         PlayScene.prototype.UpdateSnakeBodies = function () {
             for (var i = this.snakeList.length - 1; i > 0; i--) {
                 this.snakeList[i].Update(this.snakeList[i - 1].x, this.snakeList[i - 1].y);
@@ -117,7 +121,7 @@ var scenes;
                 this.scoreLabel.text = this.score.toString() + "/" + this.targetScore.toString();
                 this.mouse.ResetMouseLocation();
                 // Add new snake body
-                this.snakeList.push(new objects.SnakeBody(this.assetManager, "snakeBody"));
+                this.snakeList.push(new objects.SnakeBody(this.assetManager, "snakeBody")); //add a new body to snake
                 this.addChild(this.snakeList[this.snakeList.length - 1]);
             }
         };
@@ -152,23 +156,27 @@ var scenes;
             this.speedUpShoe.shoeCollision = managers.Collision.AABBCollisionCheck(this.snakeHead, this.speedUpShoe);
             objects.Game.speedUpShoeCollision = this.speedUpShoe.shoeCollision;
             if (this.speedUpShoe.shoeCollision) {
+                //remove speed up shoe and add speed down shoe after 12s
                 this.removeChild(this.speedUpShoe);
-                setTimeout(function () {
+                clearTimeout(this.speedDownTimer);
+                this.speedUpTimer = setTimeout(function () {
+                    _this.speedDownShoe.ResetShoeLocation();
                     _this.addChild(_this.speedDownShoe);
-                }, 10000);
+                }, 12000);
             }
-            console.log(objects.Game.speedUpShoeCollision);
-            //console.log(this.speedUpShoe.x);
         };
         PlayScene.prototype.DetectSpeedDownShoe = function () {
             var _this = this;
             this.speedDownShoe.shoeCollision = managers.Collision.AABBCollisionCheck(this.snakeHead, this.speedDownShoe);
             objects.Game.speedDownShoeCollision = this.speedDownShoe.shoeCollision;
             if (this.speedDownShoe.shoeCollision) {
+                //remove speed down shoe and add speed up shoe after 12s
+                clearTimeout(this.speedUpTimer);
                 this.removeChild(this.speedDownShoe);
-                setTimeout(function () {
+                this.speedDownTimer = setTimeout(function () {
+                    _this.speedUpShoe.ResetShoeLocation();
                     _this.addChild(_this.speedUpShoe);
-                }, 10000);
+                }, 12000);
             }
         };
         PlayScene.prototype.DetectLife = function () {
@@ -195,8 +203,9 @@ var scenes;
         PlayScene.prototype.DetectSnakeSelfCollision = function () {
             var _this = this;
             var selfCollision;
+            //when snake head's next step is snake body then it slef collision is ture
             for (var i = this.snakeList.length - 1; i > 0; i--) {
-                if (this.snakeHead.x == this.snakeList[i].x && this.snakeHead.y == this.snakeList[i].y) {
+                if (this.snakeHead.nextX == this.snakeList[i].x && this.snakeHead.nextY == this.snakeList[i].y) {
                     selfCollision = true;
                 }
             }
@@ -206,21 +215,22 @@ var scenes;
                 setTimeout(function () {
                     _this.processHit();
                 }, 2000);
+                console.log(this.currentLives);
             }
         };
         PlayScene.prototype.DetectBoundary = function () {
             var _this = this;
             var collision;
             var snakeCoords = this.snakeHead.getGridCoords();
-            if (snakeCoords[0] > 30 || snakeCoords[0] < 0) {
+            if (snakeCoords[0] > 30 || snakeCoords[0] < 1) {
                 collision = true;
             }
             if (snakeCoords[1] > 16 || snakeCoords[1] < 0) {
                 collision = true;
             }
             if (collision) {
-                this.snakeHead.stopTimer();
                 createjs.Sound.play("SnakeHitWall");
+                this.snakeHead.Reset();
                 setTimeout(function () {
                     _this.processHit();
                 }, 2000);
@@ -273,6 +283,8 @@ var scenes;
             this.removeChild(this.mouse);
             this.removeChild(this.speedDownShoe);
             this.removeChild(this.speedUpShoe);
+            clearTimeout(this.speedDownTimer);
+            clearTimeout(this.speedUpTimer);
             for (var i = 0; i < this.bombNo; i++) {
                 this.removeChild(this.bomb[i]);
             }
@@ -282,6 +294,7 @@ var scenes;
         };
         // Handles resetting of all game objects at beginning of each level
         PlayScene.prototype.resetGame = function () {
+            var _this = this;
             this.score = 0;
             objects.Game.usedGridPositions = new Array();
             this.scoreLabel.text = this.score.toString() + "/" + this.targetScore.toString();
@@ -296,12 +309,14 @@ var scenes;
             this.snakeHead.startTimer();
             this.addChild(this.mouse);
             if (this.speedUpShoeAppear) {
-                this.speedUpShoe.ResetShoeLocation();
-                this.addChild(this.speedUpShoe);
+                setTimeout(function () {
+                    _this.addChild(_this.speedUpShoe);
+                }, 8000);
             }
             if (this.speedDownShoeAppear) {
-                this.speedDownShoe.ResetShoeLocation();
-                this.addChild(this.speedDownShoe);
+                setTimeout(function () {
+                    _this.addChild(_this.speedDownShoe);
+                }, 8000);
             }
             this.bomb = new Array();
             for (var i = 0; i < this.bombNo; i++) {
