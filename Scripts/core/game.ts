@@ -31,6 +31,7 @@
         {id:"thumbsUp", src:"./Assets/thumbsUp.png"},
         {id:"mainButton",src:"./Assets/MainPageBtn.png"},
         {id:"replayButton",src:"./Assets/TryAgainBtn.png"},
+        {id:"eagle",src:"./Assets/eagle.png"},
     ];
     
 
@@ -40,7 +41,8 @@
         assetManager = new createjs.LoadQueue();
         assetManager.installPlugin(createjs.Sound);
         assetManager.loadManifest(assetManifest);
-  // register sounds
+        
+        // register sounds
         createjs.Sound.registerSound("./Assets/Explosion+3.wav", "explosion");
         createjs.Sound.registerSound("./Assets/GameOverScreenSound.mp3", "GameOverSound");
         createjs.Sound.registerSound("./Assets/HomeScreenSound.mp3", "HomeScreenSound");
