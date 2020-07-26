@@ -53,6 +53,7 @@ var scenes;
             for (var j = 0; j < this.lifeNo; j++) {
                 this.lives[j] = new objects.Life(this.assetManager, "life");
             }
+            this.eagle = new objects.Eagle(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
             this.speedUpShoe = new objects.SpeedShoe(this.assetManager, "speedUpShoe");
             this.speedDownShoe = new objects.SpeedShoe(this.assetManager, "speedDownShoe");
@@ -65,6 +66,7 @@ var scenes;
         };
         PlayScene.prototype.Update = function () {
             this.snakeHead.Update();
+            this.eagle.Update();
             this.DetectSnakeSelfCollision(); //If this method is under timeToUpdateBodies condition, then it doesn't work
             this.DetectEatMouse(); /*If this method is under timeToUpdateBodies condition, then it will cause snake body
                                     appear at top left corner when adding new bodies, because snake head timer has a lower refresh
@@ -102,6 +104,7 @@ var scenes;
             this.addChild(this.lifeIcon);
             // add objects
             this.addChild(this.snakeHead);
+            this.addChild(this.eagle);
             this.resetGame();
             this.paused = false;
         };
