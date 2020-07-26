@@ -36,13 +36,16 @@ var scenes;
             this.addChild(this.gameOverLabel);
             this.addChild(this.mainButton);
             this.addChild(this.replayButton);
+            this.gameoverSound = createjs.Sound.play("GameOverSound");
             this.mainButton.on("click", this.mainButtonClick);
             this.replayButton.on("click", this.replayButtonClick);
         };
         GameOverScene.prototype.mainButtonClick = function () {
+            createjs.Sound.stop();
             objects.Game.currentScene = config.Scene.START;
         };
         GameOverScene.prototype.replayButtonClick = function () {
+            createjs.Sound.stop();
             objects.Game.currentScene = config.Scene.GAME;
         };
         return GameOverScene;

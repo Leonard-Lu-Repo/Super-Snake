@@ -5,6 +5,8 @@ module scenes {
         private gameOverLabel: objects.Label;
         private mainButton: objects.Button;
         private replayButton:objects.Button;
+        private gameoverSound:any;
+
 
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
@@ -30,15 +32,18 @@ module scenes {
             this.addChild(this.gameOverLabel);
             this.addChild(this.mainButton);
             this.addChild(this.replayButton);
+            this.gameoverSound = createjs.Sound.play("GameOverSound");
             this.mainButton.on("click", this.mainButtonClick);
             this.replayButton.on("click",this.replayButtonClick);
         }
 
         private mainButtonClick():void {
+            createjs.Sound.stop();
             objects.Game.currentScene = config.Scene.START;
         }
 
         private replayButtonClick():void {
+            createjs.Sound.stop();
             objects.Game.currentScene = config.Scene.GAME;
         }
     } //end of GameOverScene class

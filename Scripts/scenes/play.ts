@@ -6,7 +6,7 @@ module scenes {
         private instruction:objects.Background;
         private levelLabel: objects.Label;
         private scoreLabel:objects.Label; 
-        private lifeIcon:objects.createjs.Bitmap;
+        private lifeIcon:createjs.Bitmap;
         private lifeLabel:objects.Label;
         private completeLabel: objects.Label;
         private snakeHead:objects.SnakeHead;
@@ -128,6 +128,8 @@ module scenes {
             let eatMouse:boolean;
             eatMouse=managers.Collision.AABBCollisionCheck(this.snakeHead,this.mouse);
             if(eatMouse){
+                
+                createjs.Sound.play("SnakeEatMiceSound");
                 this.score+=10;
                 this.scoreLabel.text = this.score.toString()+"/"+this.targetScore.toString();
                 this.mouse.ResetMouseLocation();
@@ -155,6 +157,11 @@ module scenes {
                 this.explosion.Explode(this.bomb[bombTouched].x, this.bomb[bombTouched].y);
                 this.removeChild(this.bomb[bombTouched]);
                 this.snakeHead.stopTimer();
+
+                 
+                createjs.Sound.play("explosion");       
+
+
                 setTimeout(()=>{
                     this.removeChild(this.explosion);
                     this.processHit();
@@ -199,7 +206,8 @@ module scenes {
                         i = this.lifeNo;// End the loop
                     }
                 }
-                if(lifeCollision) {
+                if(lifeCollision) {                    
+                    createjs.Sound.play("SnakeHitsLife");
                     this.removeChild(this.lives[lifeTouched]);
                     this.currentLives++;
                     this.lifeLabel.text = this.currentLives.toString();
@@ -234,6 +242,9 @@ module scenes {
             }
             if(collision){
                 this.snakeHead.stopTimer();
+
+                createjs.Sound.play("SnakeHitWall");
+
                 setTimeout(()=>{
                     this.processHit();
                 },2000);
@@ -264,6 +275,8 @@ module scenes {
         }
 
         private moveToNextLevel():void {
+            
+            createjs.Sound.play("LevelCompleteSound");
             // First pause everything and show results
             objects.Game.achieveTargetScore=true;
             this.clearGameObjects();

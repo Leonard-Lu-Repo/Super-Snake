@@ -112,6 +112,7 @@ var scenes;
             var eatMouse;
             eatMouse = managers.Collision.AABBCollisionCheck(this.snakeHead, this.mouse);
             if (eatMouse) {
+                createjs.Sound.play("SnakeEatMiceSound");
                 this.score += 10;
                 this.scoreLabel.text = this.score.toString() + "/" + this.targetScore.toString();
                 this.mouse.ResetMouseLocation();
@@ -139,6 +140,7 @@ var scenes;
                 this.explosion.Explode(this.bomb[bombTouched].x, this.bomb[bombTouched].y);
                 this.removeChild(this.bomb[bombTouched]);
                 this.snakeHead.stopTimer();
+                createjs.Sound.play("explosion");
                 setTimeout(function () {
                     _this.removeChild(_this.explosion);
                     _this.processHit();
@@ -183,6 +185,7 @@ var scenes;
                     }
                 }
                 if (lifeCollision) {
+                    createjs.Sound.play("SnakeHitsLife");
                     this.removeChild(this.lives[lifeTouched]);
                     this.currentLives++;
                     this.lifeLabel.text = this.currentLives.toString();
@@ -217,6 +220,7 @@ var scenes;
             }
             if (collision) {
                 this.snakeHead.stopTimer();
+                createjs.Sound.play("SnakeHitWall");
                 setTimeout(function () {
                     _this.processHit();
                 }, 2000);
@@ -245,6 +249,7 @@ var scenes;
         };
         PlayScene.prototype.moveToNextLevel = function () {
             var _this = this;
+            createjs.Sound.play("LevelCompleteSound");
             // First pause everything and show results
             objects.Game.achieveTargetScore = true;
             this.clearGameObjects();

@@ -23,6 +23,8 @@ var scenes;
         }
         // Methods
         StartScene.prototype.Start = function () {
+            this.sound = createjs.Sound.play("HomeScreenSound");
+            this.sound.play();
             // Initialize our objects for this scene
             this.logo = new objects.Gamelogo(this.assetManager, 100);
             this.background = new objects.Background(this.assetManager, "background");
@@ -42,6 +44,7 @@ var scenes;
         };
         StartScene.prototype.startButtonClick = function () {
             // Change from START to GAME scene
+            createjs.Sound.stop();
             objects.Game.currentScene = config.Scene.GAME;
         };
         return StartScene;

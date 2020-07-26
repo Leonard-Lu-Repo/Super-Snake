@@ -30,8 +30,9 @@
         {id:"explosion", src:"./Assets/explosion.png"},
         {id:"thumbsUp", src:"./Assets/thumbsUp.png"},
         {id:"mainButton",src:"./Assets/MainPageBtn.png"},
-        {id:"replayButton",src:"./Assets/TryAgainBtn.png"}
+        {id:"replayButton",src:"./Assets/TryAgainBtn.png"},
     ];
+    
 
     function Init() {
         console.log("Initializing Start");
@@ -39,6 +40,15 @@
         assetManager = new createjs.LoadQueue();
         assetManager.installPlugin(createjs.Sound);
         assetManager.loadManifest(assetManifest);
+  // register sounds
+        createjs.Sound.registerSound("./Assets/Explosion+3.wav", "explosion");
+        createjs.Sound.registerSound("./Assets/GameOverScreenSound.mp3", "GameOverSound");
+        createjs.Sound.registerSound("./Assets/HomeScreenSound.mp3", "HomeScreenSound");
+        createjs.Sound.registerSound("./Assets/Level-complete-sound-effect.mp3", "LevelCompleteSound");
+        createjs.Sound.registerSound("./Assets/snake_eatmice.wav", "SnakeEatMiceSound");
+        createjs.Sound.registerSound("./Assets/snake_hitsEagle.wav", "SnakeHitsLife");
+        createjs.Sound.registerSound("./Assets/snakehitWall.wav", "SnakeHitWall");
+        
         assetManager.on("complete", Start, this);
     }
 
@@ -66,7 +76,7 @@
             console.log("Changing scenes to " + objects.Game.currentScene);
             Main();
         }
-
+        if(currentScene!=null)
         currentScene.Update();
         stage.update();
     }
@@ -82,6 +92,7 @@
                 stage.removeAllChildren();
                 currentScene = new scenes.StartScene(assetManager);
                 stage.addChild(currentScene);
+                
             break;
             case config.Scene.GAME:
                 stage.removeAllChildren();
