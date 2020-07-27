@@ -75,6 +75,7 @@ var scenes;
                 this.snakeHead.timeToUpdateBodies = false;
                 this.UpdateSnakeBodies();
                 this.DetectBombCollision();
+                this.DetectEagleCollision();
                 this.DetectLife();
                 this.DetectBoundary();
                 if (this.speedUpShoeAppear || this.speedDownShoeAppear) {
@@ -148,6 +149,27 @@ var scenes;
                 this.removeChild(this.bomb[bombTouched]);
                 this.snakeHead.stopTimer();
                 createjs.Sound.play("explosion");
+                setTimeout(function () {
+                    _this.removeChild(_this.explosion);
+                    _this.processHit();
+                }, 2000);
+            }
+        };
+        PlayScene.prototype.DetectEagleCollision = function () {
+            var _this = this;
+            var snakeCoords = this.snakeHead.getGridCoords();
+            var eagleCoords = this.eagle.getGridCoords();
+            //console.log("eagle W H "+ this.eagle.width+ ", " + this.eagle.height);
+            //console.log("DetectEagleCollision: snake pos: ("+snakeCoords[0]+", " + snakeCoords[1] +")  eagle pos: ("+Math.floor(eagleCoords[0])+", " + Math.floor(eagleCoords[1])+")");
+            var xDistance = snakeCoords[0] - Math.floor(eagleCoords[0]);
+            var yDistance = snakeCoords[1] - Math.floor(eagleCoords[1]);
+            if (xDistance >= 0 && xDistance <= 2 && yDistance >= 0 && yDistance <= 2) {
+                objects.Game.eagleCollision = true;
+                this.addChild(this.explosion);
+                this.explosion.Explode(this.eagle.x, this.eagle.y);
+                this.snakeHead.stopTimer();
+                createjs.Sound.play("explosion");
+                console.log("Eagle ate the snake");
                 setTimeout(function () {
                     _this.removeChild(_this.explosion);
                     _this.processHit();

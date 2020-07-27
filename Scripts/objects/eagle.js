@@ -18,8 +18,8 @@ var objects;
         // Constructor
         function Eagle(assetManager) {
             var _this = _super.call(this, assetManager, "eagle") || this;
-            _this.offsetX = 0.1;
-            _this.offsetY = 0.1;
+            _this.offsetX = 0.005;
+            _this.offsetY = 0.01;
             _this.Start();
             return _this;
         }
@@ -30,13 +30,13 @@ var objects;
         Eagle.prototype.Update = function () {
             this.Move();
             this.CheckBound();
-            console.log("eagle move a step: " + this.gridX + ", " + this.gridY);
+            // console.log("eagle move a step: "+this.gridX + ", " + this.gridY);
         };
         Eagle.prototype.Reset = function () {
             this.gridX = 0;
-            this.gridY = 0;
-            this.offsetX = 0.1;
-            this.offsetY = 0.1;
+            this.gridY = -10;
+            this.offsetX = 0.005;
+            this.offsetY = 0.01;
         };
         Eagle.prototype.Move = function () {
             this.gridX += this.offsetX;
@@ -49,11 +49,14 @@ var objects;
         };
         Eagle.prototype.CheckBound = function () {
             if (this.gridY >= 15) {
-                this.offsetY = -0.1;
+                this.offsetY = -0.01;
             }
             if (this.gridX >= 60) {
                 this.Reset();
             }
+        };
+        Eagle.prototype.getGridCoords = function () {
+            return new Array(this.gridX, this.gridY);
         };
         return Eagle;
     }(objects.GameObject));
