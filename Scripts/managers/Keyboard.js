@@ -15,10 +15,10 @@ var managers;
         //private methods
         // onkeydown event listener
         Keyboard.prototype.onkeyDown = function (event) {
+            event.preventDefault();
             switch (event.keyCode) {
                 case enums.Keys.W:
                 case enums.Keys.UP_ARROW:
-                    event.preventDefault();
                     if (this.moveDirection != "down") {
                         this.moveUp = true;
                         this.moveDown = false;
@@ -29,7 +29,6 @@ var managers;
                     break;
                 case enums.Keys.S:
                 case enums.Keys.DOWN_ARROW:
-                    event.preventDefault();
                     if (this.moveDirection != "up") {
                         this.moveDown = true;
                         this.moveUp = false;
