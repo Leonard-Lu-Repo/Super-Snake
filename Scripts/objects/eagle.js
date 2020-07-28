@@ -18,7 +18,7 @@ var objects;
         // Constructor
         function Eagle(assetManager) {
             var _this = _super.call(this, assetManager, "eagle") || this;
-            _this.offsetX = 0.005;
+            _this.offsetX = 0.01;
             _this.offsetY = 0.01;
             _this.Start();
             return _this;
@@ -35,7 +35,7 @@ var objects;
         Eagle.prototype.Reset = function () {
             this.gridX = 0;
             this.gridY = -10;
-            this.offsetX = 0.005;
+            this.offsetX = 0.01;
             this.offsetY = 0.01;
         };
         Eagle.prototype.Move = function () {

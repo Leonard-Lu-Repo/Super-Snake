@@ -3,13 +3,14 @@ module objects {
         // Variables
         private  gridX: number;
         private  gridY: number;
-        private offsetX: number = 0.005;
+        private offsetX: number = 0.01;
         private offsetY: number = 0.01;
         private  newCoords: Array<number>;
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager, "eagle");
             this.Start();
+            
         }
         // Methods
         public Start():void {
@@ -23,7 +24,7 @@ module objects {
         public Reset():void {
             this.gridX = 0;
             this.gridY = -10;
-            this.offsetX = 0.005;
+            this.offsetX = 0.01;
             this.offsetY = 0.01;
         }
         public Move():void {
@@ -39,7 +40,7 @@ module objects {
         public CheckBound():void {
             if (this.gridY >= 15) {
                 this.offsetY = -0.01;
-            }
+             }
             if (this.gridX >= 60 ) {
                 this.Reset();
             }
