@@ -55,6 +55,7 @@ var scenes;
             }
             this.eagle = new objects.Eagle(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
+            this.eaglecatch = new objects.Catch(this.assetManager);
             this.speedUpShoe = new objects.SpeedShoe(this.assetManager, "speedUpShoe");
             this.speedDownShoe = new objects.SpeedShoe(this.assetManager, "speedDownShoe");
             this.thumbsUp = new createjs.Bitmap(this.assetManager.getResult("thumbsUp"));
@@ -67,6 +68,7 @@ var scenes;
         PlayScene.prototype.Update = function () {
             this.snakeHead.Update();
             this.eagle.Update();
+            this.eaglecatch.Update();
             this.DetectSnakeSelfCollision(); //If this method is under timeToUpdateBodies condition, then it doesn't work
             this.DetectEatMouse(); /*If this method is under timeToUpdateBodies condition, then it will cause snake body
                                     appear at top left corner when adding new bodies, because snake head timer has a lower refresh
@@ -165,14 +167,15 @@ var scenes;
             var yDistance = snakeCoords[1] - Math.floor(eagleCoords[1]);
             if (xDistance >= 0 && xDistance <= 2 && yDistance >= 0 && yDistance <= 2) {
                 objects.Game.eagleCollision = true;
-                this.addChild(this.explosion);
-                this.explosion.Explode(this.eagle.x, this.eagle.y);
+                this.addChild(this.eaglecatch);
+                this.eaglecatch.Catch(this.eagle.x, this.eagle.y);
                 this.snakeHead.stopTimer();
-                createjs.Sound.play("explosion");
+                this.eagle.Reset();
+                createjs.Sound.play("explosion"); //need to change sound for eagle catch snake
+                this.processHit();
                 console.log("Eagle ate the snake");
                 setTimeout(function () {
-                    _this.removeChild(_this.explosion);
-                    _this.processHit();
+                    _this.eaglecatch.Dispear();
                 }, 2000);
             }
         };
