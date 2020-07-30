@@ -12,6 +12,8 @@ var enums;
         Keys[Keys["D"] = 68] = "D";
         Keys[Keys["S"] = 83] = "S";
         Keys[Keys["W"] = 87] = "W";
+        // Debug Keys
+        Keys[Keys["X"] = 88] = "X";
     })(Keys = enums.Keys || (enums.Keys = {}));
 })(enums || (enums = {}));
 //# sourceMappingURL=Keys.js.map

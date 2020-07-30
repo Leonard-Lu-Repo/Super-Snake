@@ -9,6 +9,7 @@ var managers;
             this.moveLeft = false;
             this.moveRight = true;
             this.moveDirection = "right";
+            this.debugX = false;
             document.addEventListener("keydown", this.onkeyDown.bind(this), false);
             //document.addEventListener("keyup", this.onkeyUp.bind(this),false);
         }
@@ -57,6 +58,9 @@ var managers;
                         this.moveDirection = "right";
                     }
                     break;
+                case enums.Keys.X:
+                    this.debugX = true;
+                    break;
             }
         };
         // onkeyup event listener
@@ -77,6 +81,9 @@ var managers;
                 case enums.Keys.D:
                 case enums.Keys.RIGHT_ARROW:
                     this.moveRight = false;
+                    break;
+                case enums.Keys.X:
+                    this.debugX = false;
                     break;
             }
         };

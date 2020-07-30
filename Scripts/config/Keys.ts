@@ -11,6 +11,9 @@ module enums
         A= 65,
         D=68,
         S=83,
-        W=87
+        W=87,
+
+        // Debug Keys
+        X=88
     }
 }

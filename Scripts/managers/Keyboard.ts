@@ -8,6 +8,7 @@ module managers
         public moveLeft:boolean=false;
         public moveRight:boolean=true;
         public moveDirection:string="right";
+        public debugX:boolean=false;
 
         //constructor
         constructor()
@@ -65,6 +66,9 @@ module managers
                         this.moveDirection="right";
                     }
                     break;
+                case enums.Keys.X:
+                    this.debugX=true;
+                    break;
             } 
         }
 
@@ -89,6 +93,9 @@ module managers
                 case enums.Keys.D:
                 case enums.Keys.RIGHT_ARROW:
                     this.moveRight=false;
+                    break;
+                case enums.Keys.X:
+                    this.debugX=false;
                     break;
             }
         }

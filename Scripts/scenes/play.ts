@@ -33,6 +33,7 @@ module scenes {
         private speedUpTimer;// store speed up timer
         private speedDownTimer;// store speed down timer
         private paused:boolean; // Whether the game is paused or not
+        private keyInput:managers.Keyboard;
         // Constructor
         constructor(assetManager:createjs.LoadQueue) {
             super(assetManager);
@@ -67,10 +68,6 @@ module scenes {
             for (let i=0; i<this.bombNo; i++) {
                 this.bomb[i] = new objects.Bomb(this.assetManager);
             }
-            // TODO: Can delete the below for loop
-            for (let j=0; j<this.lifeNo; j++) {
-                this.lives[j] = new objects.Life(this.assetManager, "life");
-            }
             this.eagle = new objects.Eagle(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
             this.eaglecatch = new objects.Catch(this.assetManager);
@@ -81,6 +78,7 @@ module scenes {
             this.thumbsUp.regY = this.thumbsUp.getBounds().height * 0.5;
             this.thumbsUp.x = 480;
             this.thumbsUp.y = 400;
+            this.keyInput = new managers.Keyboard();
             this.Main();
         }
 
@@ -109,6 +107,11 @@ module scenes {
             // Check if score is achieved
             if (this.score >= this.targetScore && !this.paused) {
                 this.moveToNextLevel();
+            }
+            // Debug keys
+            if (this.keyInput.debugX) {
+                this.score = this.targetScore;
+                this.keyInput.debugX = false;
             }
         }
       
