@@ -20,6 +20,7 @@ var scenes;
             var _this = _super.call(this, assetManager) || this;
             _this.snakeList = new Array();
             _this.score = 0;
+            _this.coins = new Array();
             _this.bomb = new Array();
             _this.lives = new Array();
             _this.Start();
@@ -50,6 +51,7 @@ var scenes;
             for (var i = 0; i < this.bombNo; i++) {
                 this.bomb[i] = new objects.Bomb(this.assetManager);
             }
+            // TODO: Can delete the below for loop
             for (var j = 0; j < this.lifeNo; j++) {
                 this.lives[j] = new objects.Life(this.assetManager, "life");
             }
@@ -79,6 +81,7 @@ var scenes;
                 this.DetectBombCollision();
                 this.DetectEagleCollision();
                 this.DetectLife();
+                this.DetectCoin();
                 this.DetectBoundary();
                 if (this.speedUpShoeAppear || this.speedDownShoeAppear) {
                     this.DetectSpeedUpShoe();
@@ -212,20 +215,41 @@ var scenes;
                 var lifeCollision = false;
                 var snakeCoords = this.snakeHead.getGridCoords();
                 var lifeTouched = void 0;
-                for (var i = 0; i < this.lifeNo; i++) {
+                for (var i = 0; i < this.lives.length; i++) {
                     var lifeCoords = this.lives[i].getGridCoords();
                     if (snakeCoords[0] == lifeCoords[0] && snakeCoords[1] == lifeCoords[1]) {
                         lifeCollision = true;
                         lifeTouched = i;
-                        i = this.lifeNo; // End the loop
+                        i = this.lives.length; // End the loop
                     }
                 }
                 if (lifeCollision) {
                     createjs.Sound.play("SnakeHitsLife");
                     this.removeChild(this.lives[lifeTouched]);
+                    this.lives.splice(lifeTouched, 1);
                     this.currentLives++;
                     this.lifeLabel.text = this.currentLives.toString();
                 }
+            }
+        };
+        PlayScene.prototype.DetectCoin = function () {
+            var coinCollision = false;
+            var snakeCoords = this.snakeHead.getGridCoords();
+            var coinTouched;
+            for (var i = 0; i < this.coins.length; i++) {
+                var coinCoords = this.coins[i].getGridCoords();
+                if (snakeCoords[0] == coinCoords[0] && snakeCoords[1] == coinCoords[1]) {
+                    coinCollision = true;
+                    coinTouched = i;
+                    i = this.coins.length; // End the loop
+                }
+            }
+            if (coinCollision) {
+                // TODO: Add sound
+                this.removeChild(this.coins[coinTouched]);
+                this.coins.splice(coinTouched, 1);
+                this.score += 1;
+                this.scoreLabel.text = this.score.toString() + "/" + this.targetScore.toString();
             }
         };
         PlayScene.prototype.DetectSnakeSelfCollision = function () {
@@ -271,6 +295,7 @@ var scenes;
             this.targetScore = this.currentLevel.getTargetScore();
             this.bombNo = this.currentLevel.getBombNo();
             this.lifeNo = this.currentLevel.getLifeNo();
+            this.coinNo = this.currentLevel.getCoinNo();
             this.speedUpShoeAppear = this.currentLevel.getSpeedUpShoe();
             this.speedDownShoeAppear = this.currentLevel.getSpeedDownShoe();
         };
@@ -319,6 +344,9 @@ var scenes;
             for (var j = 0; j < this.lifeNo; j++) {
                 this.removeChild(this.lives[j]);
             }
+            for (var c = 0; c < this.coinNo; c++) {
+                this.removeChild(this.coins[c]);
+            }
         };
         // Handles resetting of all game objects at beginning of each level
         PlayScene.prototype.resetGame = function () {
@@ -355,6 +383,11 @@ var scenes;
             for (var j = 0; j < this.lifeNo; j++) {
                 this.lives[j] = new objects.Life(this.assetManager, "life");
                 this.addChild(this.lives[j]);
+            }
+            this.coins = new Array();
+            for (var c = 0; c < this.coinNo; c++) {
+                this.coins[c] = new objects.Coin(this.assetManager, "coin");
+                this.addChild(this.coins[c]);
             }
             this.levelLabel.text = "Level " + this.currentLevel.getLevelNo();
         };
