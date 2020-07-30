@@ -52,7 +52,7 @@ var objects;
                 levelData.setSpeedDownShoe(false);
             }
             if (levelNo == 4) {
-                levelData.setLevelNo(3);
+                levelData.setLevelNo(4);
                 levelData.setTargetScore(140);
                 levelData.setBombNo(5);
                 levelData.setLifeNo(1);
@@ -61,7 +61,7 @@ var objects;
                 levelData.setSpeedDownShoe(true);
             }
             if (levelNo == 5) {
-                levelData.setLevelNo(3);
+                levelData.setLevelNo(5);
                 levelData.setTargetScore(200);
                 levelData.setBombNo(6);
                 levelData.setLifeNo(1);
