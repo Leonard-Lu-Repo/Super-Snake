@@ -82,14 +82,14 @@
                 currentScene = new scenes.PlayScene(assetManager);
                 stage.addChild(currentScene);
                 break;
-            case config.Scene.SECONDLEVEL:
-                stage.removeAllChildren();
-                currentScene = new scenes.SecondLevel(assetManager);
-                stage.addChild(currentScene);
-                break;
             case config.Scene.OVER:
                 stage.removeAllChildren();
                 currentScene = new scenes.GameOverScene(assetManager);
+                stage.addChild(currentScene);
+                break;
+            case config.Scene.WIN:
+                stage.removeAllChildren();
+                currentScene = new scenes.WinScene(assetManager);
                 stage.addChild(currentScene);
                 break;
         }

@@ -362,14 +362,20 @@ module scenes {
             this.paused = true;
             this.snakeHead.stopTimer();
             setTimeout(()=>{
-                // Load new level data
-                this.loadLevel(this.currentLevel.getLevelNo() + 1);
-                // Reset everything
-                this.resetGame();
-                this.completeLabel.visible = false;
-                this.thumbsUp.visible = false;
-                // Unpause
-                this.paused = false;
+                if (this.currentLevel.getLevelNo() < 5) {
+                    // Load new level data
+                    this.loadLevel(this.currentLevel.getLevelNo() + 1);
+                    // Reset everything
+                    this.resetGame();
+                    this.completeLabel.visible = false;
+                    this.thumbsUp.visible = false;
+                    // Unpause
+                    this.paused = false;
+                } else {
+                    // If finished last level, go to Win Scene
+                    objects.Game.currentScene = config.Scene.WIN;
+                }
+                
             },2000);
         }
 

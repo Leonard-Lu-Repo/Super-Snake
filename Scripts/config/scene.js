@@ -4,8 +4,8 @@ var config;
     (function (Scene) {
         Scene[Scene["START"] = 0] = "START";
         Scene[Scene["GAME"] = 1] = "GAME";
-        Scene[Scene["SECONDLEVEL"] = 2] = "SECONDLEVEL";
-        Scene[Scene["OVER"] = 3] = "OVER";
+        Scene[Scene["OVER"] = 2] = "OVER";
+        Scene[Scene["WIN"] = 3] = "WIN";
     })(Scene = config.Scene || (config.Scene = {}));
 })(config || (config = {}));
 //# sourceMappingURL=scene.js.map

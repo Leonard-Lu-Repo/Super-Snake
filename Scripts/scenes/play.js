@@ -323,14 +323,20 @@ var scenes;
             this.paused = true;
             this.snakeHead.stopTimer();
             setTimeout(function () {
-                // Load new level data
-                _this.loadLevel(_this.currentLevel.getLevelNo() + 1);
-                // Reset everything
-                _this.resetGame();
-                _this.completeLabel.visible = false;
-                _this.thumbsUp.visible = false;
-                // Unpause
-                _this.paused = false;
+                if (_this.currentLevel.getLevelNo() < 5) {
+                    // Load new level data
+                    _this.loadLevel(_this.currentLevel.getLevelNo() + 1);
+                    // Reset everything
+                    _this.resetGame();
+                    _this.completeLabel.visible = false;
+                    _this.thumbsUp.visible = false;
+                    // Unpause
+                    _this.paused = false;
+                }
+                else {
+                    // If finished last level, go to Win Scene
+                    objects.Game.currentScene = config.Scene.WIN;
+                }
             }, 2000);
         };
         // Clears all game objects from screen (except for the snake)
