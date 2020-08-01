@@ -13,18 +13,15 @@ module objects {
         private nextCoords:Array<number>;
         private timer;
         public timeToUpdateBodies:boolean = false;
-        public imageString:string;
+        private blood:createjs.Bitmap;
+        public bloodContainer:createjs.Container;
 
-        public setImage(newImage:string):void{
-            this.imageString=newImage;
-        }
-        public getImage():string{
-            return this.imageString;
-        }
         // Constructor
         constructor(assetManager:createjs.LoadQueue, imageString:string) {
             super(assetManager, imageString);         
             this.direction=new managers.Keyboard();
+            this.blood=new createjs.Bitmap("./Assets/blood.png");
+            this.bloodContainer=new createjs.Container();
             this.Start();
         }
 
@@ -73,6 +70,8 @@ module objects {
         } 
         public stopTimer():void{
             clearTimeout(this.timer); 
+            this.blood.rotation=this.rotation;
+            this.bloodContainer.addChild(this.blood)
         }
         public Move():void {
              //according to the keyboard event to decide direction to change snake's move
@@ -107,6 +106,8 @@ module objects {
             this.nextCoords=this.getGridPosition(this.nextGridPosX,this.nextGridPosY);
             this.nextX=this.nextCoords[0];
             this.nextY=this.nextCoords[1];
+            this.blood.x=this.x;
+            this.blood.y=this.y;
             objects.Game.snakeHeadPos=new Array(this.x,this.y);
             //Update the other bodies
             this.timeToUpdateBodies = true;

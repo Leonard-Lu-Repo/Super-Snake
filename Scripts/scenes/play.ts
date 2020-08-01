@@ -226,10 +226,10 @@ module scenes {
             objects.Game.speedUpShoeCollision=this.speedUpShoe.shoeCollision;
             if(this.speedUpShoe.shoeCollision){
                 //remove speed up shoe and add speed down shoe after 12s
+                clearTimeout(this.speedUpTimer);
                 this.removeChild(this.speedUpShoe);
-                clearTimeout(this.speedDownTimer);
-                this.speedUpTimer=setTimeout(()=>{
-                    this.speedDownShoe.ResetShoeLocation();
+                this.speedDownShoe.ResetShoeLocation();
+                this.speedDownTimer=setTimeout(()=>{
                     this.addChild(this.speedDownShoe);
                 },12000);
             }
@@ -242,7 +242,7 @@ module scenes {
                 //remove speed down shoe and add speed up shoe after 12s
                 clearTimeout(this.speedUpTimer);
                 this.removeChild(this.speedDownShoe);
-                this.speedDownTimer=setTimeout(()=>{
+                this.speedUpTimer=setTimeout(()=>{
                     this.speedUpShoe.ResetShoeLocation();
                     this.addChild(this.speedUpShoe);
                 },12000);
@@ -334,9 +334,11 @@ module scenes {
                 this.snakeDead.y=this.snakeHead.y;
                 this.snakeDead.rotation=this.snakeHead.rotation;
                 this.snakeHead.Reset();
+                this.addChild(this.snakeHead.bloodContainer);
                 this.addChild(this.snakeDead);
                 setTimeout(()=>{
                     this.removeChild(this.snakeDead);
+                    this.removeChild(this.snakeHead.bloodContainer);
                     this.processHit();
 
                 },2000);
@@ -432,8 +434,6 @@ module scenes {
             this.snakeHead.startTimer();
 
             this.addChild(this.mouse);
-            clearTimeout(this.speedDownTimer);
-            clearTimeout(this.speedUpTimer);
             if (this.speedUpShoeAppear) {
                 setTimeout(()=>{
                     this.addChild(this.speedUpShoe);

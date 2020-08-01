@@ -191,10 +191,10 @@ var scenes;
             objects.Game.speedUpShoeCollision = this.speedUpShoe.shoeCollision;
             if (this.speedUpShoe.shoeCollision) {
                 //remove speed up shoe and add speed down shoe after 12s
+                clearTimeout(this.speedUpTimer);
                 this.removeChild(this.speedUpShoe);
-                clearTimeout(this.speedDownTimer);
-                this.speedUpTimer = setTimeout(function () {
-                    _this.speedDownShoe.ResetShoeLocation();
+                this.speedDownShoe.ResetShoeLocation();
+                this.speedDownTimer = setTimeout(function () {
                     _this.addChild(_this.speedDownShoe);
                 }, 12000);
             }
@@ -207,7 +207,7 @@ var scenes;
                 //remove speed down shoe and add speed up shoe after 12s
                 clearTimeout(this.speedUpTimer);
                 this.removeChild(this.speedDownShoe);
-                this.speedDownTimer = setTimeout(function () {
+                this.speedUpTimer = setTimeout(function () {
                     _this.speedUpShoe.ResetShoeLocation();
                     _this.addChild(_this.speedUpShoe);
                 }, 12000);
@@ -296,9 +296,11 @@ var scenes;
                 this.snakeDead.y = this.snakeHead.y;
                 this.snakeDead.rotation = this.snakeHead.rotation;
                 this.snakeHead.Reset();
+                this.addChild(this.snakeHead.bloodContainer);
                 this.addChild(this.snakeDead);
                 setTimeout(function () {
                     _this.removeChild(_this.snakeDead);
+                    _this.removeChild(_this.snakeHead.bloodContainer);
                     _this.processHit();
                 }, 2000);
             }
@@ -385,8 +387,6 @@ var scenes;
             this.snakeHead.Move();
             this.snakeHead.startTimer();
             this.addChild(this.mouse);
-            clearTimeout(this.speedDownTimer);
-            clearTimeout(this.speedUpTimer);
             if (this.speedUpShoeAppear) {
                 setTimeout(function () {
                     _this.addChild(_this.speedUpShoe);

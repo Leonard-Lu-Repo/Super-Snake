@@ -25,15 +25,11 @@ var objects;
             _this.snakeSpeed = 200;
             _this.timeToUpdateBodies = false;
             _this.direction = new managers.Keyboard();
+            _this.blood = new createjs.Bitmap("./Assets/blood.png");
+            _this.bloodContainer = new createjs.Container();
             _this.Start();
             return _this;
         }
-        SnakeHead.prototype.setImage = function (newImage) {
-            this.imageString = newImage;
-        };
-        SnakeHead.prototype.getImage = function () {
-            return this.imageString;
-        };
         SnakeHead.prototype.Start = function () {
         };
         SnakeHead.prototype.Update = function () {
@@ -78,6 +74,8 @@ var objects;
         };
         SnakeHead.prototype.stopTimer = function () {
             clearTimeout(this.timer);
+            this.blood.rotation = this.rotation;
+            this.bloodContainer.addChild(this.blood);
         };
         SnakeHead.prototype.Move = function () {
             //according to the keyboard event to decide direction to change snake's move
@@ -112,6 +110,8 @@ var objects;
             this.nextCoords = this.getGridPosition(this.nextGridPosX, this.nextGridPosY);
             this.nextX = this.nextCoords[0];
             this.nextY = this.nextCoords[1];
+            this.blood.x = this.x;
+            this.blood.y = this.y;
             objects.Game.snakeHeadPos = new Array(this.x, this.y);
             //Update the other bodies
             this.timeToUpdateBodies = true;
