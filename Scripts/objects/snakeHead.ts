@@ -13,7 +13,14 @@ module objects {
         private nextCoords:Array<number>;
         private timer;
         public timeToUpdateBodies:boolean = false;
+        public imageString:string;
 
+        public setImage(newImage:string):void{
+            this.imageString=newImage;
+        }
+        public getImage():string{
+            return this.imageString;
+        }
         // Constructor
         constructor(assetManager:createjs.LoadQueue, imageString:string) {
             super(assetManager, imageString);         

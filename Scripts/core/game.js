@@ -29,6 +29,7 @@
         { id: "replayButton", src: "./Assets/TryAgainBtn.png" },
         { id: "eagle", src: "./Assets/eagle.png" },
         { id: "eaglecatchsnake", src: "./Assets/eaglecatchsnake.png" },
+        { id: "snakeDead", src: "./Assets/snakeDead.png" }
     ];
     function Init() {
         console.log("Initializing Start");

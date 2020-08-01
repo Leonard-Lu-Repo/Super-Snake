@@ -11,6 +11,7 @@ module scenes {
         private completeLabel: objects.Label;
         private snakeHead:objects.SnakeHead;
         private snakeList:objects.SnakeBody[]=new Array();
+        private snakeDead:objects.SnakeHead;
         private score:number=0;
         private currentLives:number;
         private coins:objects.Coin[]=new Array();
@@ -65,9 +66,11 @@ module scenes {
             this.snakeHead=new objects.SnakeHead(this.assetManager,"snakeHead");
             this.snakeList[0]=new objects.SnakeBody(this.assetManager,"snakeBody");
             this.mouse=new objects.Mouse(this.assetManager);
+            this.snakeDead=new objects.SnakeHead(this.assetManager,"snakeDead");
             for (let i=0; i<this.bombNo; i++) {
                 this.bomb[i] = new objects.Bomb(this.assetManager);
             }
+
             this.eagle = new objects.Eagle(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
             this.eaglecatch = new objects.Catch(this.assetManager);
@@ -300,8 +303,13 @@ module scenes {
             }
             if(selfCollision){
                 console.log("Self collided");
+                this.snakeDead.x=this.snakeHead.x;
+                this.snakeDead.y=this.snakeHead.y;
+                this.snakeDead.rotation=this.snakeHead.rotation;
                 this.snakeHead.stopTimer();
+                this.addChild(this.snakeDead);
                 setTimeout(()=>{
+                    this.removeChild(this.snakeDead);
                     this.processHit();
                 }, 2000);
                 console.log(this.currentLives);
@@ -319,9 +327,15 @@ module scenes {
             }
             if(collision){
                 createjs.Sound.play("SnakeHitWall");
+                this.snakeDead.x=this.snakeHead.x;
+                this.snakeDead.y=this.snakeHead.y;
+                this.snakeDead.rotation=this.snakeHead.rotation;
                 this.snakeHead.Reset();
+                this.addChild(this.snakeDead);
                 setTimeout(()=>{
+                    this.removeChild(this.snakeDead);
                     this.processHit();
+
                 },2000);
             }
         }

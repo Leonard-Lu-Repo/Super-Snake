@@ -48,6 +48,7 @@ var scenes;
             this.snakeHead = new objects.SnakeHead(this.assetManager, "snakeHead");
             this.snakeList[0] = new objects.SnakeBody(this.assetManager, "snakeBody");
             this.mouse = new objects.Mouse(this.assetManager);
+            this.snakeDead = new objects.SnakeHead(this.assetManager, "snakeDead");
             for (var i = 0; i < this.bombNo; i++) {
                 this.bomb[i] = new objects.Bomb(this.assetManager);
             }
@@ -265,8 +266,13 @@ var scenes;
             }
             if (selfCollision) {
                 console.log("Self collided");
+                this.snakeDead.x = this.snakeHead.x;
+                this.snakeDead.y = this.snakeHead.y;
+                this.snakeDead.rotation = this.snakeHead.rotation;
                 this.snakeHead.stopTimer();
+                this.addChild(this.snakeDead);
                 setTimeout(function () {
+                    _this.removeChild(_this.snakeDead);
                     _this.processHit();
                 }, 2000);
                 console.log(this.currentLives);
@@ -284,8 +290,13 @@ var scenes;
             }
             if (collision) {
                 createjs.Sound.play("SnakeHitWall");
+                this.snakeDead.x = this.snakeHead.x;
+                this.snakeDead.y = this.snakeHead.y;
+                this.snakeDead.rotation = this.snakeHead.rotation;
                 this.snakeHead.Reset();
+                this.addChild(this.snakeDead);
                 setTimeout(function () {
+                    _this.removeChild(_this.snakeDead);
                     _this.processHit();
                 }, 2000);
             }

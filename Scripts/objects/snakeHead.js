@@ -28,6 +28,12 @@ var objects;
             _this.Start();
             return _this;
         }
+        SnakeHead.prototype.setImage = function (newImage) {
+            this.imageString = newImage;
+        };
+        SnakeHead.prototype.getImage = function () {
+            return this.imageString;
+        };
         SnakeHead.prototype.Start = function () {
         };
         SnakeHead.prototype.Update = function () {
