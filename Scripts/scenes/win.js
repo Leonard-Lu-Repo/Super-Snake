@@ -23,8 +23,8 @@ var scenes;
         }
         WinScene.prototype.Start = function () {
             // Initialize variables
-            this.congratsLabel = new objects.Label("Congratulations!", "60px", "Comic", "FF9A36", 480, 240, true);
-            this.subLabel = new objects.Label("You completed all 5 levels!", "35px", "Comic", "FF9A36", 480, 280, true);
+            this.congratsLabel = new objects.Label("Congratulations!", "60px", "Comic", "#FF9A36", 480, 240, true);
+            this.subLabel = new objects.Label("You completed all 5 levels!", "35px", "Comic", "#FF9A36", 480, 280, true);
             this.background = new objects.Background(this.assetManager, "background");
             this.mainButton = new objects.Button(this.assetManager, "mainButton", 400, 340);
             this.Main();

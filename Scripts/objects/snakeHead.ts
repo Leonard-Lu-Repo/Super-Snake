@@ -79,20 +79,24 @@ module objects {
              if(this.direction.moveLeft){
                 this.gridPosX--;
                 this.nextGridPosX=this.gridPosX-1;
+                this.nextGridPosY=this.gridPosY;
                 this.rotation=0;
             }
             if(this.direction.moveRight){
                this.gridPosX++;
                this.nextGridPosX=this.gridPosX+1;
+               this.nextGridPosY=this.gridPosY;
                this.rotation=180;
             }
             if(this.direction.moveDown){
                 this.gridPosY++;
+                this.nextGridPosX=this.gridPosX;
                 this.nextGridPosY=this.gridPosY+1;
                 this.rotation=-90;
             }
             if(this.direction.moveUp){
                 this.gridPosY--;
+                this.nextGridPosX=this.gridPosX;
                 this.nextGridPosY=this.gridPosY-1;
                 this.rotation=90;
             }

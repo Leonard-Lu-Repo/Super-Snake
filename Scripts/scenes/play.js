@@ -69,7 +69,6 @@ var scenes;
             this.snakeHead.Update();
             this.eagle.Update();
             this.eaglecatch.Update();
-            this.DetectSnakeSelfCollision(); //If this method is under timeToUpdateBodies condition, then it doesn't work
             this.DetectEatMouse(); /*If this method is under timeToUpdateBodies condition, then it will cause snake body
                                     appear at top left corner when adding new bodies, because snake head timer has a lower refresh
                                     frequence than createjs ticker*/
@@ -78,6 +77,7 @@ var scenes;
                 this.UpdateSnakeBodies();
                 this.DetectBombCollision();
                 this.DetectEagleCollision();
+                this.DetectSnakeSelfCollision();
                 this.DetectLife();
                 this.DetectCoin();
                 this.DetectBoundary();
@@ -278,7 +278,6 @@ var scenes;
                     _this.removeChild(_this.snakeDead);
                     _this.processHit();
                 }, 2000);
-                console.log(this.currentLives);
             }
         };
         PlayScene.prototype.DetectBoundary = function () {
@@ -386,6 +385,8 @@ var scenes;
             this.snakeHead.Move();
             this.snakeHead.startTimer();
             this.addChild(this.mouse);
+            clearTimeout(this.speedDownTimer);
+            clearTimeout(this.speedUpTimer);
             if (this.speedUpShoeAppear) {
                 setTimeout(function () {
                     _this.addChild(_this.speedUpShoe);
