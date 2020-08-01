@@ -209,7 +209,7 @@ module scenes {
                 this.snakeHead.stopTimer();
                 this.eagle.Reset();
 
-                createjs.Sound.play("explosion");  //need to change sound for eagle catch snake
+                createjs.Sound.play("SnakeHitsEagle");  //need to change sound for eagle catch snake
                 this.processHit();
                 console.log("Eagle ate the snake");
                 
@@ -263,7 +263,7 @@ module scenes {
                     }
                 }
                 if(lifeCollision) {                    
-                    createjs.Sound.play("SnakeHitsLife");
+                    createjs.Sound.play("SnakeHitsEagle");
                     this.removeChild(this.lives[lifeTouched]);
                     this.lives.splice(lifeTouched, 1);
                     this.currentLives++;
@@ -285,6 +285,10 @@ module scenes {
                 }
             }
             if (coinCollision) {
+                createjs.Sound.stop();
+                // SnakeHitCoin
+                createjs.Sound.play("SnakeHitCoin");
+                
                 // TODO: Add sound
                 this.removeChild(this.coins[coinTouched]);
                 this.coins.splice(coinTouched, 1);

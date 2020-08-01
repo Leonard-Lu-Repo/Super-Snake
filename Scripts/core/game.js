@@ -42,8 +42,9 @@
         createjs.Sound.registerSound("./Assets/HomeScreenSound.mp3", "HomeScreenSound");
         createjs.Sound.registerSound("./Assets/Level-complete-sound-effect.mp3", "LevelCompleteSound");
         createjs.Sound.registerSound("./Assets/snake_eatmice.wav", "SnakeEatMiceSound");
-        createjs.Sound.registerSound("./Assets/snake_hitsEagle.wav", "SnakeHitsLife");
+        createjs.Sound.registerSound("./Assets/snake_hitsEagle.wav", "SnakeHitsEagle");
         createjs.Sound.registerSound("./Assets/snakehitWall.wav", "SnakeHitWall");
+        createjs.Sound.registerSound("./Assets/snakeHitCoin.wav", "SnakeHitCoin");
         assetManager.on("complete", Start, this);
     }
     function Start() {
