@@ -20,7 +20,7 @@ module managers{
         }
 
         public static squaredRadiusCheck(obj1:objects.GameObject,
-                                         obj2:createjs.Container):boolean
+                                         obj2:objects.GameObject):boolean
         {
             let objetRad=obj1.halfH+obj2.getBounds().height*0.5;
             let sqrDistance=Math.pow( Math.abs((obj1.x-obj2.x)),2)+Math.pow(Math.abs(obj1.y-obj2.y),2);

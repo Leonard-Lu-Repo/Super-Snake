@@ -18,19 +18,23 @@ var objects;
         // Constructor
         function SnakeHead(assetManager, imageString) {
             var _this = _super.call(this, assetManager, imageString) || this;
-            _this.gridPosX = 0;
+            _this.gridPosX = 3;
             _this.gridPosY = 0;
             _this.nextGridPosX = 0;
             _this.nextGridPosY = 0;
             _this.snakeSpeed = 200;
             _this.timeToUpdateBodies = false;
             _this.direction = new managers.Keyboard();
-            _this.blood = new createjs.Bitmap("./Assets/blood.png");
-            _this.bloodContainer = new createjs.Container();
             _this.Start();
             return _this;
         }
         SnakeHead.prototype.Start = function () {
+            this.blood = new createjs.Bitmap("./Assets/blood.png");
+            this.blood.regX = this.blood.getBounds().width * 0.5;
+            this.blood.regY = this.blood.getBounds().height * 0.5;
+            this.snakeDead = new createjs.Bitmap("./Assets/snakeDead.png");
+            this.snakeDead.regX = this.snakeDead.getBounds().width * 0.5;
+            this.snakeDead.regY = this.snakeDead.getBounds().height * 0.5;
         };
         SnakeHead.prototype.Update = function () {
         };
@@ -75,7 +79,7 @@ var objects;
         SnakeHead.prototype.stopTimer = function () {
             clearTimeout(this.timer);
             this.blood.rotation = this.rotation;
-            this.bloodContainer.addChild(this.blood);
+            this.snakeDead.rotation = this.rotation;
         };
         SnakeHead.prototype.Move = function () {
             //according to the keyboard event to decide direction to change snake's move
@@ -112,12 +116,14 @@ var objects;
             this.nextY = this.nextCoords[1];
             this.blood.x = this.x;
             this.blood.y = this.y;
+            this.snakeDead.x = this.x;
+            this.snakeDead.y = this.y;
             objects.Game.snakeHeadPos = new Array(this.x, this.y);
             //Update the other bodies
             this.timeToUpdateBodies = true;
         };
         SnakeHead.prototype.ResetSnakeStatus = function () {
-            this.gridPosX = 0;
+            this.gridPosX = 3;
             this.gridPosY = 0;
             this.snakeSpeed = 200;
             this.direction.moveUp = false;

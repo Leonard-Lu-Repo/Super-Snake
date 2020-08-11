@@ -2,7 +2,7 @@ module objects {
     export class SnakeHead extends objects.GameObject {
        // Variables
         private direction:managers.Keyboard; 
-        private gridPosX=0;
+        private gridPosX=3;
         private gridPosY=0;
         private nextGridPosX=0;
         private nextGridPosY=0;  
@@ -13,19 +13,24 @@ module objects {
         private nextCoords:Array<number>;
         private timer;
         public timeToUpdateBodies:boolean = false;
-        private blood:createjs.Bitmap;
-        public bloodContainer:createjs.Container;
+        public blood:createjs.Bitmap;
+        public snakeDead:createjs.Bitmap;
+
 
         // Constructor
         constructor(assetManager:createjs.LoadQueue, imageString:string) {
             super(assetManager, imageString);         
             this.direction=new managers.Keyboard();
-            this.blood=new createjs.Bitmap("./Assets/blood.png");
-            this.bloodContainer=new createjs.Container();
             this.Start();
         }
 
         public Start():void {
+            this.blood=new createjs.Bitmap("./Assets/blood.png");
+            this.blood.regX=this.blood.getBounds().width*0.5;
+            this.blood.regY=this.blood.getBounds().height*0.5;
+            this.snakeDead=new createjs.Bitmap("./Assets/snakeDead.png");
+            this.snakeDead.regX=this.snakeDead.getBounds().width*0.5;
+            this.snakeDead.regY=this.snakeDead.getBounds().height*0.5;
         }
         public Update():void {   
         }
@@ -71,7 +76,7 @@ module objects {
         public stopTimer():void{
             clearTimeout(this.timer); 
             this.blood.rotation=this.rotation;
-            this.bloodContainer.addChild(this.blood)
+            this.snakeDead.rotation=this.rotation;
         }
         public Move():void {
              //according to the keyboard event to decide direction to change snake's move
@@ -108,12 +113,14 @@ module objects {
             this.nextY=this.nextCoords[1];
             this.blood.x=this.x;
             this.blood.y=this.y;
+            this.snakeDead.x=this.x;
+            this.snakeDead.y=this.y;
             objects.Game.snakeHeadPos=new Array(this.x,this.y);
             //Update the other bodies
             this.timeToUpdateBodies = true;
        }
         public ResetSnakeStatus() {
-            this.gridPosX = 0;
+            this.gridPosX = 3;
             this.gridPosY = 0;
             this.snakeSpeed=200;
             this.direction.moveUp = false;
@@ -126,5 +133,6 @@ module objects {
         public getGridCoords():Array<number> {
             return new Array(this.gridPosX,this.gridPosY);
         }
+        
     }
 }

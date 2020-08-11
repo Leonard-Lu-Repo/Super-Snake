@@ -34,7 +34,7 @@ var scenes;
             // Intialize our variables
             objects.Game.usedGridPositions = new Array();
             this.background = new objects.Background(this.assetManager, "background");
-            this.thornsWall = new objects.Background(this.assetManager, "thornsWall", 0, 60);
+            this.thornsWall = new objects.Background(this.assetManager, "thornsWall", 0, 0);
             this.instruction = new objects.Background(this.assetManager, "instruction", 0, 650);
             this.levelLabel = new objects.Label("Level " + this.currentLevel.getLevelNo(), "40px", "Comic", "#FF9A36", 100, 40, true);
             this.scoreLabel = new objects.Label(this.score.toString() + "/" + this.targetScore.toString(), "40px", "Comic", "#FF9A36", 700, 40, true);
@@ -48,15 +48,12 @@ var scenes;
             this.snakeHead = new objects.SnakeHead(this.assetManager, "snakeHead");
             this.snakeList[0] = new objects.SnakeBody(this.assetManager, "snakeBody");
             this.mouse = new objects.Mouse(this.assetManager);
-            this.snakeDead = new objects.SnakeHead(this.assetManager, "snakeDead");
             for (var i = 0; i < this.bombNo; i++) {
                 this.bomb[i] = new objects.Bomb(this.assetManager);
             }
             this.eagle = new objects.Eagle(this.assetManager);
             this.explosion = new objects.Explosion(this.assetManager);
             this.eaglecatch = new objects.Catch(this.assetManager);
-            this.speedUpShoe = new objects.SpeedShoe(this.assetManager, "speedUpShoe");
-            this.speedDownShoe = new objects.SpeedShoe(this.assetManager, "speedDownShoe");
             this.thumbsUp = new createjs.Bitmap(this.assetManager.getResult("thumbsUp"));
             this.thumbsUp.regX = this.thumbsUp.getBounds().width * 0.5;
             this.thumbsUp.regY = this.thumbsUp.getBounds().height * 0.5;
@@ -66,6 +63,25 @@ var scenes;
             this.Main();
         };
         PlayScene.prototype.Update = function () {
+            if (this.currentLevel.getSaw()) {
+                this.saw.Update();
+            }
+            if (this.currentLevel.getFort()) {
+                if (this.fort1.bullets.y >= this.fort1.y + 10 || this.fort2.bullets.y >= this.fort2.bullets.y + 10) {
+                    this.fort1.bullets.y += 4;
+                    this.fort2.bullets.y += 4;
+                }
+                if (this.fort1.bullets.y > 800 || this.fort2.bullets.y > 800) {
+                    this.fort1.bullets.y = this.fort2.bullets.y = this.fort1.y + 10;
+                }
+                if (this.fort3.bullets.x <= this.fort3.x - 10 || this.fort4.bullets.x <= this.fort4.bullets.x - 10) {
+                    this.fort3.bullets.x -= 4;
+                    this.fort4.bullets.x -= 4;
+                }
+                if (this.fort3.bullets.x < -300 || this.fort4.bullets.x < -300) {
+                    this.fort3.bullets.x = this.fort4.bullets.x = this.fort3.x - 10;
+                }
+            }
             this.snakeHead.Update();
             this.eagle.Update();
             this.eaglecatch.Update();
@@ -81,11 +97,22 @@ var scenes;
                 this.DetectLife();
                 this.DetectCoin();
                 this.DetectBoundary();
-                if (this.speedUpShoeAppear || this.speedDownShoeAppear) {
-                    this.DetectSpeedUpShoe();
-                    this.DetectSpeedDownShoe();
+                if (this.currentLevel.getSaw()) {
+                    this.DetectSaw();
                 }
-                console.log(this.snakeHead.snakeSpeed);
+                if (this.currentLevel.getFort()) {
+                    this.DetectBullet();
+                }
+                if (this.speedUpShoeAppear) {
+                    this.DetectSpeedUpShoe();
+                    console.log("Speed Up: " + this.speedUpShoe.x + " " + this.speedUpShoe.y);
+                    console.log(this.speedUpShoe.shoeCollision);
+                }
+                if (this.speedDownShoeAppear) {
+                    this.DetectSpeedDownShoe();
+                    console.log("Speed Down: " + this.speedDownShoe.x + " " + this.speedDownShoe.y);
+                    console.log(this.speedUpShoe.shoeCollision);
+                }
             }
             // Check if score is achieved
             if (this.score >= this.targetScore && !this.paused) {
@@ -98,22 +125,6 @@ var scenes;
             }
         };
         PlayScene.prototype.Main = function () {
-            //always add background first
-            this.addChild(this.background);
-            this.addChild(this.thornsWall);
-            this.addChild(this.instruction);
-            //add labels
-            this.addChild(this.levelLabel);
-            this.addChild(this.scoreLabel);
-            this.addChild(this.completeLabel);
-            this.completeLabel.visible = false;
-            this.addChild(this.thumbsUp);
-            this.thumbsUp.visible = false;
-            this.addChild(this.lifeLabel);
-            this.addChild(this.lifeIcon);
-            // add objects
-            this.addChild(this.snakeHead);
-            this.addChild(this.eagle);
             this.resetGame();
             this.paused = false;
         };
@@ -167,8 +178,6 @@ var scenes;
             var _this = this;
             var snakeCoords = this.snakeHead.getGridCoords();
             var eagleCoords = this.eagle.getGridCoords();
-            //console.log("eagle W H "+ this.eagle.width+ ", " + this.eagle.height);
-            //console.log("DetectEagleCollision: snake pos: ("+snakeCoords[0]+", " + snakeCoords[1] +")  eagle pos: ("+Math.floor(eagleCoords[0])+", " + Math.floor(eagleCoords[1])+")");
             var xDistance = snakeCoords[0] - Math.floor(eagleCoords[0]);
             var yDistance = snakeCoords[1] - Math.floor(eagleCoords[1]);
             if (xDistance >= 0 && xDistance <= 2 && yDistance >= 0 && yDistance <= 2) {
@@ -192,7 +201,11 @@ var scenes;
             if (this.speedUpShoe.shoeCollision) {
                 //remove speed up shoe and add speed down shoe after 12s
                 clearTimeout(this.speedUpTimer);
+                this.speedUpShoeAppear = false;
                 this.removeChild(this.speedUpShoe);
+                setTimeout(function () { _this.speedUpShoe.shoeCollision = false; objects.Game.speedUpShoeCollision = _this.speedUpShoe.shoeCollision; }, 8000);
+                this.speedDownShoeAppear = true;
+                this.speedDownShoe = new objects.SpeedShoe(this.assetManager, "speedDownShoe");
                 this.speedDownShoe.ResetShoeLocation();
                 this.speedDownTimer = setTimeout(function () {
                     _this.addChild(_this.speedDownShoe);
@@ -205,10 +218,13 @@ var scenes;
             objects.Game.speedDownShoeCollision = this.speedDownShoe.shoeCollision;
             if (this.speedDownShoe.shoeCollision) {
                 //remove speed down shoe and add speed up shoe after 12s
-                clearTimeout(this.speedUpTimer);
+                clearTimeout(this.speedDownTimer);
                 this.removeChild(this.speedDownShoe);
+                this.speedDownShoeAppear = false;
+                setTimeout(function () { _this.speedDownShoe.shoeCollision = false; objects.Game.speedDownShoeCollision = _this.speedDownShoe.shoeCollision; }, 8000);
+                this.speedUpShoeAppear = true;
+                this.speedUpShoe.ResetShoeLocation();
                 this.speedUpTimer = setTimeout(function () {
-                    _this.speedUpShoe.ResetShoeLocation();
                     _this.addChild(_this.speedUpShoe);
                 }, 12000);
             }
@@ -269,13 +285,10 @@ var scenes;
             }
             if (selfCollision) {
                 console.log("Self collided");
-                this.snakeDead.x = this.snakeHead.x;
-                this.snakeDead.y = this.snakeHead.y;
-                this.snakeDead.rotation = this.snakeHead.rotation;
                 this.snakeHead.stopTimer();
-                this.addChild(this.snakeDead);
+                this.addChild(this.snakeHead.snakeDead);
                 setTimeout(function () {
-                    _this.removeChild(_this.snakeDead);
+                    _this.removeChild(_this.snakeHead.snakeDead);
                     _this.processHit();
                 }, 2000);
             }
@@ -292,15 +305,45 @@ var scenes;
             }
             if (collision) {
                 createjs.Sound.play("SnakeHitWall");
-                this.snakeDead.x = this.snakeHead.x;
-                this.snakeDead.y = this.snakeHead.y;
-                this.snakeDead.rotation = this.snakeHead.rotation;
                 this.snakeHead.Reset();
-                this.addChild(this.snakeHead.bloodContainer);
-                this.addChild(this.snakeDead);
+                this.addChild(this.snakeHead.blood);
+                this.addChild(this.snakeHead.snakeDead);
                 setTimeout(function () {
-                    _this.removeChild(_this.snakeDead);
-                    _this.removeChild(_this.snakeHead.bloodContainer);
+                    _this.removeChild(_this.snakeHead.snakeDead);
+                    _this.removeChild(_this.snakeHead.blood);
+                    _this.processHit();
+                }, 2000);
+            }
+        };
+        PlayScene.prototype.DetectSaw = function () {
+            var _this = this;
+            var collision;
+            collision = managers.Collision.squaredRadiusCheck(this.snakeHead, this.saw);
+            if (collision) {
+                this.snakeHead.stopTimer();
+                this.saw.collision = true;
+                this.addChild(this.snakeHead.blood);
+                this.addChild(this.snakeHead.snakeDead);
+                setTimeout(function () {
+                    _this.removeChild(_this.snakeHead.snakeDead);
+                    _this.removeChild(_this.snakeHead.blood);
+                    _this.processHit();
+                }, 2000);
+            }
+        };
+        PlayScene.prototype.DetectBullet = function () {
+            var _this = this;
+            var collision1 = managers.Collision.squaredRadiusCheck(this.snakeHead, this.fort1.bullets);
+            var collision2 = managers.Collision.squaredRadiusCheck(this.snakeHead, this.fort2.bullets);
+            var collision3 = managers.Collision.squaredRadiusCheck(this.snakeHead, this.fort3.bullets);
+            var collision4 = managers.Collision.squaredRadiusCheck(this.snakeHead, this.fort4.bullets);
+            if (collision1 || collision2 || collision3 || collision4) {
+                this.snakeHead.stopTimer();
+                this.addChild(this.snakeHead.blood);
+                this.addChild(this.snakeHead.snakeDead);
+                setTimeout(function () {
+                    _this.removeChild(_this.snakeHead.snakeDead);
+                    _this.removeChild(_this.snakeHead.blood);
                     _this.processHit();
                 }, 2000);
             }
@@ -314,7 +357,6 @@ var scenes;
             this.lifeNo = this.currentLevel.getLifeNo();
             this.coinNo = this.currentLevel.getCoinNo();
             this.speedUpShoeAppear = this.currentLevel.getSpeedUpShoe();
-            this.speedDownShoeAppear = this.currentLevel.getSpeedDownShoe();
         };
         PlayScene.prototype.processHit = function () {
             this.currentLives--;
@@ -323,8 +365,12 @@ var scenes;
                 objects.Game.currentScene = config.Scene.OVER;
                 return;
             }
+            if (this.currentLevel.getSaw()) {
+                this.saw.resetMove();
+            }
             // If we still have lives, reset the level
             this.clearGameObjects();
+            this.speedUpShoeAppear = this.currentLevel.getSpeedUpShoe();
             this.resetGame();
         };
         PlayScene.prototype.moveToNextLevel = function () {
@@ -333,6 +379,7 @@ var scenes;
             // First pause everything and show results
             objects.Game.achieveTargetScore = true;
             this.clearGameObjects();
+            this.speedDownShoeAppear = false;
             this.completeLabel.visible = true;
             this.thumbsUp.visible = true;
             this.paused = true;
@@ -356,11 +403,13 @@ var scenes;
         };
         // Clears all game objects from screen (except for the snake)
         PlayScene.prototype.clearGameObjects = function () {
+            //this.removeAllChildren();
             this.removeChild(this.mouse);
             this.removeChild(this.speedDownShoe);
             this.removeChild(this.speedUpShoe);
             clearTimeout(this.speedDownTimer);
             clearTimeout(this.speedUpTimer);
+            this.removeChild(this.saw);
             for (var i = 0; i < this.bombNo; i++) {
                 this.removeChild(this.bomb[i]);
             }
@@ -374,6 +423,7 @@ var scenes;
         // Handles resetting of all game objects at beginning of each level
         PlayScene.prototype.resetGame = function () {
             var _this = this;
+            this.addChild(this.background);
             this.score = 0;
             objects.Game.usedGridPositions = new Array();
             this.scoreLabel.text = this.score.toString() + "/" + this.targetScore.toString();
@@ -385,18 +435,56 @@ var scenes;
                 }
             }
             this.snakeHead.Move();
+            this.snakeHead.snakeSpeed = 200;
             this.snakeHead.startTimer();
+            if (this.currentLevel.getSaw()) {
+                this.saw = new objects.Saw(this.assetManager);
+                this.addChild(this.saw);
+            }
+            if (this.currentLevel.getFort()) {
+                this.fort1 = new objects.Fort(this.assetManager, 250, 90);
+                this.fort1.bullets.x = this.fort1.x;
+                this.fort1.bullets.y = this.fort1.y + 10;
+                this.fort2 = new objects.Fort(this.assetManager, 700, 90);
+                this.fort2.bullets.x = this.fort2.x;
+                this.fort2.bullets.y = this.fort2.y + 10;
+                this.fort3 = new objects.Fort(this.assetManager, 920, 250);
+                this.fort3.rotation = 90;
+                this.fort3.bullets.x = this.fort3.x - 10;
+                this.fort3.bullets.y = this.fort3.y;
+                this.fort4 = new objects.Fort(this.assetManager, 920, 450);
+                this.fort4.rotation = 90;
+                this.fort4.bullets.x = this.fort4.x - 10;
+                this.fort4.bullets.y = this.fort4.y;
+                this.addChild(this.fort1);
+                this.addChild(this.fort2);
+                this.addChild(this.fort3);
+                this.addChild(this.fort4);
+                this.addChild(this.fort1.bullets);
+                this.addChild(this.fort2.bullets);
+                this.addChild(this.fort3.bullets);
+                this.addChild(this.fort4.bullets);
+            }
+            this.addChild(this.thornsWall);
+            this.addChild(this.instruction);
+            this.addChild(this.levelLabel);
+            this.addChild(this.scoreLabel);
+            this.addChild(this.completeLabel);
+            this.completeLabel.visible = false;
+            this.addChild(this.thumbsUp);
+            this.thumbsUp.visible = false;
+            this.addChild(this.lifeLabel);
+            this.addChild(this.lifeIcon);
+            this.addChild(this.snakeHead);
+            this.addChild(this.eagle);
             this.addChild(this.mouse);
             if (this.speedUpShoeAppear) {
+                this.speedUpShoe = new objects.SpeedShoe(this.assetManager, "speedUpShoe");
                 setTimeout(function () {
                     _this.addChild(_this.speedUpShoe);
                 }, 8000);
             }
-            if (this.speedDownShoeAppear) {
-                setTimeout(function () {
-                    _this.addChild(_this.speedDownShoe);
-                }, 8000);
-            }
+            this.speedDownShoeAppear = false;
             this.bomb = new Array();
             for (var i = 0; i < this.bombNo; i++) {
                 this.bomb[i] = new objects.Bomb(this.assetManager);

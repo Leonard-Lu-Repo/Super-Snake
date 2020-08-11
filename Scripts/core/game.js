@@ -29,7 +29,9 @@
         { id: "replayButton", src: "./Assets/TryAgainBtn.png" },
         { id: "eagle", src: "./Assets/eagle.png" },
         { id: "eaglecatchsnake", src: "./Assets/eaglecatchsnake.png" },
-        { id: "snakeDead", src: "./Assets/snakeDead.png" }
+        { id: "saw", src: "./Assets/saw.png" },
+        { id: "fort", src: "./Assets/fort.png" },
+        { id: "bullet", src: "./Assets/bullet.png" }
     ];
     function Init() {
         console.log("Initializing Start");
