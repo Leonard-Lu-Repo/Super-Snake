@@ -221,13 +221,17 @@ module scenes {
                 this.snakeHead.stopTimer();
                 this.eagle.Reset();
 
-                createjs.Sound.play("SnakeHitsEagle");  //need to change sound for eagle catch snake
-                this.processHit();
+                createjs.Sound.play("SnakeHitsEagle");
                 console.log("Eagle ate the snake");
+
+                this.snakeHead.visible = false;
+                for (let i = 0; i < this.snakeList.length; i++) {
+                    this.snakeList[i].visible = false;
+                }
                 
                 setTimeout(()=>{
-                    
                     this.eaglecatch.Dispear();
+                    this.processHit();
                 }, 2000);
             }
         }
@@ -416,6 +420,10 @@ module scenes {
             this.clearGameObjects();
             this.speedUpShoeAppear = this.currentLevel.getSpeedUpShoe();
             this.resetGame();
+            this.snakeHead.visible = true;
+            for (let i = 0; i < this.snakeList.length; i++) {
+                this.snakeList[i].visible = true;
+            }
         }
 
         private moveToNextLevel():void {

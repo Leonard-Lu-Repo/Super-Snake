@@ -186,11 +186,15 @@ var scenes;
                 this.eaglecatch.Catch(this.eagle.x, this.eagle.y);
                 this.snakeHead.stopTimer();
                 this.eagle.Reset();
-                createjs.Sound.play("SnakeHitsEagle"); //need to change sound for eagle catch snake
-                this.processHit();
+                createjs.Sound.play("SnakeHitsEagle");
                 console.log("Eagle ate the snake");
+                this.snakeHead.visible = false;
+                for (var i = 0; i < this.snakeList.length; i++) {
+                    this.snakeList[i].visible = false;
+                }
                 setTimeout(function () {
                     _this.eaglecatch.Dispear();
+                    _this.processHit();
                 }, 2000);
             }
         };
@@ -372,6 +376,10 @@ var scenes;
             this.clearGameObjects();
             this.speedUpShoeAppear = this.currentLevel.getSpeedUpShoe();
             this.resetGame();
+            this.snakeHead.visible = true;
+            for (var i = 0; i < this.snakeList.length; i++) {
+                this.snakeList[i].visible = true;
+            }
         };
         PlayScene.prototype.moveToNextLevel = function () {
             var _this = this;
