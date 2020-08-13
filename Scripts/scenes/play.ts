@@ -282,7 +282,7 @@ module scenes {
                     }
                 }
                 if(lifeCollision) {                    
-                    createjs.Sound.play("SnakeHitsEagle");
+                    createjs.Sound.play("ExtraLife");
                     this.removeChild(this.lives[lifeTouched]);
                     this.lives.splice(lifeTouched, 1);
                     this.currentLives++;

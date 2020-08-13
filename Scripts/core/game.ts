@@ -56,6 +56,7 @@
         createjs.Sound.registerSound("./Assets/snake_hitsEagle.wav", "SnakeHitsEagle");
         createjs.Sound.registerSound("./Assets/snakehitWall.wav", "SnakeHitWall");
         createjs.Sound.registerSound("./Assets/snakeHitCoin.wav", "SnakeHitCoin");
+        createjs.Sound.registerSound("./Assets/extraLife.wav", "ExtraLife");
         
         assetManager.on("complete", Start, this);
     }
