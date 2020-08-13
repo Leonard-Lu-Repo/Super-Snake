@@ -29,14 +29,8 @@ var objects;
             this.regY = this.getBounds().height * 0.5;
         };
         Fort.prototype.Update = function () {
-            //this.Move();
         };
         Fort.prototype.Move = function () {
-            /*  this.y+=1;
-             if(this.y>=90){
-                 this.y=90;
-                 this.bullets.y+=4;
-             } */
         };
         return Fort;
     }(objects.GameObject));

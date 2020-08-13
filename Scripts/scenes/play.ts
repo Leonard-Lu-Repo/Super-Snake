@@ -92,15 +92,15 @@ module scenes {
             }
             if(this.currentLevel.getFort()){
                 if(this.fort1.bullets.y>=this.fort1.y+10||this.fort2.bullets.y>=this.fort2.bullets.y+10){
-                    this.fort1.bullets.y+=4;
-                    this.fort2.bullets.y+=4;
+                    this.fort1.bullets.y+=2;
+                    this.fort2.bullets.y+=2;
                 }
                 if(this.fort1.bullets.y>800||this.fort2.bullets.y>800){
                     this.fort1.bullets.y=this.fort2.bullets.y=this.fort1.y+10;
                 }
                 if(this.fort3.bullets.x<=this.fort3.x-10||this.fort4.bullets.x<=this.fort4.bullets.x-10){
-                    this.fort3.bullets.x-=4;
-                    this.fort4.bullets.x-=4;
+                    this.fort3.bullets.x-=2;
+                    this.fort4.bullets.x-=2;
                 }
                 if(this.fort3.bullets.x<-300||this.fort4.bullets.x<-300){
                     this.fort3.bullets.x=this.fort4.bullets.x=this.fort3.x-10;
@@ -366,6 +366,7 @@ module scenes {
             let collision:boolean;
             collision=managers.Collision.squaredRadiusCheck(this.snakeHead,this.saw);
             if(collision){
+                createjs.Sound.play("sawSound");
                 this.snakeHead.stopTimer();
                 this.saw.collision=true;
                 this.addChild(this.snakeHead.blood);
@@ -384,6 +385,7 @@ module scenes {
            let collision3=managers.Collision.squaredRadiusCheck(this.snakeHead,this.fort3.bullets);
            let collision4=managers.Collision.squaredRadiusCheck(this.snakeHead,this.fort4.bullets);
             if(collision1||collision2||collision3||collision4){
+                createjs.Sound.play("bulletSound");
                 this.snakeHead.stopTimer();
                 this.addChild(this.snakeHead.blood);
                 this.addChild(this.snakeHead.snakeDead);

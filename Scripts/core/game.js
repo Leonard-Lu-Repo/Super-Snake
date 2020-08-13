@@ -48,6 +48,8 @@
         createjs.Sound.registerSound("./Assets/snakehitWall.wav", "SnakeHitWall");
         createjs.Sound.registerSound("./Assets/snakeHitCoin.wav", "SnakeHitCoin");
         createjs.Sound.registerSound("./Assets/extraLife.wav", "ExtraLife");
+        createjs.Sound.registerSound("./Assets/sawSound.mp3", "sawSound");
+        createjs.Sound.registerSound("./Assets/bulletSound.mp3", "bulletSound");
         assetManager.on("complete", Start, this);
     }
     function Start() {

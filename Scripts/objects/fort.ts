@@ -16,15 +16,9 @@ module objects{
         }
  
          public Update():void { 
-             //this.Move();
         }
         
         public Move():void{
-           /*  this.y+=1;
-            if(this.y>=90){
-                this.y=90;
-                this.bullets.y+=4;
-            } */
             
         }     
 
