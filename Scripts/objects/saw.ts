@@ -23,9 +23,6 @@ module objects{
             if(this.collision==false&&this.x>=20){
                 this.Move();
             }
-            if(this.x>=20){
-                console.log(true);
-            }
             this.stopMove();
          }
         

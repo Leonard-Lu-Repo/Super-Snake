@@ -203,17 +203,8 @@ var scenes;
             this.speedUpShoe.shoeCollision = managers.Collision.AABBCollisionCheck(this.snakeHead, this.speedUpShoe);
             objects.Game.speedUpShoeCollision = this.speedUpShoe.shoeCollision;
             if (this.speedUpShoe.shoeCollision) {
-                //remove speed up shoe and add speed down shoe after 12s
-                clearTimeout(this.speedUpTimer);
-                this.speedUpShoeAppear = false;
                 this.removeChild(this.speedUpShoe);
-                setTimeout(function () { _this.speedUpShoe.shoeCollision = false; objects.Game.speedUpShoeCollision = _this.speedUpShoe.shoeCollision; }, 8000);
-                this.speedDownShoeAppear = true;
-                this.speedDownShoe = new objects.SpeedShoe(this.assetManager, "speedDownShoe");
-                this.speedDownShoe.ResetShoeLocation();
-                this.speedDownTimer = setTimeout(function () {
-                    _this.addChild(_this.speedDownShoe);
-                }, 12000);
+                this.speedUpTimer = setTimeout(function () { _this.speedUpShoe.ResetShoeLocation(); _this.addChild(_this.speedUpShoe); }, 16000);
             }
         };
         PlayScene.prototype.DetectSpeedDownShoe = function () {
@@ -221,16 +212,8 @@ var scenes;
             this.speedDownShoe.shoeCollision = managers.Collision.AABBCollisionCheck(this.snakeHead, this.speedDownShoe);
             objects.Game.speedDownShoeCollision = this.speedDownShoe.shoeCollision;
             if (this.speedDownShoe.shoeCollision) {
-                //remove speed down shoe and add speed up shoe after 12s
-                clearTimeout(this.speedDownTimer);
                 this.removeChild(this.speedDownShoe);
-                this.speedDownShoeAppear = false;
-                setTimeout(function () { _this.speedDownShoe.shoeCollision = false; objects.Game.speedDownShoeCollision = _this.speedDownShoe.shoeCollision; }, 8000);
-                this.speedUpShoeAppear = true;
-                this.speedUpShoe.ResetShoeLocation();
-                this.speedUpTimer = setTimeout(function () {
-                    _this.addChild(_this.speedUpShoe);
-                }, 12000);
+                this.speedDownTimer = setTimeout(function () { _this.speedDownShoe.ResetShoeLocation(); _this.addChild(_this.speedDownShoe); }, 16000);
             }
         };
         PlayScene.prototype.DetectLife = function () {
@@ -363,6 +346,7 @@ var scenes;
             this.lifeNo = this.currentLevel.getLifeNo();
             this.coinNo = this.currentLevel.getCoinNo();
             this.speedUpShoeAppear = this.currentLevel.getSpeedUpShoe();
+            this.speedDownShoeAppear = this.currentLevel.getSpeedDownShoe();
         };
         PlayScene.prototype.processHit = function () {
             this.currentLives--;
@@ -376,7 +360,6 @@ var scenes;
             }
             // If we still have lives, reset the level
             this.clearGameObjects();
-            this.speedUpShoeAppear = this.currentLevel.getSpeedUpShoe();
             this.resetGame();
             this.snakeHead.visible = true;
             for (var i = 0; i < this.snakeList.length; i++) {
@@ -389,7 +372,6 @@ var scenes;
             // First pause everything and show results
             objects.Game.achieveTargetScore = true;
             this.clearGameObjects();
-            this.speedDownShoeAppear = false;
             this.completeLabel.visible = true;
             this.thumbsUp.visible = true;
             this.paused = true;
@@ -432,7 +414,6 @@ var scenes;
         };
         // Handles resetting of all game objects at beginning of each level
         PlayScene.prototype.resetGame = function () {
-            var _this = this;
             this.addChild(this.background);
             this.score = 0;
             objects.Game.usedGridPositions = new Array();
@@ -490,11 +471,12 @@ var scenes;
             this.addChild(this.mouse);
             if (this.speedUpShoeAppear) {
                 this.speedUpShoe = new objects.SpeedShoe(this.assetManager, "speedUpShoe");
-                setTimeout(function () {
-                    _this.addChild(_this.speedUpShoe);
-                }, 8000);
+                this.addChild(this.speedUpShoe);
             }
-            this.speedDownShoeAppear = false;
+            if (this.speedDownShoeAppear) {
+                this.speedDownShoe = new objects.SpeedShoe(this.assetManager, "speedDownShoe");
+                this.addChild(this.speedDownShoe);
+            }
             this.bomb = new Array();
             for (var i = 0; i < this.bombNo; i++) {
                 this.bomb[i] = new objects.Bomb(this.assetManager);

@@ -7,6 +7,7 @@ module objects {
         private lifeNo:number;// Number of lives in level
         private coinNo:number;
         private speedUpShoe:boolean=false;// If there is a speed-up shoe in level
+        private speedDownShoe:boolean=false;// If there is a speed-down shoe in level
         private saw:boolean=false;
         private fort:boolean=false;
 
@@ -20,6 +21,7 @@ module objects {
         public getLifeNo():number {return this.lifeNo;}
         public getCoinNo():number {return this.coinNo;}
         public getSpeedUpShoe():boolean {return this.speedUpShoe;}
+        public getSpeedDownShoe():boolean {return this.speedDownShoe;}
         public getSaw():boolean {return this.saw;}
         public getFort():boolean {return this.fort;}
 
@@ -30,6 +32,7 @@ module objects {
         public setLifeNo(lifeNo:number) {this.lifeNo = lifeNo;}
         public setCoinNo(cointNo:number) {this.coinNo = cointNo;}
         public setSpeedUpShoe(speedUpShoe:boolean) {this.speedUpShoe = speedUpShoe;}
+        public setSpeedDownShoe(speedDownShoe:boolean) {this.speedDownShoe = speedDownShoe;}
         public setSaw(saw:boolean) {this.saw = saw;}
         public setFort(fort:boolean) {this.fort = fort;}
 
@@ -45,6 +48,7 @@ module objects {
                 levelData.setLifeNo(0);
                 levelData.setCoinNo(5);
                 levelData.setSpeedUpShoe(false);
+                levelData.setSpeedDownShoe(false);
                 levelData.setSaw(false);
                 levelData.setFort(false);
             }
@@ -55,6 +59,7 @@ module objects {
                 levelData.setLifeNo(1);
                 levelData.setCoinNo(5);
                 levelData.setSpeedUpShoe(false);
+                levelData.setSpeedDownShoe(false);
                 levelData.setSaw(false);
                 levelData.setFort(false);
             }
@@ -65,6 +70,7 @@ module objects {
                 levelData.setLifeNo(1);
                 levelData.setCoinNo(10);
                 levelData.setSpeedUpShoe(true);
+                levelData.setSpeedDownShoe(true);
                 levelData.setSaw(false);
                 levelData.setFort(false);
             }
@@ -75,6 +81,7 @@ module objects {
                 levelData.setLifeNo(1);
                 levelData.setCoinNo(10);
                 levelData.setSpeedUpShoe(true);
+                levelData.setSpeedDownShoe(true);
                 levelData.setSaw(true);
                 levelData.setFort(false);
             }
@@ -85,6 +92,7 @@ module objects {
                 levelData.setLifeNo(1);
                 levelData.setCoinNo(10);
                 levelData.setSpeedUpShoe(true);
+                levelData.setSpeedDownShoe(true);
                 levelData.setSaw(false);
                 levelData.setFort(true);
             }
